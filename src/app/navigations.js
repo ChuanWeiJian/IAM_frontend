@@ -30,7 +30,13 @@ export const navigations = [
         name: "New Assignment Task",
         path: "/assignment/new",
         type: "link"
-      }
+      }, 
+      {
+        icon: "i-File-Horizontal-Text",
+        name: "Assignment Tasks List",
+        path: "/assignment/list",
+        type: "link"
+      }, 
     ]
   },
   {

@@ -5,6 +5,7 @@ const NewAssignmentTask = lazy(() =>
   import("./new_assignment_task/NewAssignmentTask")
 );
 const AssignmentTasks = lazy(() => import("./assignmentTasks"));
+const AssignmentTasksList = lazy(() => import("./assignment_tasks_list/AssignmentTaskList"));
 
 const assignmentTasksRoutes = [
   {
@@ -17,6 +18,11 @@ const assignmentTasksRoutes = [
     exact: true,
     component: NewAssignmentTask,
   },
+  {
+    path: "/assignment/list",
+    exact: true,
+    component: AssignmentTasksList
+  }
 ];
 
 export default assignmentTasksRoutes;
