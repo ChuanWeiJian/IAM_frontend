@@ -21,7 +21,7 @@ const ActionButtons = ({ role, assignmentTask, isComplete }) => {
           >
             <Link
               className="p-2 btn-hover rounded-circle"
-              to={`/assignment/result/${role}`}
+              to={`/assignment/result/${role}/${assignmentTask.id}`}
             >
               <MdRemoveRedEye
                 className="cursor-pointer"
