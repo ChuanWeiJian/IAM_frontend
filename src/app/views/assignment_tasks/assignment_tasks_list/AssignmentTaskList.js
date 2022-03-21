@@ -6,7 +6,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
-import moment from "moment";
+import { getStatus } from "app/views/shared/function/getStatus";
 
 import { AssignmentTasks } from "fake-db/static_data/AssignmentTaskLists";
 
@@ -14,24 +14,7 @@ let { SearchBar } = Search;
 
 const AssignmentTaskList = (props) => {
   const resolvedAssignmentTasks = AssignmentTasks.map((task, index) => {
-    let now = moment(new Date(), "DD/MM/YYYY HH:mm");
-    let resolvedCollectionDate = moment(
-      task.collectionDate,
-      "DD/MM/YYYY HH:mm"
-    );
-    let resolvedAssignmentDate = moment(
-      task.assignmentDate,
-      "DD/MM/YYYY HH:mm"
-    );
-
-    let status;
-    if (resolvedCollectionDate.isSameOrAfter(now)) {
-      status = "Collection in progress";
-    } else if (resolvedAssignmentDate.isSameOrAfter(now)) {
-      status = "Assigning in progress";
-    } else {
-      status = "Assignment Completed";
-    }
+    let status = getStatus(task.collectionDate, task.assignmentDate);
 
     let actions = {
       view: "/assignment/" + task.id,

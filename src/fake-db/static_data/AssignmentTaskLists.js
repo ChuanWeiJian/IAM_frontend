@@ -13,8 +13,8 @@ export const AssignmentTasks = [
     title: "STPM 2022",
     examType: "STPM",
     createdDate: "20/03/2022 17:16",
-    collectionDate: "21/03/2022 00:00",
-    assignmentDate: "22/03/2022 00:00",
+    collectionDate: "22/03/2022 00:00",
+    assignmentDate: "23/03/2022 00:00",
     examCenters: ["01", "02", "03"],
   },
   {
