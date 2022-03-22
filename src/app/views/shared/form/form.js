@@ -1,5 +1,6 @@
 import React from "react";
 import DateTime from "react-datetime";
+import { Field } from "redux-form";
 
 const renderError = (meta) => {
   if (meta.touched && meta.error) {
@@ -94,6 +95,30 @@ export const renderMultipleColumnFormExamCentersCheckboxGroup = (formProps) => {
           );
         })}
       </div>
+      {renderError(formProps.meta)}
+    </div>
+  );
+};
+
+export const renderEditAssignmentResultField = (formProps) => {
+  return (
+    <div className={`form-group ${formProps.className || ""}`}>
+      <label className="ul-form__label">{formProps.label}</label>
+      <select
+        {...formProps.input}
+        className="form-control"
+        onChange={formProps.input.onChange}
+      >
+        {formProps.options.map((option) => {
+          return (
+            option.examCenterId !== formProps.originalExamCenterId && (
+              <option key={option.id} value={option.id}>
+                {`${option.name} - ${option.examCenterCode}`}
+              </option>
+            )
+          );
+        })}
+      </select>
       {renderError(formProps.meta)}
     </div>
   );

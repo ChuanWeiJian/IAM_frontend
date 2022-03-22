@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Breadcrumb, SimpleCard } from "@gull";
+import { Breadcrumb } from "@gull";
 import { useParams } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import moment from "moment";
@@ -18,7 +18,7 @@ import {
   examCenters,
   examTypes,
 } from "fake-db/static_data/EditAssignmentTask";
-import { validate } from "../shared/validation";
+import { validateAssignmentTask as validate } from "../shared/validation";
 
 const EditAssignmentTask = (props) => {
   const taskId = useParams().taskId;

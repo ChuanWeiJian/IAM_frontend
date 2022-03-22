@@ -3,7 +3,7 @@ import { Breadcrumb } from "@gull";
 import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import { Form } from "react-bootstrap";
-import {validate} from "../shared/validation";
+import {validateAssignmentTask as validate} from "../shared/validation";
 
 import {
   renderMultiColumnFormInputField,

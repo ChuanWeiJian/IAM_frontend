@@ -22,8 +22,9 @@ export const AssignmentTasks = [
     examType: "STPM",
     createdDate: "20/03/2022 17:16",
     collectionDate: "22/03/2022 00:00",
-    assignmentDate: "23/03/2022 00:00",
+    assignmentDate: "31/03/2022 00:00",
     examCenters: ["01", "02", "03"],
+    examCenterData: ["07", "08", "09"],
     chiefInvigilatorComplete: false,
     viceChiefInvigilatorComplete: false,
     invigilatorComplete: false,
@@ -38,7 +39,7 @@ export const AssignmentTasks = [
     examType: "SPM",
     createdDate: "18/03/2022 17:16",
     collectionDate: "19/03/2022 00:00",
-    assignmentDate: "22/03/2022 00:00",
+    assignmentDate: "31/03/2022 00:00",
     examCenters: ["01", "02", "03"],
     examCenterData: ["04", "05", "06"],
     chiefInvigilatorComplete: true,
@@ -103,6 +104,25 @@ export const AssignmentResults = [
   {
     id: "01",
     assignmentTask: "01",
+    role: "chiefInvigilator",
+    results: [
+      {
+        examCenter: "01",
+        invigilator: "03",
+      },
+      {
+        examCenter: "02",
+        invigilator: "01",
+      },
+      {
+        examCenter: "03",
+        invigilator: "02",
+      },
+    ],
+  },
+  {
+    id: "02",
+    assignmentTask: "03",
     role: "chiefInvigilator",
     results: [
       {
