@@ -1,23 +1,40 @@
-import React from "react";
-import { Breadcrumb } from "@gull";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Breadcrumb, SimpleCard } from "@gull";
+import { useParams } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import { Form } from "react-bootstrap";
-import {validate} from "../shared/validation";
 
 import {
   renderMultiColumnFormInputField,
   renderMultiColumnFormSelect,
   renderMultiColumnFormDateTimeField,
-  renderMultiColumnFormDateTimeField2,
   renderMultipleColumnFormExamCentersCheckboxGroup,
 } from "app/views/shared/form/form";
+import { initializeForm } from "app/redux/actions/EditAssignmentTaskActions";
 import {
-  examTypes,
+  AssignmentTasks,
   examCenters,
-} from "fake-db/static_data/NewAssignmentTaskData";
+  examTypes,
+} from "fake-db/static_data/EditAssignmentTask";
+import { validate } from "../shared/validation";
 
-const NewAssignmentTask = (props) => {
+const EditAssignmentTask = (props) => {
+  const taskId = useParams().taskId;
+
+  const assignmentTask = AssignmentTasks.find((task) => task.id === taskId);
+
+  useEffect(() => {
+    props.initializeForm({
+      title: assignmentTask.title,
+      examType: assignmentTask.examType,
+      collectionDate: moment(assignmentTask.collectionDate, "DD/MM/YYYY HH:mm"),
+      assignmentDate: moment(assignmentTask.assignmentDate, "DD/MM/YYYY HH:mm"),
+      examCenters: assignmentTask.examCenters,
+    });
+  }, []);
+
   const handleFormSubmit = (values) => {
     console.log(values);
   };
@@ -27,7 +44,8 @@ const NewAssignmentTask = (props) => {
       <Breadcrumb
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
-          { name: "New Assignment Task" },
+          { name: "Assignment Tasks List", path: "/assignment/list" },
+          { name: "Edit Assignment Task" },
         ]}
       ></Breadcrumb>
       <div className="2-columns-form-layout">
@@ -36,7 +54,7 @@ const NewAssignmentTask = (props) => {
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-header bg-transparent">
-                  <h3 className="card-title"> New Assignment Task</h3>
+                  <h3 className="card-title"> Edit Assignment Task</h3>
                 </div>
                 <form onSubmit={props.handleSubmit(handleFormSubmit)}>
                   <div className="card-body">
@@ -65,11 +83,11 @@ const NewAssignmentTask = (props) => {
                       <Field
                         className="col-md-6"
                         name="collectionDate"
-                        placeholder="Please select collection deadline"
+                        placeholder="Please select data collection deadline"
+                        helpText="Please select data collection deadline"
                         isValidDate={(current) => {
                           return current.isAfter(moment().subtract(1, "day"));
                         }}
-                        helpText="Please select data collection deadline"
                         component={renderMultiColumnFormDateTimeField}
                       />
                       <Field
@@ -124,7 +142,7 @@ const NewAssignmentTask = (props) => {
                               type="submit"
                               className="btn  btn-primary m-1"
                             >
-                              Create Task
+                              Save Changes
                             </button>
                           </div>
                         </div>
@@ -141,6 +159,14 @@ const NewAssignmentTask = (props) => {
   );
 };
 
-export default reduxForm({ form: "NewAssignmentTask", validate: validate })(
-  NewAssignmentTask
+const mapStateToProps = (state) => {
+  return { initialValues: state.editAssignmentTask };
+};
+
+export default connect(mapStateToProps, { initializeForm: initializeForm })(
+  reduxForm({
+    form: "EditAssignmentTask",
+    validate: validate,
+    enableReinitialize: true,
+  })(EditAssignmentTask)
 );

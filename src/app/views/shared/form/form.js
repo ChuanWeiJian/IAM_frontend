@@ -16,9 +16,7 @@ export const renderMultiColumnFormInputField = (formProps) => {
         placeholder={formProps.placeholder}
         className="form-control"
       ></input>
-      <small id="passwordHelpBlock" className="ul-form__text form-text ">
-        {formProps.helpText}
-      </small>
+      <small className="ul-form__text form-text ">{formProps.helpText}</small>
       {renderError(formProps.meta)}
     </div>
   );
@@ -39,9 +37,7 @@ export const renderMultiColumnFormSelect = (formProps) => {
           </option>
         ))}
       </select>
-      <small id="passwordHelpBlock" className="ul-form__text form-text ">
-        {formProps.helpText}
-      </small>
+      <small className="ul-form__text form-text ">{formProps.helpText}</small>
       {renderError(formProps.meta)}
     </div>
   );
@@ -58,10 +54,9 @@ export const renderMultiColumnFormDateTimeField = (formProps) => {
         timeFormat="HH:mm"
         dateFormat="DD/MM/YYYY"
         placeholder={formProps.placeholder}
+        value={formProps.input.value}
       />
-      <small id="passwordHelpBlock" className="ul-form__text form-text ">
-        {formProps.helpText}
-      </small>
+      <small className="ul-form__text form-text ">{formProps.helpText}</small>
       {renderError(formProps.meta)}
     </div>
   );

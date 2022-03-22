@@ -6,6 +6,7 @@ import ScrumBoardReducer from "./ScrumBoardReducer";
 import NotificationReducer from "./NotificationReducer";
 import EcommerceReducer from "./EcommerceReducer";
 import AssignmentTaskInfoReducer from "./AssignmentTaskInfoReducer";
+import EditAssignmentTaskReducer from "./EditAssignmentTaskReducer";
 import { reducer as formReducer } from "redux-form";
 
 const RootReducer = combineReducers({
@@ -16,6 +17,7 @@ const RootReducer = combineReducers({
   notification: NotificationReducer,
   ecommerce: EcommerceReducer,
   assignmentTaskInfo: AssignmentTaskInfoReducer,
+  editAssignmentTask: EditAssignmentTaskReducer,
   form: formReducer,
 });
 

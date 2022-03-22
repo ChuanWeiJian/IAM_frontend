@@ -16,6 +16,10 @@ const AssignmentResultSummary = lazy(() =>
   import("./assignment_result_summary/AssignmentResultSummary")
 );
 
+const EditAssignmentTask = lazy(() =>
+  import("./edit_assignment_task/EditAssignmentTask.js")
+);
+
 const assignmentTasksRoutes = [
   {
     path: "/assignment",
@@ -41,6 +45,11 @@ const assignmentTasksRoutes = [
     path: "/assignment/result/:role/:taskId",
     exact: true,
     component: AssignmentResultSummary,
+  },
+  {
+    path: "/assignment/edit/:taskId",
+    exact: true,
+    component: EditAssignmentTask,
   },
 ];
 

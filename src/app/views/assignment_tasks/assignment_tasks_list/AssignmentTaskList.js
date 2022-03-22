@@ -18,7 +18,7 @@ const AssignmentTaskList = (props) => {
 
     let actions = {
       view: "/assignment/" + task.id,
-      update: "/assignment/update/" + task.id,
+      edit: "/assignment/edit/" + task.id,
       delete: "/assignment/delete/" + task.id,
     };
 
@@ -48,7 +48,7 @@ const AssignmentTaskList = (props) => {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Edit</Tooltip>}
         >
-          <Link className="p-2 btn-hover rounded-circle" to={cell.update}>
+          <Link className="p-2 btn-hover rounded-circle" to={cell.edit}>
             <MdModeEdit className="cursor-pointer" size={24}></MdModeEdit>
           </Link>
         </OverlayTrigger>
