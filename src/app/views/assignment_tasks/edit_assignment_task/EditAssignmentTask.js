@@ -17,7 +17,7 @@ import {
   AssignmentTasks,
   examCenters,
   examTypes,
-} from "fake-db/static_data/EditAssignmentTask";
+} from "fake-db/static_data/AssignmentTask";
 import { validateAssignmentTask as validate } from "../shared/validation";
 
 const EditAssignmentTask = (props) => {
@@ -133,18 +133,17 @@ const EditAssignmentTask = (props) => {
                         }
                       />
                     </div>
-
-                    <div className="card-footer">
-                      <div className="mc-footer">
-                        <div className="row">
-                          <div className="col-lg-12">
-                            <button
-                              type="submit"
-                              className="btn  btn-primary m-1"
-                            >
-                              Save Changes
-                            </button>
-                          </div>
+                  </div>
+                  <div className="card-footer">
+                    <div className="mc-footer">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <button
+                            type="submit"
+                            className="btn  btn-primary m-1"
+                          >
+                            Save Changes
+                          </button>
                         </div>
                       </div>
                     </div>

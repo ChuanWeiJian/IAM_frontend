@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import dashboardRoutes from "./views/dashboard/dashboardRoutes";
 import sessionsRoutes from "./views/sessions/sessionsRoutes";
 import assignmentTasksRoutes from "./views/assignment_tasks/assignmentTasksRoutes";
+import letterTemplatesRoutes from "./views/letterTemplates/letterTemplatesRoutes";
 import AuthGuard from "./auth/AuthGuard";
 
 
@@ -28,6 +29,7 @@ const routes = [
     routes: [
       ...dashboardRoutes,
       ...assignmentTasksRoutes,
+      ...letterTemplatesRoutes,
       ...redirectRoute,
       ...errorRoute
     ]

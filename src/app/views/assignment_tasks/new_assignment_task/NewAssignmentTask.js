@@ -3,19 +3,15 @@ import { Breadcrumb } from "@gull";
 import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import { Form } from "react-bootstrap";
-import {validateAssignmentTask as validate} from "../shared/validation";
+import { validateAssignmentTask as validate } from "../shared/validation";
 
 import {
   renderMultiColumnFormInputField,
   renderMultiColumnFormSelect,
   renderMultiColumnFormDateTimeField,
-  renderMultiColumnFormDateTimeField2,
   renderMultipleColumnFormExamCentersCheckboxGroup,
 } from "app/views/shared/form/form";
-import {
-  examTypes,
-  examCenters,
-} from "fake-db/static_data/NewAssignmentTaskData";
+import { examTypes, examCenters } from "fake-db/static_data/AssignmentTask";
 
 const NewAssignmentTask = (props) => {
   const handleFormSubmit = (values) => {
@@ -115,18 +111,14 @@ const NewAssignmentTask = (props) => {
                         }
                       />
                     </div>
-
-                    <div className="card-footer">
-                      <div className="mc-footer">
-                        <div className="row">
-                          <div className="col-lg-12">
-                            <button
-                              type="submit"
-                              className="btn  btn-primary m-1"
-                            >
-                              Create Task
-                            </button>
-                          </div>
+                  </div>
+                  <div className="card-footer">
+                    <div className="mc-footer">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <button type="submit" className="btn btn-primary m-1">
+                            Create Task
+                          </button>
                         </div>
                       </div>
                     </div>

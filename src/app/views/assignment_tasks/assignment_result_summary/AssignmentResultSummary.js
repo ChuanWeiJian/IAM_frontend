@@ -7,7 +7,7 @@ import {
   examCenters,
   Invigilators,
   AssignmentResults,
-} from "fake-db/static_data/AssignmentResultSummary";
+} from "fake-db/static_data/AssignmentTask";
 import AssignmentTaskInfoHeader from "../shared/components/AssignmentTaskInfoHeader";
 import AssignmentResultTable from "./components/AssignmentResultTable";
 import { getStatus } from "app/views/shared/function/getStatus";

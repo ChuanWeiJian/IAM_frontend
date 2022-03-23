@@ -1,6 +1,8 @@
 import React from "react";
 import DateTime from "react-datetime";
+import { SimpleCard, RichTextEditor } from "@gull";
 import { Field } from "redux-form";
+import { tagFieldsOptions } from "fake-db/static_data/LetterTemplate";
 
 const renderError = (meta) => {
   if (meta.touched && meta.error) {
@@ -120,6 +122,129 @@ export const renderEditAssignmentResultField = (formProps) => {
         })}
       </select>
       {renderError(formProps.meta)}
+    </div>
+  );
+};
+
+export const renderMultiColumnFormRichTextEditor = (formProps) => {
+  return (
+    <div className="col-md-12">
+      <SimpleCard title={formProps.title} subtitle={formProps.subtitle}>
+        <RichTextEditor
+          {...formProps.input}
+          content={formProps.input.value}
+          handleContentChange={formProps.input.onChange}
+          placeholder={formProps.placeholder}
+        />
+      </SimpleCard>
+      {renderError(formProps.meta)}
+    </div>
+  );
+};
+
+const renderTagSelectField = (formProps) => {
+  return (
+    <div className={`form-group ${formProps.className || ""}`}>
+      <div className="row">
+        <label className="ul-form__label ul-form--margin col-lg-1 col-form-label ">
+          {formProps.label}
+        </label>
+        <div className="col-lg-8">
+          <select
+            className="form-control"
+            {...formProps.input}
+            onChange={formProps.input.onChange}
+          >
+            <option value="">{formProps.defaultOption}</option>
+            {formProps.items.map((item) => (
+              <option key={item.id} value={item.value}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-lg-3">
+          <button
+            type="button"
+            className="btn btn-danger m-1"
+            onClick={() => {
+              const removedTag = "&lt;" + (formProps.index + 1) + "&gt;";
+              let newLetterContent = formProps.letterContent.replace(
+                removedTag,
+                ""
+              );
+              if (formProps.index < formProps.fieldLength) {
+                for (
+                  var idx = formProps.index + 1;
+                  idx < formProps.fieldLength;
+                  idx++
+                ) {
+                  const modifiedTag = "&lt;" + (idx + 1) + "&gt;";
+                  const newTag = "&lt;" + idx + "&gt;";
+                  newLetterContent = newLetterContent.replace(
+                    modifiedTag,
+                    newTag
+                  );
+                }
+              }
+              formProps.changeFunction("content", newLetterContent);
+              formProps.onRemoveTag(formProps.index);
+            }}
+          >
+            Remove Tag
+          </button>
+        </div>
+      </div>
+      {renderError(formProps.meta)}
+    </div>
+  );
+};
+
+export const renderTagsSelector = (formProps) => {
+  return (
+    <div className="row">
+      <div className="col-md-12">
+        <button
+          type="button"
+          className="btn btn-outline-secondary m-1"
+          onClick={() => {
+            formProps.fields.push({});
+            let newLetterContent;
+            if (formProps.letterContent) {
+              newLetterContent =
+                formProps.letterContent +
+                "&lt;" +
+                (formProps.fields.length + 1) +
+                "&gt;";
+            } else {
+              newLetterContent =
+                "&lt;" + (formProps.fields.length + 1) + "&gt;";
+            }
+            formProps.changeFunction("content", newLetterContent);
+          }}
+        >
+          Add New Tag
+        </button>
+      </div>
+
+      <div className="custom-separator"></div>
+
+      {formProps.fields.map((tag, index) => (
+        <Field
+          key={index}
+          className="col-md-12"
+          label={`<${index + 1}>`}
+          name={`${tag}.value`}
+          component={renderTagSelectField}
+          defaultOption="Please select a field"
+          onRemoveTag={formProps.fields.remove}
+          changeFunction={formProps.changeFunction}
+          letterContent={formProps.letterContent}
+          index={index}
+          fieldLength={formProps.fields.length}
+          items={tagFieldsOptions}
+        />
+      ))}
     </div>
   );
 };

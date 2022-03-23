@@ -11,7 +11,7 @@ import {
   AssignmentTasks,
   examCenters,
   examCenterData,
-} from "fake-db/static_data/AssignmentTaskInfo";
+} from "fake-db/static_data/AssignmentTask";
 import { getStatus } from "app/views/shared/function/getStatus";
 import ExamCenterDataSummary from "./components/ExamCenterDataSummary";
 import AssignmentTaskInfoHeader from "../shared/components/AssignmentTaskInfoHeader";

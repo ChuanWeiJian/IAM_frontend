@@ -5,10 +5,10 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
+import { MdModeEdit, MdRemoveRedEye } from "react-icons/md";
 import { getStatus } from "app/views/shared/function/getStatus";
 
-import { AssignmentTasks } from "fake-db/static_data/AssignmentTaskLists";
+import { AssignmentTasks } from "fake-db/static_data/AssignmentTask";
 
 let { SearchBar } = Search;
 
@@ -19,7 +19,6 @@ const AssignmentTaskList = (props) => {
     let actions = {
       view: "/assignment/" + task.id,
       edit: "/assignment/edit/" + task.id,
-      delete: "/assignment/delete/" + task.id,
     };
 
     return {
@@ -50,14 +49,6 @@ const AssignmentTaskList = (props) => {
         >
           <Link className="p-2 btn-hover rounded-circle" to={cell.edit}>
             <MdModeEdit className="cursor-pointer" size={24}></MdModeEdit>
-          </Link>
-        </OverlayTrigger>
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip id="tooltip-top">Delete</Tooltip>}
-        >
-          <Link className="p-2 btn-hover rounded-circle" to={cell.delete}>
-            <MdDelete className="cursor-pointer" size={24}></MdDelete>
           </Link>
         </OverlayTrigger>
       </div>

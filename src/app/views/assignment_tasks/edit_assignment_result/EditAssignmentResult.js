@@ -13,7 +13,7 @@ import {
   examCenters,
   Invigilators,
   AssignmentResults,
-} from "fake-db/static_data/EditAssignmentResult";
+} from "fake-db/static_data/AssignmentTask";
 
 const EditAssignmentResult = (props) => {
   const taskId = useParams().taskId;
@@ -86,36 +86,35 @@ const EditAssignmentResult = (props) => {
           <h3 className="card-title">
             Edit Assignment Result : {_.startCase(role)}
           </h3>
-          <form onSubmit={props.handleSubmit(handleFormSubmit)}>
-            <div className="card-body">
+        </div>
+        <form onSubmit={props.handleSubmit(handleFormSubmit)}>
+          <div className="card-body">
+            <div className="row">
+              {resolvedResult.results.map((result, index) => (
+                <Field
+                  key={index}
+                  className="col-md-4"
+                  name={`result${result.examCenter.id}`}
+                  label={`${result.examCenter.schoolCode} - ${result.examCenter.examCenterCode} - ${result.examCenter.name}`}
+                  options={involvedInvigilators}
+                  originalExamCenterId={result.examCenter.id}
+                  component={renderEditAssignmentResultField}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="card-footer">
+            <div className="mc-footer">
               <div className="row">
-                {resolvedResult.results.map((result, index) => (
-                  <Field
-                    key={index}
-                    className="col-md-4"
-                    name={`result${result.examCenter.id}`}
-                    label={`${result.examCenter.schoolCode} - ${result.examCenter.examCenterCode} - ${result.examCenter.name}`}
-                    options={involvedInvigilators}
-                    originalExamCenterId={result.examCenter.id}
-                    component={renderEditAssignmentResultField}
-                  />
-                ))}
-              </div>
-
-              <div className="card-footer">
-                <div className="mc-footer">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <button type="submit" className="btn  btn-primary m-1">
-                        Save Changes
-                      </button>
-                    </div>
-                  </div>
+                <div className="col-lg-12">
+                  <button type="submit" className="btn  btn-primary m-1">
+                    Save Changes
+                  </button>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );

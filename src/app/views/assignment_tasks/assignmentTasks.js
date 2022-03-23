@@ -9,7 +9,7 @@ const AssignmentTasks = () => {
   return (
     <div>
       <Breadcrumb
-        routeSegments={[{ name: "Assignment Tasks", path: "/assignment" }]}
+        routeSegments={[{ name: "Assignment Tasks" }]}
       ></Breadcrumb>
       <Row>
         <Col lg={6} md={6} sm={6} xs={12} className="mb-4">
