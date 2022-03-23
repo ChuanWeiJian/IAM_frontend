@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
+import SweetAlert from "sweetalert2-react";
+import swal from "sweetalert2";
 
 import { LetterTemplates } from "fake-db/static_data/LetterTemplate";
 
@@ -52,9 +54,40 @@ const LetterTemplatesList = (props) => {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Delete</Tooltip>}
         >
-          <Link className="p-2 btn-hover rounded-circle" to={cell.delete}>
-            <MdDelete className="cursor-pointer" size={24}></MdDelete>
-          </Link>
+          <div
+            className="p-2 btn-hover rounded-circle"
+            onClick={() => {
+              swal
+                .fire({
+                  title: "Are you sure?",
+                  text: `Confirm to delete ${row.title}`,
+                  icon: "warning",
+                  type: "question",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, delete it!",
+                  cancelButtonText: "No",
+                })
+                .then((result) => {
+                  if (result.value) {
+                    console.log("Deleting");
+                    swal.fire(
+                      "Deleted!",
+                      "Your file has been deleted.",
+                      "success"
+                    );
+                  } else {
+                    swal.fire("Cancelled!", "Permission denied.", "error");
+                  }
+                });
+            }}
+          >
+            <MdDelete
+              className="cursor-pointer text-primary"
+              size={24}
+            ></MdDelete>
+          </div>
         </OverlayTrigger>
       </div>
     );
