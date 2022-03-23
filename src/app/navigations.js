@@ -64,7 +64,13 @@ export const navigations = [
         name: "New Formal Letter",
         path: "/letter/new",
         type: "link"
-      }
+      },
+      {
+        icon: "i-Email",
+        name: "Formal Letter List",
+        path: "/letter/list",
+        type: "link"
+      },
     ]
   },
 ];

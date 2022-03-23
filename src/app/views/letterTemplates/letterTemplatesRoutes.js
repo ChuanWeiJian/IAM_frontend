@@ -6,6 +6,10 @@ const NewLetterTemplate = lazy(() =>
 );
 const LetterTemplate = lazy(() => import("./letterTemplates"));
 
+const LetterTemplatesList = lazy(() =>
+  import("./letter_templates_list/LetterTemplatesList")
+);
+
 const letterTemplatesRoutes = [
   {
     path: "/letter",
@@ -16,6 +20,11 @@ const letterTemplatesRoutes = [
     path: "/letter/new",
     exact: true,
     component: NewLetterTemplate,
+  },
+  {
+    path: "/letter/list",
+    exact: true,
+    component: LetterTemplatesList,
   },
 ];
 
