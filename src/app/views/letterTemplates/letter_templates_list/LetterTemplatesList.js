@@ -6,7 +6,6 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
-import SweetAlert from "sweetalert2-react";
 import swal from "sweetalert2";
 
 import { LetterTemplates } from "fake-db/static_data/LetterTemplate";
