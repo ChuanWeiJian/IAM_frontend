@@ -4,21 +4,21 @@ import dashboardRoutes from "./views/dashboard/dashboardRoutes";
 import sessionsRoutes from "./views/sessions/sessionsRoutes";
 import assignmentTasksRoutes from "./views/assignment_tasks/assignmentTasksRoutes";
 import letterTemplatesRoutes from "./views/letterTemplates/letterTemplatesRoutes";
+import examCentersRoutes from "./views/exam_centers/examCentersRoutes";
 import AuthGuard from "./auth/AuthGuard";
-
 
 const redirectRoute = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/dashboard/v1" />
-  }
+    component: () => <Redirect to="/dashboard/v1" />,
+  },
 ];
 
 const errorRoute = [
   {
-    component: () => <Redirect to="/session/404" />
-  }
+    component: () => <Redirect to="/session/404" />,
+  },
 ];
 
 const routes = [
@@ -30,10 +30,11 @@ const routes = [
       ...dashboardRoutes,
       ...assignmentTasksRoutes,
       ...letterTemplatesRoutes,
+      ...examCentersRoutes,
       ...redirectRoute,
-      ...errorRoute
-    ]
-  }
+      ...errorRoute,
+    ],
+  },
 ];
 
 export default routes;
