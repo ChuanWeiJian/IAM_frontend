@@ -3,10 +3,7 @@ import { Breadcrumb, SimpleCard } from "@gull";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
-import {
-  setPage,
-  setRowsPerPage,
-} from "app/redux/actions/AssignmentTaskInfoActions";
+import { setPage, setRowsPerPage } from "app/redux/actions/TableActions";
 import {
   AssignmentTasks,
   examCenters,
@@ -69,7 +66,7 @@ const AssignmentTaskInfo = (props) => {
                 <select
                   className="form-control"
                   onChange={({ target: { value } }) => {
-                    props.setRowPerPage(value);
+                    props.setRowsPerPage(value);
                   }}
                 >
                   <option value={10}>10</option>
@@ -147,8 +144,8 @@ const AssignmentTaskInfo = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    page: state.assignmentTaskInfo.page,
-    rowsPerPage: state.assignmentTaskInfo.rowsPerPage,
+    page: state.table.page,
+    rowsPerPage: state.table.rowsPerPage,
   };
 };
 

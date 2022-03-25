@@ -5,11 +5,11 @@ import LayoutReducer from "./LayoutReducer";
 import ScrumBoardReducer from "./ScrumBoardReducer";
 import NotificationReducer from "./NotificationReducer";
 import EcommerceReducer from "./EcommerceReducer";
-import AssignmentTaskInfoReducer from "./AssignmentTaskInfoReducer";
 import EditAssignmentTaskReducer from "./EditAssignmentTaskReducer";
 import EditAssignmentResultReducer from "./EditAssignmentResultReducer";
 import EditLetterTemplateReducer from "./EditLetterTemplateReducer";
 import NewExamCenterReducer from "./NewExamCenterReducer";
+import TableReducer from "./TableReducer";
 import { reducer as formReducer } from "redux-form";
 
 const RootReducer = combineReducers({
@@ -19,7 +19,7 @@ const RootReducer = combineReducers({
   scrumboard: ScrumBoardReducer,
   notification: NotificationReducer,
   ecommerce: EcommerceReducer,
-  assignmentTaskInfo: AssignmentTaskInfoReducer,
+  table: TableReducer,
   editAssignmentTask: EditAssignmentTaskReducer,
   editAssignmentResult: EditAssignmentResultReducer,
   editLetterTemplate: EditLetterTemplateReducer,
