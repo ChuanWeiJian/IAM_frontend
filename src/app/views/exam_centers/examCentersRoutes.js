@@ -3,7 +3,7 @@ import { lazy } from "react";
 
 const NewExamCenter = lazy(() => import("./new_exam_center/NewExamCenter"));
 const ExamCenters = lazy(() => import("./examCenters"));
-
+const ExamCentersList = lazy(() => import("./exam_center_list/ExamCenterList"));
 const examCentersRoutes = [
   {
     path: "/examcenter",
@@ -14,6 +14,11 @@ const examCentersRoutes = [
     path: "/examcenter/new",
     exact: true,
     component: NewExamCenter,
+  },
+  {
+    path: "/examcenter/list",
+    exact: true,
+    component: ExamCentersList,
   },
 ];
 

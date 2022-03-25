@@ -50,7 +50,13 @@ export const navigations = [
         name: "New Exam Center",
         path: "/examcenter/new",
         type: "link"
-      }
+      },
+      {
+        icon: "i-University1",
+        name: "Exam Centers List",
+        path: "/examcenter/list",
+        type: "link"
+      },
     ]
   },
   {
