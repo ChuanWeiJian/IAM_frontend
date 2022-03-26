@@ -9,6 +9,7 @@ import EditAssignmentTaskReducer from "./EditAssignmentTaskReducer";
 import EditAssignmentResultReducer from "./EditAssignmentResultReducer";
 import EditLetterTemplateReducer from "./EditLetterTemplateReducer";
 import NewExamCenterReducer from "./NewExamCenterReducer";
+import EditExamCenterReducer from "./EditExamCenterReducer";
 import TableReducer from "./TableReducer";
 import { reducer as formReducer } from "redux-form";
 
@@ -24,6 +25,7 @@ const RootReducer = combineReducers({
   editAssignmentResult: EditAssignmentResultReducer,
   editLetterTemplate: EditLetterTemplateReducer,
   newExamCenter: NewExamCenterReducer,
+  editExamCenter: EditExamCenterReducer,
   form: formReducer,
 });
 

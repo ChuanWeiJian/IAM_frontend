@@ -7,6 +7,7 @@ const ExamCentersList = lazy(() => import("./exam_center_list/ExamCenterList"));
 const ExamCenterInformation = lazy(() =>
   import("./exam_center_information/ExamCenterInformation")
 );
+const EditExamCenter = lazy(() => import("./edit_exam_center/EditExamCenter"));
 const examCentersRoutes = [
   {
     path: "/examcenter",
@@ -27,6 +28,11 @@ const examCentersRoutes = [
     path: "/examcenter/:centerId",
     exact: true,
     component: ExamCenterInformation,
+  },
+  {
+    path: "/examcenter/edit/:centerId",
+    exact: true,
+    component: EditExamCenter,
   },
 ];
 

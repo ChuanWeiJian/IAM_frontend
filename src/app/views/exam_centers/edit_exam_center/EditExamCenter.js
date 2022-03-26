@@ -1,5 +1,5 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Breadcrumb } from "@gull";
@@ -7,26 +7,31 @@ import { Field, reduxForm } from "redux-form";
 import SweetAlert from "sweetalert2-react";
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import ExamCenterListModal from "../shared/components/ExamCenterListModal";
-import { examCenters, examSecretaries } from "fake-db/static_data/ExamCenter";
+import { examCenters } from "fake-db/static_data/ExamCenter";
 import { validateExamCenter as validate } from "../shared/validation";
 import {
   toggleAlert,
   toggleExamCenterListModal,
   toggleError,
-  setExamSecretary,
   setError,
-} from "app/redux/actions/NewExamCenterActions";
+  initializeForm,
+} from "app/redux/actions/EditExamCenterActions";
 
-const NewExamCenter = (props) => {
+const EditExamCenter = (props) => {
+  const centerId = useParams().centerId;
+
+  useEffect(() => {
+    const examCenter = examCenters.find((center) => center.id === centerId);
+    props.initializeForm(examCenter);
+  }, [centerId]);
+
   const history = useHistory();
-  
+
   const handleFormSubmit = (values) => {
     console.log(values);
-    const success = true;
+    const success = false;
 
     if (success) {
-      const examSecretaryAcc = examSecretaries.find((acc) => acc.id === "04");
-      props.setExamSecretary(examSecretaryAcc);
       props.toggleAlert(true);
     } else {
       const error = { message: "Duplicate exam center code" };
@@ -40,33 +45,27 @@ const NewExamCenter = (props) => {
       <Breadcrumb
         routeSegments={[
           { name: "Exam Centers", path: "/examcenter" },
-          { name: "New Exam Center" },
+          { name: "Exam Centers List", path: "/examcenter/list" },
+          { name: "Edit Exam Center" },
         ]}
       ></Breadcrumb>
       <SweetAlert
-        show={props.showAlert}
-        title="Exam Center Registration Success"
+        show={props.mechanism.showAlert}
+        title="Changes Saved Success"
         type="success"
-        html={renderToStaticMarkup(
-          <>
-            <h3>Exam Secretary Account</h3>
-            <p>Username: {props.examSecretary.username}</p>
-            <p>Password: {props.examSecretary.password}</p>
-          </>
-        )}
         onConfirm={() => {
           props.toggleAlert(false);
           history.push("/");
         }}
       />
       <SweetAlert
-        show={props.showError}
-        title="Exam Center Registration Failed"
+        show={props.mechanism.showError}
+        title="Changes Saved Failed"
         type="error"
         html={renderToStaticMarkup(
           <>
             <h3>Error</h3>
-            <p>Message: {props.submitError.message}</p>
+            <p>Message: {props.mechanism.submitError.message}</p>
           </>
         )}
         onConfirm={() => {
@@ -79,7 +78,7 @@ const NewExamCenter = (props) => {
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-header bg-transparent">
-                  <h3 className="card-title"> New Exam Center</h3>
+                  <h3 className="card-title"> Edit Exam Center</h3>
                 </div>
                 <form onSubmit={props.handleSubmit(handleFormSubmit)}>
                   <div className="card-body">
@@ -104,7 +103,7 @@ const NewExamCenter = (props) => {
                         <ExamCenterListModal
                           items={examCenters}
                           toggleModal={props.toggleExamCenterListModal}
-                          showModal={props.showModal}
+                          showModal={props.mechanism.showModal}
                         />
                       </div>
                     </div>
@@ -137,7 +136,7 @@ const NewExamCenter = (props) => {
                       <div className="row">
                         <div className="col-lg-12">
                           <button type="submit" className="btn btn-primary m-1">
-                            Register Exam Center
+                            Save Changes
                           </button>
                         </div>
                       </div>
@@ -154,13 +153,22 @@ const NewExamCenter = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return state.newExamCenter;
+  return {
+    mechanism: state.editExamCenter.mechanism,
+    initialValues: state.editExamCenter.initialValues,
+  };
 };
 
 export default connect(mapStateToProps, {
+  initializeForm: initializeForm,
   toggleAlert: toggleAlert,
   toggleExamCenterListModal: toggleExamCenterListModal,
   toggleError: toggleError,
-  setExamSecretary: setExamSecretary,
   setError: setError,
-})(reduxForm({ form: "NewExamCenter", validate: validate })(NewExamCenter));
+})(
+  reduxForm({
+    form: "EditExamCenter",
+    enableReinitialize: true,
+    validate: validate,
+  })(EditExamCenter)
+);

@@ -1,9 +1,9 @@
 import {
-  TOGGLE_EXAM_CENTER_LIST,
-  TOGGLE_ALERT,
-  TOGGLE_ERROR,
-  SET_EXAM_SECRETARY,
-  SET_ERROR,
+  NEW_TOGGLE_EXAM_CENTER_LIST,
+  NEW_TOGGLE_ALERT,
+  NEW_TOGGLE_ERROR,
+  NEW_SET_EXAM_SECRETARY,
+  NEW_SET_ERROR,
 } from "../actions/NewExamCenterActions";
 
 const initialState = {
@@ -16,15 +16,15 @@ const initialState = {
 
 const NewExamCenterReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOGGLE_EXAM_CENTER_LIST:
+    case NEW_TOGGLE_EXAM_CENTER_LIST:
       return { ...state, showModal: action.payload };
-    case TOGGLE_ALERT:
+    case NEW_TOGGLE_ALERT:
       return { ...state, showAlert: action.payload };
-    case TOGGLE_ERROR:
+    case NEW_TOGGLE_ERROR:
       return { ...state, showError: action.payload };
-    case SET_EXAM_SECRETARY:
+    case NEW_SET_EXAM_SECRETARY:
       return { ...state, examSecretary: action.payload };
-    case SET_ERROR:
+    case NEW_SET_ERROR:
       return { ...state, submitError: action.payload };
     default:
       return state;
