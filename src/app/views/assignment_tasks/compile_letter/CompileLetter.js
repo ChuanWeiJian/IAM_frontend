@@ -1,18 +1,19 @@
 import React from "react";
 import { Breadcrumb, SimpleCard } from "@gull";
 import { useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import _ from "lodash";
 import {
   AssignmentTasks,
+  AssignmentResults,
   examCenters,
   Invigilators,
-  AssignmentResults,
 } from "fake-db/static_data/AssignmentTask";
-import AssignmentTaskInfoHeader from "../shared/components/AssignmentTaskInfoHeader";
+import { LetterTemplates } from "fake-db/static_data/LetterTemplate";
+import LetterTemplateForm from "./components/LetterTemplateForm";
 import AssignmentResultTable from "../shared/components/AssignmentResultTable";
-import { getStatus } from "app/views/shared/function/getStatus";
 
-const AssignmentResultSummary = () => {
+const CompileLetter = () => {
   const role = useParams().role;
   const taskId = useParams().taskId;
 
@@ -40,13 +41,6 @@ const AssignmentResultSummary = () => {
     };
   }
 
-  console.log(resolvedResult);
-
-  let status = getStatus(
-    assignmentTask.collectionDate,
-    assignmentTask.assignmentDate
-  );
-
   return (
     <div>
       <Breadcrumb
@@ -54,14 +48,14 @@ const AssignmentResultSummary = () => {
           { name: "Assignment Tasks", path: "/assignment" },
           { name: "Assignment Tasks List", path: "/assignment/list" },
           { name: assignmentTask.title, path: `/assignment/${taskId}` },
-          { name: "Summary of Assignment Result" },
+          { name: "Compile Letter" },
         ]}
       ></Breadcrumb>
-      <SimpleCard>
-        <AssignmentTaskInfoHeader
-          assignmentTask={assignmentTask}
-          status={status}
-        />
+      <SimpleCard
+        title="Letter Template"
+        subtitle="Please select the letter template"
+      >
+        <LetterTemplateForm letters={LetterTemplates} />
 
         <div className="custom-separator"></div>
 
@@ -72,4 +66,4 @@ const AssignmentResultSummary = () => {
   );
 };
 
-export default AssignmentResultSummary;
+export default CompileLetter;

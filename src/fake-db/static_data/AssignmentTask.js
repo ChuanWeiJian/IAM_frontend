@@ -22,18 +22,27 @@ export const examCenters = [
     name: "SMK Tinggi Kluang",
     schoolCode: "JEB2037",
     examCenterCode: "JC005",
+    address: "xxxx, Jalan XXX, 81000, XXX, Johor",
+    examSecretary: "02",
+    assignmentTasks: ["01", "02", "03"],
   },
   {
     id: "02",
     name: "SMK Tengku Aris Bendahara",
     schoolCode: "JEB2038",
     examCenterCode: "JC017",
+    address: "xxxx, Jalan XXX, 81000, XXX, Johor",
+    examSecretary: "02",
+    assignmentTasks: ["01", "02", "03"],
   },
   {
     id: "03",
     name: "SMK Sultan Abdul Jalil",
     schoolCode: "JEA2033",
     examCenterCode: "JC013",
+    address: "xxxx, Jalan XXX, 81000, XXX, Johor",
+    examSecretary: "03",
+    assignmentTasks: ["01", "02", "03"],
   },
 ];
 
@@ -201,7 +210,7 @@ export const Invigilators = [
     email: "xxxx@gmail.com",
     gender: "M",
     examCenterId: "01",
-    examCenterCode: "JC005"
+    examCenterCode: "JC005",
   },
   {
     id: "02",
@@ -210,7 +219,7 @@ export const Invigilators = [
     email: "xxxx@gmail.com",
     gender: "F",
     examCenterId: "02",
-    examCenterCode: "JC017"
+    examCenterCode: "JC017",
   },
   {
     id: "03",
@@ -219,7 +228,7 @@ export const Invigilators = [
     email: "xxxx@gmail.com",
     gender: "M",
     examCenterId: "03",
-    examCenterCode: "JC013"
+    examCenterCode: "JC013",
   },
 ];
 

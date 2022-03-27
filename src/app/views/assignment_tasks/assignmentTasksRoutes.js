@@ -24,6 +24,8 @@ const EditAssignmentResult = lazy(() =>
   import("./edit_assignment_result/EditAssignmentResult")
 );
 
+const CompileLetter = lazy(() => import("./compile_letter/CompileLetter"));
+
 const assignmentTasksRoutes = [
   {
     path: "/assignment",
@@ -59,6 +61,11 @@ const assignmentTasksRoutes = [
     path: "/assignment/result/edit/:role/:taskId",
     exact: true,
     component: EditAssignmentResult,
+  },
+  {
+    path: "/assignment/letter/:role/:taskId",
+    exact: true,
+    component: CompileLetter,
   },
 ];
 

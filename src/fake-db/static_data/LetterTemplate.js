@@ -1,5 +1,3 @@
-import { Invigilators } from "./AssignmentTask";
-
 export const tagFieldsOptions = [
   {
     id: "01",

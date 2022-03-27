@@ -46,7 +46,7 @@ const ActionButtons = ({ role, assignmentTask, isComplete }) => {
             placement="top"
             overlay={<Tooltip id="tooltip-top">Send Formal Letter</Tooltip>}
           >
-            <Link className="p-2 btn-hover rounded-circle" to={`/`}>
+            <Link className="p-2 btn-hover rounded-circle" to={`/assignment/letter/${role}/${assignmentTask.id}`}>
               <MdEmail className="cursor-pointer" size={24}></MdEmail>
             </Link>
           </OverlayTrigger>

@@ -3,6 +3,7 @@ import DateTime from "react-datetime";
 import { SimpleCard, RichTextEditor } from "@gull";
 import { Field } from "redux-form";
 import { tagFieldsOptions } from "fake-db/static_data/LetterTemplate";
+import { Form } from "react-bootstrap";
 
 const renderError = (meta) => {
   if (meta.touched && meta.error) {
@@ -246,5 +247,19 @@ export const renderTagsSelector = (formProps) => {
         />
       ))}
     </div>
+  );
+};
+
+export const renderLetterTemplateRadio = (formProps) => {
+  return (
+    <React.Fragment>
+      <Form.Check
+        type="radio"
+        label={formProps.label}
+        {...formProps.input}
+        value={formProps.radioValue}
+      />
+      {renderError(formProps.meta)}
+    </React.Fragment>
   );
 };

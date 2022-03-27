@@ -60,3 +60,12 @@ export const validateAssignmentResult = (values) => {
 
   return errors;
 };
+
+export const validateCompileLetterTemplate = (values) => {
+  const errors = {};
+  if (!values.letterTemplate) {
+    errors.letterTemplate = "Please select the letter template";
+  }
+
+  return errors;
+};
