@@ -103,10 +103,9 @@ export const renderMultipleColumnFormExamCentersCheckboxGroup = (formProps) => {
   );
 };
 
-export const renderEditAssignmentResultField = (formProps) => {
+export const renderInvigilatorOptions = (formProps) => {
   return (
     <div className={`form-group ${formProps.className || ""}`}>
-      <label className="ul-form__label">{formProps.label}</label>
       <select
         {...formProps.input}
         className="form-control"
@@ -123,6 +122,28 @@ export const renderEditAssignmentResultField = (formProps) => {
         })}
       </select>
       {renderError(formProps.meta)}
+    </div>
+  );
+};
+
+export const renderEditAssignmentResultArrayField = (formProps) => {
+  return (
+    <div className="col-md-4">
+      <label className="ul-form__label">{formProps.label}</label>
+      <div className="row">
+        {formProps.fields.map((invigilator, index) => {
+          return (
+            <Field
+              key={invigilator}
+              className="col-lg-12"
+              name={invigilator}
+              options={formProps.options}
+              originalExamCenterId={formProps.examCenterId}
+              component={renderInvigilatorOptions}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

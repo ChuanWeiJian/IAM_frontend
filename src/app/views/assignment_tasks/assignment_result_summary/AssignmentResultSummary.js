@@ -22,20 +22,30 @@ const AssignmentResultSummary = () => {
   );
   let resolvedResult;
   if (result) {
+    let newResults = [];
+    result.results.forEach((data) => {
+      const examCenter = examCenters.find(
+        (center) => center.id === data.examCenter
+      );
+
+      console.log(data.invigilators);
+      data.invigilators.forEach((invigilatorId) => {
+        newResults = [
+          ...newResults,
+          {
+            examCenter: examCenter,
+            invigilator: Invigilators.find(
+              (invigilator) => invigilator.id === invigilatorId
+            ),
+          },
+        ];
+      });
+    });
+
     resolvedResult = {
       ...result,
-      results: result.results.map((data, index) => {
-        const examCenter = examCenters.find(
-          (center) => center.id === data.examCenter
-        );
-        const invigilator = Invigilators.find(
-          (invigilator) => invigilator.id === data.invigilator
-        );
-        return {
-          index: index + 1,
-          examCenter: examCenter,
-          invigilator: invigilator,
-        };
+      results: newResults.map((newResult, index) => {
+        return { index: index + 1, ...newResult };
       }),
     };
   }

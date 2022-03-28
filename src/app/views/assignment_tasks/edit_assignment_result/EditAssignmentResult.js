@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Breadcrumb } from "@gull";
 import { useParams } from "react-router-dom";
-import { Field, reduxForm } from "redux-form";
+import { FieldArray, reduxForm } from "redux-form";
 import _ from "lodash";
 
-import { renderEditAssignmentResultField } from "../../shared/form/form";
+import { renderEditAssignmentResultArrayField } from "../../shared/form/form";
 import { initializeForm } from "app/redux/actions/EditAssignmentResultActions";
 import { validateAssignmentResult as validate } from "../shared/validation";
 import {
@@ -24,7 +24,8 @@ const EditAssignmentResult = (props) => {
     (result) => result.assignmentTask === taskId && result.role === role
   );
 
-  let resolvedResult, involvedInvigilators;
+  let resolvedResult;
+  let involvedInvigilators = [];
   if (assignmentResult) {
     resolvedResult = {
       ...assignmentResult,
@@ -32,19 +33,28 @@ const EditAssignmentResult = (props) => {
         const examCenter = examCenters.find(
           (center) => center.id === data.examCenter
         );
-        const invigilator = Invigilators.find(
-          (invigilator) => invigilator.id === data.invigilator
+        const invigilators = data.invigilators.map((invigilatorId) =>
+          Invigilators.find((invigilator) => invigilator.id === invigilatorId)
         );
+
+        involvedInvigilators = [...involvedInvigilators, ...invigilators];
+
         return {
           examCenter: examCenter,
-          invigilator: invigilator,
+          invigilators: invigilators,
         };
       }),
     };
 
-    involvedInvigilators = resolvedResult.results.map(
-      (result) => result.invigilator
-    );
+    involvedInvigilators.sort((a, b) => {
+      if (a.examCenterCode > b.examCenterCode) {
+        return 1;
+      } else if (a.examCenterCode < b.examCenterCode) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   const handleFormSubmit = (values) => {
@@ -65,7 +75,7 @@ const EditAssignmentResult = (props) => {
     let initialValues = {};
     assignmentResult.results.forEach((result) => {
       const key = "result" + result.examCenter;
-      initialValues[key] = result.invigilator;
+      initialValues[key] = result.invigilators;
     });
 
     props.initializeForm(initialValues);
@@ -90,17 +100,19 @@ const EditAssignmentResult = (props) => {
         <form onSubmit={props.handleSubmit(handleFormSubmit)}>
           <div className="card-body">
             <div className="row">
-              {resolvedResult.results.map((result, index) => (
-                <Field
-                  key={index}
-                  className="col-md-4"
-                  name={`result${result.examCenter.id}`}
-                  label={`${result.examCenter.schoolCode} - ${result.examCenter.examCenterCode} - ${result.examCenter.name}`}
-                  options={involvedInvigilators}
-                  originalExamCenterId={result.examCenter.id}
-                  component={renderEditAssignmentResultField}
-                />
-              ))}
+              {assignmentResult.results.map((result, index) => {
+                const label = `${resolvedResult.results[index].examCenter.schoolCode} - ${resolvedResult.results[index].examCenter.examCenterCode} - ${resolvedResult.results[index].examCenter.name}`;
+                return (
+                  <FieldArray
+                    key={index}
+                    name={`result${result.examCenter}`}
+                    options={involvedInvigilators}
+                    label={label}
+                    component={renderEditAssignmentResultArrayField}
+                    examCenterId={result.examCenter}
+                  />
+                );
+              })}
             </div>
           </div>
           <div className="card-footer">

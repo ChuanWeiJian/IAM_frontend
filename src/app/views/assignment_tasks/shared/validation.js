@@ -1,3 +1,4 @@
+import { indexOf } from "lodash";
 import moment from "moment";
 
 export const validateAssignmentTask = (values) => {
@@ -37,22 +38,42 @@ export const validateAssignmentTask = (values) => {
 
 export const validateAssignmentResult = (values) => {
   const errors = {};
+  for (let key in values) {
+    errors[key] = new Array(values[key].length);
+  }
   let duplicate = false;
 
   for (let key in values) {
-    const value = values[key];
-    for (let innerKey in values) {
-      if (key === innerKey) {
-        continue;
-      }
-
-      if (value === values[innerKey]) {
-        errors[key] = "The invigilator is same with other exam center";
-        errors[innerKey] = "The invigilator is same with other exam center";
+    const valueArray = values[key];
+    for (let value of valueArray) {
+      if (valueArray.indexOf(value) !== valueArray.lastIndexOf(value)) {
+        errors[key][valueArray.indexOf(value)] =
+          "The invigilator cannot be the same";
+        errors[key][valueArray.lastIndexOf(value)] =
+          "The invigilator cannot be the same";
         duplicate = true;
         break;
       }
+
+      for (let innerKey in values) {
+        if (innerKey === key) {
+          continue;
+        }
+
+        const innerKeyValueArray = values[innerKey];
+        for (let innerValue of innerKeyValueArray) {
+          if (value === innerValue) {
+            errors[key][valueArray.indexOf(value)] =
+              "The invigilator cannot be the same";
+            errors[innerKey][innerKeyValueArray.indexOf(value)] =
+              "The invigilator cannot be the same";
+            duplicate = true;
+            break;
+          }
+        }
+      }
     }
+
     if (duplicate) {
       break;
     }
