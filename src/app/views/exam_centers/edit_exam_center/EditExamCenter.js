@@ -4,17 +4,14 @@ import { connect } from "react-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Breadcrumb } from "@gull";
 import { Field, reduxForm } from "redux-form";
-import SweetAlert from "sweetalert2-react";
+import swal from "sweetalert2";
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import ExamCenterListModal from "../shared/components/ExamCenterListModal";
 import { examCenters } from "fake-db/static_data/ExamCenter";
 import { validateExamCenter as validate } from "../shared/validation";
 import {
-  toggleAlert,
-  toggleExamCenterListModal,
-  toggleError,
-  setError,
   initializeForm,
+  toggleExamCenterListModal,
 } from "app/redux/actions/EditExamCenterActions";
 
 const EditExamCenter = (props) => {
@@ -28,16 +25,23 @@ const EditExamCenter = (props) => {
   const history = useHistory();
 
   const handleFormSubmit = (values) => {
-    console.log(values);
-    const success = false;
-
-    if (success) {
-      props.toggleAlert(true);
-    } else {
-      const error = { message: "Duplicate exam center code" };
-      props.setError(error);
-      props.toggleError(true);
-    }
+    swal.fire({
+      title: "Saving Changes...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire("Success", "Successful saved the changes", "success")
+          .then((result) => {
+            history.push(`/examcenter/list`);
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   return (
@@ -49,29 +53,6 @@ const EditExamCenter = (props) => {
           { name: "Edit Exam Center" },
         ]}
       ></Breadcrumb>
-      <SweetAlert
-        show={props.mechanism.showAlert}
-        title="Changes Saved Success"
-        type="success"
-        onConfirm={() => {
-          props.toggleAlert(false);
-          history.push("/");
-        }}
-      />
-      <SweetAlert
-        show={props.mechanism.showError}
-        title="Changes Saved Failed"
-        type="error"
-        html={renderToStaticMarkup(
-          <>
-            <h3>Error</h3>
-            <p>Message: {props.mechanism.submitError.message}</p>
-          </>
-        )}
-        onConfirm={() => {
-          props.toggleError(false);
-        }}
-      />
       <div className="2-columns-form-layout">
         <div className="">
           <div className="row">
@@ -160,11 +141,8 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-  initializeForm: initializeForm,
-  toggleAlert: toggleAlert,
   toggleExamCenterListModal: toggleExamCenterListModal,
-  toggleError: toggleError,
-  setError: setError,
+  initializeForm: initializeForm,
 })(
   reduxForm({
     form: "EditExamCenter",

@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Breadcrumb } from "@gull";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import { Form } from "react-bootstrap";
+import swal from "sweetalert2";
 
 import {
   renderMultiColumnFormInputField,
@@ -21,6 +22,7 @@ import {
 import { validateAssignmentTask as validate } from "../shared/validation";
 
 const EditAssignmentTask = (props) => {
+  const history = useHistory();
   const taskId = useParams().taskId;
 
   const assignmentTask = AssignmentTasks.find((task) => task.id === taskId);
@@ -36,7 +38,23 @@ const EditAssignmentTask = (props) => {
   }, []);
 
   const handleFormSubmit = (values) => {
-    console.log(values);
+    swal.fire({
+      title: "Saving Changes...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire("Success", "Successful save the changes", "success")
+          .then((result) => {
+            history.push("/assignment/list");
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   return (

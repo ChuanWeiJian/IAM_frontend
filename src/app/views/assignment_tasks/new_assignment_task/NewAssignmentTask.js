@@ -1,9 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Breadcrumb } from "@gull";
 import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import { Form } from "react-bootstrap";
 import { validateAssignmentTask as validate } from "../shared/validation";
+import swal from "sweetalert2";
 
 import {
   renderMultiColumnFormInputField,
@@ -14,8 +16,26 @@ import {
 import { examTypes, examCenters } from "fake-db/static_data/AssignmentTask";
 
 const NewAssignmentTask = (props) => {
+  const history = useHistory();
+
   const handleFormSubmit = (values) => {
-    console.log(values);
+    swal.fire({
+      title: "Creating Assignment Task...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire("Success", "Successful create new assignment task", "success")
+          .then((result) => {
+            history.push("/assignment/list");
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   return (

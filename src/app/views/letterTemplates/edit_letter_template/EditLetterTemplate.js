@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
 import { Breadcrumb } from "@gull";
+import swal from "sweetalert2";
 import { LetterTemplates } from "fake-db/static_data/LetterTemplate";
 import { initializeForm } from "app/redux/actions/EditLetterTemplateActions";
 import {
@@ -13,6 +14,7 @@ import {
 import { validateLetterTemplate as validate } from "../shared/validation";
 
 const EditLetterTemplate = (props) => {
+  const history = useHistory();
   const templateId = useParams().templateId;
   const letterTemplate = LetterTemplates.find(
     (template) => template.id === templateId
@@ -23,7 +25,23 @@ const EditLetterTemplate = (props) => {
   }, []);
 
   const handleFormSubmit = (values) => {
-    console.log(values);
+    swal.fire({
+      title: "Saving changes...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire("Success", "Successful saved the changes", "success")
+          .then((result) => {
+            history.push("/letter/list");
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   return (

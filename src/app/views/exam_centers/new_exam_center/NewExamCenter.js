@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Breadcrumb } from "@gull";
 import { Field, reduxForm } from "redux-form";
-import SweetAlert from "sweetalert2-react";
+import swal from "sweetalert2";
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import ExamCenterListModal from "../shared/components/ExamCenterListModal";
 import { examCenters, examSecretaries } from "fake-db/static_data/ExamCenter";
@@ -19,20 +19,36 @@ import {
 
 const NewExamCenter = (props) => {
   const history = useHistory();
-  
-  const handleFormSubmit = (values) => {
-    console.log(values);
-    const success = true;
 
-    if (success) {
-      const examSecretaryAcc = examSecretaries.find((acc) => acc.id === "04");
-      props.setExamSecretary(examSecretaryAcc);
-      props.toggleAlert(true);
-    } else {
-      const error = { message: "Duplicate exam center code" };
-      props.setError(error);
-      props.toggleError(true);
-    }
+  const handleFormSubmit = (values) => {
+    swal.fire({
+      title: "Registering new exam center...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        const examSecretaryAcc = examSecretaries.find((acc) => acc.id === "04");
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire({
+            title: "Success",
+            icon: "success",
+            html: renderToStaticMarkup(
+              <>
+                <h3>Exam Secretary Account</h3>
+                <p>Username: {examSecretaryAcc.username}</p>
+                <p>Password: {examSecretaryAcc.password}</p>
+              </>
+            ),
+          })
+          .then((result) => {
+            history.push(`/examcenter/list`);
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   return (
@@ -43,36 +59,6 @@ const NewExamCenter = (props) => {
           { name: "New Exam Center" },
         ]}
       ></Breadcrumb>
-      <SweetAlert
-        show={props.showAlert}
-        title="Exam Center Registration Success"
-        type="success"
-        html={renderToStaticMarkup(
-          <>
-            <h3>Exam Secretary Account</h3>
-            <p>Username: {props.examSecretary.username}</p>
-            <p>Password: {props.examSecretary.password}</p>
-          </>
-        )}
-        onConfirm={() => {
-          props.toggleAlert(false);
-          history.push("/");
-        }}
-      />
-      <SweetAlert
-        show={props.showError}
-        title="Exam Center Registration Failed"
-        type="error"
-        html={renderToStaticMarkup(
-          <>
-            <h3>Error</h3>
-            <p>Message: {props.submitError.message}</p>
-          </>
-        )}
-        onConfirm={() => {
-          props.toggleError(false);
-        }}
-      />
       <div className="2-columns-form-layout">
         <div className="">
           <div className="row">
@@ -158,9 +144,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-  toggleAlert: toggleAlert,
   toggleExamCenterListModal: toggleExamCenterListModal,
-  toggleError: toggleError,
-  setExamSecretary: setExamSecretary,
-  setError: setError,
 })(reduxForm({ form: "NewExamCenter", validate: validate })(NewExamCenter));

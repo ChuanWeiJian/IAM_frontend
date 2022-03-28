@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
@@ -8,8 +8,12 @@ import { renderLetterTemplateRadio } from "app/views/shared/form/form";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdRemoveRedEye } from "react-icons/md";
 import { validateCompileLetterTemplate as validate } from "app/views/assignment_tasks/shared/validation";
+import swal from "sweetalert2";
 
 const LetterTemplatesForm = (props) => {
+  const history = useHistory();
+  const taskId = props.taskId;
+
   const letters = props.letters.map((letter, index) => {
     return {
       index: index + 1,
@@ -52,7 +56,23 @@ const LetterTemplatesForm = (props) => {
   };
 
   const handleFormSubmit = (values) => {
-    console.log(values);
+    swal.fire({
+      title: "Compiling letters...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire("Success", "Successful compile and sent the letters", "success")
+          .then((result) => {
+            history.push(`/assignment/${taskId}`);
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   const columns = [

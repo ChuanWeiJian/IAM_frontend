@@ -1,7 +1,9 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Breadcrumb } from "@gull";
 import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
+import swal from "sweetalert2";
 import {
   renderMultiColumnFormInputField,
   renderMultiColumnFormRichTextEditor,
@@ -10,8 +12,26 @@ import {
 import { validateLetterTemplate as validate } from "../shared/validation";
 
 const NewLetterTemplate = (props) => {
+  const history = useHistory();
+
   const handleFormSubmit = (values) => {
-    console.log(values);
+    swal.fire({
+      title: "Saving letter template...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire("Success", "Successful saved the letter template", "success")
+          .then((result) => {
+            history.push("/letter/list");
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   return (
@@ -96,5 +116,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(
-  reduxForm({ form: "NewLetterTemplate", validate: validate })(NewLetterTemplate)
+  reduxForm({ form: "NewLetterTemplate", validate: validate })(
+    NewLetterTemplate
+  )
 );

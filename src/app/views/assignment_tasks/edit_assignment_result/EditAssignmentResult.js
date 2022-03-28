@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Breadcrumb } from "@gull";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { FieldArray, reduxForm } from "redux-form";
 import _ from "lodash";
+import swal from "sweetalert2";
 
 import { renderEditAssignmentResultArrayField } from "../../shared/form/form";
 import { initializeForm } from "app/redux/actions/EditAssignmentResultActions";
@@ -16,6 +17,7 @@ import {
 } from "fake-db/static_data/AssignmentTask";
 
 const EditAssignmentResult = (props) => {
+  const history = useHistory();
   const taskId = useParams().taskId;
   const role = useParams().role;
   const assignmentTask = AssignmentTasks.find((task) => task.id === taskId);
@@ -58,17 +60,33 @@ const EditAssignmentResult = (props) => {
   }
 
   const handleFormSubmit = (values) => {
-    let newResults = [];
-    for (let key in values) {
-      const examCenterId = key.slice(6);
-      newResults = [
-        ...newResults,
-        { examCenter: examCenterId, invigilator: values[key] },
-      ];
-    }
+    swal.fire({
+      title: "Saving Changes...",
+      onBeforeOpen: () => {
+        swal.showLoading();
+      },
+      onOpen: () => {
+        //submit form process here remember to async and await with try...catch block
+        let newResults = [];
+        for (let key in values) {
+          const examCenterId = key.slice(6);
+          newResults = [
+            ...newResults,
+            { examCenter: examCenterId, invigilator: values[key] },
+          ];
+        }
 
-    console.log(newResults);
-    console.log(values);
+        console.log(newResults);
+        console.log(values);
+        swal.hideLoading();
+        swal
+          .fire("Success", "Successful save the changes", "success")
+          .then((result) => {
+            history.push(`/assignment/${taskId}`);
+          });
+      },
+      allowOutsideClick: () => !swal.isLoading(),
+    });
   };
 
   useEffect(() => {
