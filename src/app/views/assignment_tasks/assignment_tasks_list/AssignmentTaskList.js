@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Breadcrumb, SimpleCard } from "@gull";
 import { Link } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -6,28 +7,15 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye } from "react-icons/md";
-import { getStatus } from "app/views/shared/function/getStatus";
 
-import { AssignmentTasks } from "fake-db/static_data/AssignmentTask";
+import { getAllAssignmentTasks } from "app/redux/actions/AssignmentTasksListActions";
 
 let { SearchBar } = Search;
 
 const AssignmentTaskList = (props) => {
-  const resolvedAssignmentTasks = AssignmentTasks.map((task, index) => {
-    let status = getStatus(task.collectionDate, task.assignmentDate);
-
-    let actions = {
-      view: "/assignment/" + task.id,
-      edit: "/assignment/edit/" + task.id,
-    };
-
-    return {
-      ...task,
-      status: status,
-      actions: actions,
-      index: index + 1,
-    };
-  });
+  useEffect(() => {
+    props.getAllAssignmentTasks();
+  }, []);
 
   const renderActionButtons = (cell, row, rowIndex) => {
     return (
@@ -106,7 +94,7 @@ const AssignmentTaskList = (props) => {
     firstPageTitle: "Next page",
     lastPageTitle: "Last page",
     showTotal: true,
-    totalSize: resolvedAssignmentTasks.length,
+    totalSize: props.resolvedAssignmentTasks.length,
   };
 
   return (
@@ -121,7 +109,7 @@ const AssignmentTaskList = (props) => {
         <ToolkitProvider
           striped
           keyField="id"
-          data={resolvedAssignmentTasks}
+          data={props.resolvedAssignmentTasks}
           columns={sortableColumn}
           search
         >
@@ -145,4 +133,10 @@ const AssignmentTaskList = (props) => {
   );
 };
 
-export default AssignmentTaskList;
+const mapStateToProps = (state) => {
+  return { resolvedAssignmentTasks: state.assignmentTasksList.assignmentTasks };
+};
+
+export default connect(mapStateToProps, { getAllAssignmentTasks })(
+  AssignmentTaskList
+);

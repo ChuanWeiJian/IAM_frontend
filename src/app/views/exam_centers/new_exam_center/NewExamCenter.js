@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -7,18 +7,19 @@ import { Field, reduxForm } from "redux-form";
 import swal from "sweetalert2";
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import ExamCenterListModal from "../shared/components/ExamCenterListModal";
-import { examCenters, examSecretaries } from "fake-db/static_data/ExamCenter";
+import { examSecretaries } from "fake-db/static_data/ExamCenter";
 import { validateExamCenter as validate } from "../shared/validation";
 import {
-  toggleAlert,
+  getAllExamCenters,
   toggleExamCenterListModal,
-  toggleError,
-  setExamSecretary,
-  setError,
 } from "app/redux/actions/NewExamCenterActions";
 
 const NewExamCenter = (props) => {
   const history = useHistory();
+
+  useEffect(() => {
+    props.getAllExamCenters();
+  }, []);
 
   const handleFormSubmit = (values) => {
     swal.fire({
@@ -88,7 +89,7 @@ const NewExamCenter = (props) => {
                       />
                       <div className="col-md-2">
                         <ExamCenterListModal
-                          items={examCenters}
+                          items={props.examCenters}
                           toggleModal={props.toggleExamCenterListModal}
                           showModal={props.showModal}
                         />
@@ -140,9 +141,13 @@ const NewExamCenter = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return state.newExamCenter;
+  return {
+    showModal: state.newExamCenter.showModal,
+    examCenters: state.newExamCenter.examCenters,
+  };
 };
 
 export default connect(mapStateToProps, {
-  toggleExamCenterListModal: toggleExamCenterListModal,
+  toggleExamCenterListModal,
+  getAllExamCenters,
 })(reduxForm({ form: "NewExamCenter", validate: validate })(NewExamCenter));

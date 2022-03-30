@@ -1,32 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Breadcrumb, SimpleCard } from "@gull";
 import { Link } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
 
-import { LetterTemplates } from "fake-db/static_data/LetterTemplate";
+import { getAllLetterTemplates } from "app/redux/actions/LetterTemplatesListActions";
 
 let { SearchBar } = Search;
 
 const LetterTemplatesList = (props) => {
-  const resolvedLetterTemplates = LetterTemplates.map((template, index) => {
-    let actions = {
-      view: "/letter/" + template.id,
-      edit: "/letter/edit/" + template.id,
-      delete: "/letter/delete" + template.id,
-    };
-
-    return {
-      ...template,
-      actions: actions,
-      index: index + 1,
-    };
-  });
-
+  useEffect(() => {
+    props.getAllLetterTemplates();
+  }, []);
+  
   const renderActionButtons = (cell, row, rowIndex) => {
     return (
       <div className="d-flex flex-wrap align-items-center">
@@ -122,7 +113,7 @@ const LetterTemplatesList = (props) => {
     firstPageTitle: "Next page",
     lastPageTitle: "Last page",
     showTotal: true,
-    totalSize: resolvedLetterTemplates.length,
+    totalSize: props.letterTemplates.length,
   };
   return (
     <div>
@@ -136,7 +127,7 @@ const LetterTemplatesList = (props) => {
         <ToolkitProvider
           striped
           keyField="id"
-          data={resolvedLetterTemplates}
+          data={props.letterTemplates}
           columns={sortableColumn}
           search
         >
@@ -160,4 +151,10 @@ const LetterTemplatesList = (props) => {
   );
 };
 
-export default LetterTemplatesList;
+const mapStateToProps = (state) => {
+  return { letterTemplates: state.letterTemplatesList.letterTemplates };
+};
+
+export default connect(mapStateToProps, { getAllLetterTemplates })(
+  LetterTemplatesList
+);

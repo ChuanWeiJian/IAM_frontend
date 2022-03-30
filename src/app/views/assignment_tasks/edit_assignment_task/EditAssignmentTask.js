@@ -14,27 +14,15 @@ import {
   renderMultipleColumnFormExamCentersCheckboxGroup,
 } from "app/views/shared/form/form";
 import { initializeForm } from "app/redux/actions/EditAssignmentTaskActions";
-import {
-  AssignmentTasks,
-  examCenters,
-  examTypes,
-} from "fake-db/static_data/AssignmentTask";
+import { examTypes } from "fake-db/static_data/AssignmentTask";
 import { validateAssignmentTask as validate } from "../shared/validation";
 
 const EditAssignmentTask = (props) => {
   const history = useHistory();
   const taskId = useParams().taskId;
 
-  const assignmentTask = AssignmentTasks.find((task) => task.id === taskId);
-
   useEffect(() => {
-    props.initializeForm({
-      title: assignmentTask.title,
-      examType: assignmentTask.examType,
-      collectionDate: moment(assignmentTask.collectionDate, "DD/MM/YYYY HH:mm"),
-      assignmentDate: moment(assignmentTask.assignmentDate, "DD/MM/YYYY HH:mm"),
-      examCenters: assignmentTask.examCenters,
-    });
+    props.initializeForm(taskId);
   }, []);
 
   const handleFormSubmit = (values) => {
@@ -130,7 +118,7 @@ const EditAssignmentTask = (props) => {
                           label="Select All Exam Centers"
                           onChange={(event) => {
                             if (event.target.checked) {
-                              const newValue = examCenters.map(
+                              const newValue = props.examCenters.map(
                                 (examCenter) => examCenter.id
                               );
                               props.change("examCenters", newValue);
@@ -145,7 +133,7 @@ const EditAssignmentTask = (props) => {
                     <div className="row">
                       <Field
                         name="examCenters"
-                        items={examCenters}
+                        items={props.examCenters}
                         component={
                           renderMultipleColumnFormExamCentersCheckboxGroup
                         }
@@ -177,7 +165,22 @@ const EditAssignmentTask = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { initialValues: state.editAssignmentTask };
+  return {
+    initialValues: {
+      title: state.editAssignmentTask.assignmentTask.title,
+      examType: state.editAssignmentTask.assignmentTask.examType,
+      collectionDate: moment(
+        state.editAssignmentTask.assignmentTask.collectionDate,
+        "DD/MM/YYYY HH:mm"
+      ),
+      assignmentDate: moment(
+        state.editAssignmentTask.assignmentTask.assignmentDate,
+        "DD/MM/YYYY HH:mm"
+      ),
+      examCenters: state.editAssignmentTask.assignmentTask.examCenters,
+    },
+    examCenters: state.editAssignmentTask.examCenters,
+  };
 };
 
 export default connect(mapStateToProps, { initializeForm: initializeForm })(

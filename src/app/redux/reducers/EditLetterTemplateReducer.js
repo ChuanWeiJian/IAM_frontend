@@ -1,9 +1,13 @@
-import { INITIALIZE_LETTER_TEMPLATE_FORM } from "../actions/EditLetterTemplateActions";
+import { INITIALIZE_FORM } from "../actions/EditLetterTemplateActions";
 
-const EditLetterTemplateReducer = (state = {}, action) => {
+const initialState = {
+  letterTemplate: {},
+};
+
+const EditLetterTemplateReducer = (state = initialState, action) => {
   switch (action.type) {
-    case INITIALIZE_LETTER_TEMPLATE_FORM:
-      return action.payload;
+    case INITIALIZE_FORM:
+      return { ...state, letterTemplate: action.payload };
     default:
       return state;
   }

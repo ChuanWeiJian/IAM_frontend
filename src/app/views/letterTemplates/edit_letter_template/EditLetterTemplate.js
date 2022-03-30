@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
 import { Breadcrumb } from "@gull";
 import swal from "sweetalert2";
-import { LetterTemplates } from "fake-db/static_data/LetterTemplate";
+
 import { initializeForm } from "app/redux/actions/EditLetterTemplateActions";
 import {
   renderMultiColumnFormInputField,
@@ -16,12 +16,9 @@ import { validateLetterTemplate as validate } from "../shared/validation";
 const EditLetterTemplate = (props) => {
   const history = useHistory();
   const templateId = useParams().templateId;
-  const letterTemplate = LetterTemplates.find(
-    (template) => template.id === templateId
-  );
 
   useEffect(() => {
-    props.initializeForm(letterTemplate);
+    props.initializeForm(templateId);
   }, []);
 
   const handleFormSubmit = (values) => {
@@ -124,7 +121,7 @@ const selector = formValueSelector("EditLetterTemplate");
 
 const mapStateToProps = (state) => {
   return {
-    initialValues: state.editLetterTemplate,
+    initialValues: state.editLetterTemplate.letterTemplate,
     content: selector(state, "content"),
   };
 };

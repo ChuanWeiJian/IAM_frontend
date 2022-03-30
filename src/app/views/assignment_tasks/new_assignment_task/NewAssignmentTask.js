@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Breadcrumb } from "@gull";
 import { Field, reduxForm } from "redux-form";
@@ -13,10 +14,15 @@ import {
   renderMultiColumnFormDateTimeField,
   renderMultipleColumnFormExamCentersCheckboxGroup,
 } from "app/views/shared/form/form";
-import { examTypes, examCenters } from "fake-db/static_data/AssignmentTask";
+import { examTypes } from "fake-db/static_data/AssignmentTask";
+import { getAllExamCenters } from "app/redux/actions/NewAssignmentTaskActions";
 
 const NewAssignmentTask = (props) => {
   const history = useHistory();
+
+  useEffect(() => {
+    props.getAllExamCenters();
+  }, []);
 
   const handleFormSubmit = (values) => {
     swal.fire({
@@ -110,7 +116,7 @@ const NewAssignmentTask = (props) => {
                           label="Select All Exam Centers"
                           onChange={(event) => {
                             if (event.target.checked) {
-                              const newValue = examCenters.map(
+                              const newValue = props.examCenters.map(
                                 (examCenter) => examCenter.id
                               );
                               props.change("examCenters", newValue);
@@ -125,7 +131,7 @@ const NewAssignmentTask = (props) => {
                     <div className="row">
                       <Field
                         name="examCenters"
-                        items={examCenters}
+                        items={props.examCenters}
                         component={
                           renderMultipleColumnFormExamCentersCheckboxGroup
                         }
@@ -153,6 +159,12 @@ const NewAssignmentTask = (props) => {
   );
 };
 
-export default reduxForm({ form: "NewAssignmentTask", validate: validate })(
-  NewAssignmentTask
+const mapStateToProps = (state) => {
+  return state.newAssignmentTask;
+};
+
+export default connect(mapStateToProps, { getAllExamCenters })(
+  reduxForm({ form: "NewAssignmentTask", validate: validate })(
+    NewAssignmentTask
+  )
 );

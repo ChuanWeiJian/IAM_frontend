@@ -5,10 +5,19 @@ import LayoutReducer from "./LayoutReducer";
 import ScrumBoardReducer from "./ScrumBoardReducer";
 import NotificationReducer from "./NotificationReducer";
 import EcommerceReducer from "./EcommerceReducer";
+import NewAssignmentTaskReducer from "./NewAssignmentTaskReducer";
+import AssignmentTasksListReducer from "./AssignmentTasksListReducer";
+import AssignmentTaskInfoReducer from "./AssignmentTaskInfoReducer";
+import AssignmentResultSummaryReducer from "./AssignmentResultSummaryReducer";
+import CompileLetterReducer from "./CompileLetterReducer";
 import EditAssignmentTaskReducer from "./EditAssignmentTaskReducer";
 import EditAssignmentResultReducer from "./EditAssignmentResultReducer";
-import EditLetterTemplateReducer from "./EditLetterTemplateReducer";
 import NewExamCenterReducer from "./NewExamCenterReducer";
+import ExamCenterListReducer from "./ExamCenterListReducer";
+import ExamCenterInformationReducer from "./ExamCenterInformationReducer";
+import LetterTemplatesListReducer from "./LetterTemplatesListReducer";
+import LetterTemplateContentReducer from "./LetterTemplateContentReducer";
+import EditLetterTemplateReducer from "./EditLetterTemplateReducer";
 import EditExamCenterReducer from "./EditExamCenterReducer";
 import TableReducer from "./TableReducer";
 import { reducer as formReducer } from "redux-form";
@@ -21,11 +30,20 @@ const RootReducer = combineReducers({
   notification: NotificationReducer,
   ecommerce: EcommerceReducer,
   table: TableReducer,
+  newAssignmentTask: NewAssignmentTaskReducer,
+  assignmentTasksList: AssignmentTasksListReducer,
+  assignmentTaskInfo: AssignmentTaskInfoReducer,
+  assignmentResultSummary: AssignmentResultSummaryReducer,
+  compileLetter: CompileLetterReducer,
   editAssignmentTask: EditAssignmentTaskReducer,
   editAssignmentResult: EditAssignmentResultReducer,
-  editLetterTemplate: EditLetterTemplateReducer,
   newExamCenter: NewExamCenterReducer,
+  examCenterList: ExamCenterListReducer,
+  examCenterInformation: ExamCenterInformationReducer,
   editExamCenter: EditExamCenterReducer,
+  letterTemplatesList: LetterTemplatesListReducer,
+  letterTemplateContent: LetterTemplateContentReducer,
+  editLetterTemplate: EditLetterTemplateReducer,
   form: formReducer,
 });
 

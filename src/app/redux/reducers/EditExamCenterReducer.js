@@ -1,24 +1,27 @@
 import {
-  EDIT_TOGGLE_EXAM_CENTER_LIST,
+  TOGGLE_EXAM_CENTER_LIST,
   INITIALIZE_FORM,
 } from "../actions/EditExamCenterActions";
 
 const initialState = {
-  mechanism: {
-    showModal: false,
-  },
-  initialValues: {},
+  showModal: false,
+  selectedExamCenter: {},
+  examCenters: [],
 };
 
 const EditExamCenterReducer = (state = initialState, action) => {
   switch (action.type) {
-    case EDIT_TOGGLE_EXAM_CENTER_LIST:
+    case TOGGLE_EXAM_CENTER_LIST:
       return {
         ...state,
-        mechanism: { ...state.mechanism, showModal: action.payload },
+        showModal: action.payload,
       };
     case INITIALIZE_FORM:
-      return { ...state, initialValues: action.payload };
+      return {
+        ...state,
+        selectedExamCenter: action.payload.selectedExamCenter,
+        examCenters: action.payload.examCenters,
+      };
     default:
       return state;
   }

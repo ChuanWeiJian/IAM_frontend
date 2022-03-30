@@ -1,30 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Breadcrumb, SimpleCard } from "@gull";
 import { Link } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import { OverlayTrigger, Tooltip, Button } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
-import { examCenters } from "fake-db/static_data/ExamCenter";
+import { getAllExamCenters } from "app/redux/actions/ExamCenterListActions";
 
 const { SearchBar } = Search;
 
 const ExamCentersList = (props) => {
-  const resolvedExamCenters = examCenters.map((center, index) => {
-    let actions = {
-      view: "/examcenter/" + center.id,
-      edit: "/examcenter/edit/" + center.id,
-      delete: "/examcenter/delete" + center.id,
-    };
-
-    return {
-      ...center,
-      actions: actions,
-      index: index + 1,
-    };
-  });
+  useEffect(() => {
+    props.getAllExamCenters();
+  }, []);
 
   const renderActionButtons = (cell, row, rowIndex) => {
     return (
@@ -69,7 +60,8 @@ const ExamCentersList = (props) => {
                 })
                 .then((result) => {
                   if (result.value) {
-                    console.log("Deleting");
+                    console.log(`Deleting - ${cell.delete}`);
+
                     swal.fire(
                       "Deleted!",
                       "Your file has been deleted.",
@@ -131,7 +123,7 @@ const ExamCentersList = (props) => {
     firstPageTitle: "Next page",
     lastPageTitle: "Last page",
     showTotal: true,
-    totalSize: resolvedExamCenters.length,
+    totalSize: props.examCenters.length,
   };
   return (
     <div>
@@ -145,7 +137,7 @@ const ExamCentersList = (props) => {
         <ToolkitProvider
           striped
           keyField="id"
-          data={resolvedExamCenters}
+          data={props.examCenters}
           columns={sortableColumn}
           search
         >
@@ -169,4 +161,8 @@ const ExamCentersList = (props) => {
   );
 };
 
-export default ExamCentersList;
+const mapStateToProps = (state) => {
+  return { examCenters: state.examCenterList.examCenters };
+};
+
+export default connect(mapStateToProps, { getAllExamCenters })(ExamCentersList);

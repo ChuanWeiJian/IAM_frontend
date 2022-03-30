@@ -1,39 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Breadcrumb, SimpleCard } from "@gull";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { setPage, setRowsPerPage } from "app/redux/actions/TableActions";
-import {
-  AssignmentTasks,
-  examCenters,
-  examCenterData,
-} from "fake-db/static_data/AssignmentTask";
-import { getStatus } from "app/views/shared/function/getStatus";
+import { getAssignmentTaskInfo } from "app/redux/actions/AssignmentTaskInfoActions";
 import ExamCenterDataSummary from "./components/ExamCenterDataSummary";
 import AssignmentTaskInfoHeader from "../shared/components/AssignmentTaskInfoHeader";
 
 const AssignmentTaskInfo = (props) => {
   const taskId = useParams().taskId;
-  const AssignmentTask = AssignmentTasks.find((task) => task.id === taskId);
-  const involvedExamCenters = AssignmentTask.examCenters.map((examCenterId) => {
-    return examCenters.find((examCenter) => examCenter.id === examCenterId);
-  });
 
-  console.log(AssignmentTask);
-
-  let status = getStatus(
-    AssignmentTask.collectionDate,
-    AssignmentTask.assignmentDate
-  );
-
-  let collectedExamCenterData;
-
-  if (status !== "Collection in progress") {
-    collectedExamCenterData = examCenterData.filter(
-      (data) => data.assignmentTaskId === AssignmentTask.id
-    );
-  }
+  useEffect(() => {
+    props.getAssignmentTaskInfo(taskId);
+  }, []);
 
   const handlePageClick = (data) => {
     let page = data.selected;
@@ -46,15 +26,15 @@ const AssignmentTaskInfo = (props) => {
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
           { name: "Assignment Tasks List", path: "/assignment/list" },
-          { name: AssignmentTask.title },
+          { name: props.assignmentTask.title },
         ]}
       ></Breadcrumb>
       <SimpleCard>
         <AssignmentTaskInfoHeader
-          assignmentTask={AssignmentTask}
-          status={status}
+          assignmentTask={props.assignmentTask}
+          status={props.status}
         />
-        
+
         <div className="custom-separator"></div>
 
         <h5>Exam Centers</h5>
@@ -92,7 +72,7 @@ const AssignmentTaskInfo = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {involvedExamCenters
+                {props.involvedExamCenters
                   .slice(
                     props.rowsPerPage * props.page,
                     props.rowsPerPage * (props.page + 1)
@@ -117,7 +97,7 @@ const AssignmentTaskInfo = (props) => {
               breakLabel={"..."}
               breakClassName={"break-me"}
               pageCount={Math.ceil(
-                involvedExamCenters.length / props.rowsPerPage
+                props.involvedExamCenters.length / props.rowsPerPage
               )}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
@@ -133,9 +113,9 @@ const AssignmentTaskInfo = (props) => {
 
         <h5>Exam Center Data Summary</h5>
         <ExamCenterDataSummary
-          status={status}
-          examCenterData={collectedExamCenterData}
-          assignmentTask={AssignmentTask}
+          status={props.status}
+          examCenterData={props.collectedExamCenterData}
+          assignmentTask={props.assignmentTask}
         />
       </SimpleCard>
     </div>
@@ -144,12 +124,17 @@ const AssignmentTaskInfo = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    assignmentTask: state.assignmentTaskInfo.assignmentTask,
+    involvedExamCenters: state.assignmentTaskInfo.involvedExamCenters,
+    status: state.assignmentTaskInfo.status,
+    collectedExamCenterData: state.assignmentTaskInfo.examCenterData,
     page: state.table.page,
     rowsPerPage: state.table.rowsPerPage,
   };
 };
 
 export default connect(mapStateToProps, {
-  setPage: setPage,
-  setRowsPerPage: setRowsPerPage,
+  getAssignmentTaskInfo,
+  setPage,
+  setRowsPerPage,
 })(AssignmentTaskInfo);

@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { connect } from "react-redux";
-import { renderToStaticMarkup } from "react-dom/server";
 import { Breadcrumb } from "@gull";
 import { Field, reduxForm } from "redux-form";
 import swal from "sweetalert2";
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import ExamCenterListModal from "../shared/components/ExamCenterListModal";
-import { examCenters } from "fake-db/static_data/ExamCenter";
 import { validateExamCenter as validate } from "../shared/validation";
 import {
   initializeForm,
@@ -18,8 +16,7 @@ const EditExamCenter = (props) => {
   const centerId = useParams().centerId;
 
   useEffect(() => {
-    const examCenter = examCenters.find((center) => center.id === centerId);
-    props.initializeForm(examCenter);
+    props.initializeForm(centerId);
   }, [centerId]);
 
   const history = useHistory();
@@ -82,9 +79,9 @@ const EditExamCenter = (props) => {
                       />
                       <div className="col-md-2">
                         <ExamCenterListModal
-                          items={examCenters}
+                          items={props.examCenters}
                           toggleModal={props.toggleExamCenterListModal}
-                          showModal={props.mechanism.showModal}
+                          showModal={props.showModal}
                         />
                       </div>
                     </div>
@@ -135,14 +132,17 @@ const EditExamCenter = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    mechanism: state.editExamCenter.mechanism,
-    initialValues: state.editExamCenter.initialValues,
+    showModal: state.editExamCenter.showModal,
+    initialValues: {
+      ...state.editExamCenter.selectedExamCenter,
+    },
+    examCenters: state.editExamCenter.examCenters,
   };
 };
 
 export default connect(mapStateToProps, {
-  toggleExamCenterListModal: toggleExamCenterListModal,
-  initializeForm: initializeForm,
+  toggleExamCenterListModal,
+  initializeForm,
 })(
   reduxForm({
     form: "EditExamCenter",

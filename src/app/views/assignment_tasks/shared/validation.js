@@ -1,4 +1,3 @@
-import { indexOf } from "lodash";
 import moment from "moment";
 
 export const validateAssignmentTask = (values) => {

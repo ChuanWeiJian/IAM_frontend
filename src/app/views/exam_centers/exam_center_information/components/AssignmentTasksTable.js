@@ -50,9 +50,7 @@ const AssignmentTaskTable = (props) => {
                       <td>
                         <Link to={`/assignment/${task.id}`}>{task.title}</Link>
                       </td>
-                      <td>
-                        {getStatus(task.collectionDate, task.assignmentDate)}
-                      </td>
+                      <td>{getStatus(task)}</td>
                     </tr>
                   );
                 })}

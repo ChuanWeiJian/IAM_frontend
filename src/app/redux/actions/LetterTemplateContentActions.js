@@ -1,13 +1,15 @@
 import { LetterTemplates } from "fake-db/static_data/LetterTemplate";
 
-export const INITIALIZE_FORM = "EDIT-LETTER-TEMPLATE INITIALIZE_FORM";
+export const GET_LETTER_TEMPLATE_BY_ID =
+  "LETTER-TEMPLATE-CONTENT GET_LETTER_TEMPLATE_BY_ID";
 
-export const initializeForm = (templateId) => {
+export const getLetterTemplateById = (templateId) => {
   const letterTemplate = LetterTemplates.find(
     (template) => template.id === templateId
   );
+
   return {
-    type: INITIALIZE_FORM,
+    type: GET_LETTER_TEMPLATE_BY_ID,
     payload: letterTemplate,
   };
 };

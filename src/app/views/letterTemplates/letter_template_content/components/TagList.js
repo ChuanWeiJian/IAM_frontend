@@ -21,19 +21,20 @@ const TagList = (props) => {
                   <span className="text-start">Field</span>
                 </div>
               </div>
-              {props.items.map((tag, index) => {
-                const tagField = tagFieldsOptions.find(
-                  (option) => option.value === tag.value
-                );
-                return (
-                  <div className="ul-widget6__body" key={index}>
-                    <div className="ul-widget6__item">
-                      <span>{`<${index + 1}>`}</span>
-                      <span className="text-start">{tagField.title}</span>
+              {props.items &&
+                props.items.map((tag, index) => {
+                  const tagField = tagFieldsOptions.find(
+                    (option) => option.value === tag.value
+                  );
+                  return (
+                    <div className="ul-widget6__body" key={index}>
+                      <div className="ul-widget6__item">
+                        <span>{`<${index + 1}>`}</span>
+                        <span className="text-start">{tagField.title}</span>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         </div>
