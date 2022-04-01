@@ -12,6 +12,7 @@ import AssignmentResultSummaryReducer from "./AssignmentResultSummaryReducer";
 import CompileLetterReducer from "./CompileLetterReducer";
 import EditAssignmentTaskReducer from "./EditAssignmentTaskReducer";
 import EditAssignmentResultReducer from "./EditAssignmentResultReducer";
+import NewSchoolsReducer from "./NewSchoolReducer";
 import NewExamCenterReducer from "./NewExamCenterReducer";
 import ExamCenterListReducer from "./ExamCenterListReducer";
 import ExamCenterInformationReducer from "./ExamCenterInformationReducer";
@@ -37,6 +38,7 @@ const RootReducer = combineReducers({
   compileLetter: CompileLetterReducer,
   editAssignmentTask: EditAssignmentTaskReducer,
   editAssignmentResult: EditAssignmentResultReducer,
+  newSchool: NewSchoolsReducer,
   newExamCenter: NewExamCenterReducer,
   examCenterList: ExamCenterListReducer,
   examCenterInformation: ExamCenterInformationReducer,

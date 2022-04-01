@@ -40,11 +40,17 @@ export const navigations = [
     ]
   },
   {
-    name: "Exam Center",
-    description: "Management of exam centers",
+    name: "School & Exam Center",
+    description: "Management of schools & exam centers",
     type: "dropDown",
     icon: "i-University1",
     sub: [
+      {
+        icon: "i-University",
+        name: "New School",
+        path: "/school/new",
+        type: "link"
+      },
       {
         icon: "i-University",
         name: "New Exam Center",

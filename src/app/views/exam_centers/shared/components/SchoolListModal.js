@@ -1,14 +1,14 @@
 import React, { Fragment } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const ExamCenterListModal = (props) => {
+const SchoolListModal = (props) => {
   return (
     <Fragment>
       <Button
         className="text-capitalize btn btn-dark"
         onClick={() => props.toggleModal(true)}
       >
-        All registered exam centers
+        All registered schools
       </Button>
       <Modal
         show={props.showModal}
@@ -24,14 +24,14 @@ const ExamCenterListModal = (props) => {
             <div className="col-md-12 mb-4">
               <div className="text-left p-1">
                 <div className="p-3">
-                  <h4 className="mb-2">Registered Exam Centers</h4>
+                  <h4 className="mb-2">Registered Schools</h4>
                   <ul className="list-group">
-                    {props.items.map((examCenter) => {
+                    {props.items.map((school) => {
                       return (
                         <li
                           className="list-group-item"
-                          key={examCenter.id}
-                        >{`${examCenter.school.schoolCode} - ${examCenter.examCenterCode} - ${examCenter.school.name}`}</li>
+                          key={school.id}
+                        >{`${school.schoolCode} - ${school.name} - ${school.examCenters.length} exam center(s)`}</li>
                       );
                     })}
                   </ul>
@@ -55,4 +55,4 @@ const ExamCenterListModal = (props) => {
   );
 };
 
-export default ExamCenterListModal;
+export default SchoolListModal;

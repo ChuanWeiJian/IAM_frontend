@@ -1,6 +1,7 @@
 import { lazy } from "react";
 //import { authRoles } from "app/auth/authRoles";
 
+const NewSchool = lazy(() => import("./new_school/NewSchool"));
 const NewExamCenter = lazy(() => import("./new_exam_center/NewExamCenter"));
 const ExamCenters = lazy(() => import("./examCenters"));
 const ExamCentersList = lazy(() => import("./exam_center_list/ExamCenterList"));
@@ -9,6 +10,11 @@ const ExamCenterInformation = lazy(() =>
 );
 const EditExamCenter = lazy(() => import("./edit_exam_center/EditExamCenter"));
 const examCentersRoutes = [
+  {
+    path: "/school/new",
+    exact: true,
+    component: NewSchool,
+  },
   {
     path: "/examcenter",
     exact: true,
