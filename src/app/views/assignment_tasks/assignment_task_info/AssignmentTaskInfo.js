@@ -81,9 +81,9 @@ const AssignmentTaskInfo = (props) => {
                     return (
                       <tr key={examCenter.id}>
                         <td>{index + 1}</td>
-                        <td>{examCenter.schoolCode}</td>
+                        <td>{examCenter.school.schoolCode}</td>
                         <td>{examCenter.examCenterCode}</td>
-                        <td>{examCenter.name}</td>
+                        <td>{examCenter.school.name}</td>
                       </tr>
                     );
                   })}

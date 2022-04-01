@@ -70,7 +70,7 @@ const EditAssignmentResult = (props) => {
             <div className="row">
               {props.assignmentResult.results &&
                 props.assignmentResult.results.map((result, index) => {
-                  const label = `${props.assignmentResult.results[index].examCenter.schoolCode} - ${props.assignmentResult.results[index].examCenter.examCenterCode} - ${props.assignmentResult.results[index].examCenter.name}`;
+                  const label = `${props.assignmentResult.results[index].examCenter.school.schoolCode} - ${props.assignmentResult.results[index].examCenter.examCenterCode} - ${props.assignmentResult.results[index].examCenter.school.name}`;
                   return (
                     <FieldArray
                       key={index}
@@ -78,7 +78,7 @@ const EditAssignmentResult = (props) => {
                       options={props.involvedInvigilators}
                       label={label}
                       component={renderEditAssignmentResultArrayField}
-                      examCenterId={result.examCenter.id}
+                      schoolId={result.examCenter.school.id}
                     />
                   );
                 })}

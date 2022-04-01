@@ -2,6 +2,7 @@ import {
   examCenterData,
   examCenters,
   AssignmentTasks,
+  Schools
 } from "fake-db/static_data/AssignmentTask";
 import { getStatus } from "app/views/shared/function/getStatus";
 
@@ -13,6 +14,13 @@ export const getAssignmentTaskInfo = (taskId) => {
   const involvedExamCenters = assignmentTask.examCenters.map((id) =>
     examCenters.find((examcenter) => examcenter.id === id)
   );
+
+  const resolvedExamCenters = involvedExamCenters.map((center) => {
+    const resolvedSchool = Schools.find(
+      (school) => school.id === center.school
+    );
+    return { ...center, school: resolvedSchool };
+  })
 
   const status = getStatus(assignmentTask);
   let collectedExamCenterData = [];
@@ -27,7 +35,7 @@ export const getAssignmentTaskInfo = (taskId) => {
     type: GET_ASSIGNMENT_TASK_INFO,
     payload: {
       assignmentTask,
-      involvedExamCenters,
+      resolvedExamCenters,
       status,
       collectedExamCenterData,
     },

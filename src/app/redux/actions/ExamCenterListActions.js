@@ -1,8 +1,12 @@
-import { examCenters } from "fake-db/static_data/ExamCenter";
+import { examCenters, Schools } from "fake-db/static_data/ExamCenter";
 export const GET_ALL_EXAM_CENTERS = "EXAM-CENTER-LIST GET_ALL_EXAM_CENTERS";
 
 export const getAllExamCenters = () => {
   const resolvedExamCenters = examCenters.map((center, index) => {
+    const resolvedSchool = Schools.find(
+      (school) => school.id === center.school
+    );
+
     let actions = {
       view: "/examcenter/" + center.id,
       edit: "/examcenter/edit/" + center.id,
@@ -11,6 +15,7 @@ export const getAllExamCenters = () => {
 
     return {
       ...center,
+      school: resolvedSchool,
       actions: actions,
       index: index + 1,
     };

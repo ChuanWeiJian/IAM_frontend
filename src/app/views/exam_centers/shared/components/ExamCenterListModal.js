@@ -31,7 +31,7 @@ const ExamCenterListModal = (props) => {
                         <li
                           className="list-group-item"
                           key={examCenter.id}
-                        >{`${examCenter.schoolCode} - ${examCenter.examCenterCode} - ${examCenter.name}`}</li>
+                        >{`${examCenter.school.schoolCode} - ${examCenter.examCenterCode} - ${examCenter.school.name}`}</li>
                       );
                     })}
                   </ul>

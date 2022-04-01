@@ -5,7 +5,7 @@ import {
 
 const initialState = {
   showModal: false,
-  selectedExamCenter: {},
+  selectedExamCenter: {school:{}},
   examCenters: [],
 };
 

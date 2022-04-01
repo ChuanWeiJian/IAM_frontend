@@ -13,7 +13,7 @@ const AssignmentTaskInfoReducer = (state = initialState, action) => {
       return {
         ...state,
         assignmentTask: action.payload.assignmentTask,
-        involvedExamCenters: action.payload.involvedExamCenters,
+        involvedExamCenters: action.payload.resolvedExamCenters,
         status: action.payload.status,
         examCenterData: action.payload.collectedExamCenterData
       };

@@ -1,4 +1,4 @@
-import { examCenters } from "fake-db/static_data/ExamCenter";
+import { examCenters, Schools } from "fake-db/static_data/ExamCenter";
 
 export const TOGGLE_EXAM_CENTER_LIST =
   "EDIT-EXAM-CENTER TOGGLE_EXAM_CENTER_LIST";
@@ -12,10 +12,21 @@ export const toggleExamCenterListModal = (show) => {
 };
 
 export const initializeForm = (centerId) => {
-  const examCenter = examCenters.find((center) => center.id === centerId);
+  const resolvedExamCenters = examCenters.map((center) => {
+    return {
+      ...center,
+      school: Schools.find((school) => school.id === center.school),
+    };
+  });
+  const examCenter = resolvedExamCenters.find(
+    (center) => center.id === centerId
+  );
 
   return {
     type: INITIALIZE_FORM,
-    payload: { selectedExamCenter: examCenter, examCenters },
+    payload: {
+      selectedExamCenter: examCenter,
+      examCenters: resolvedExamCenters,
+    },
   };
 };

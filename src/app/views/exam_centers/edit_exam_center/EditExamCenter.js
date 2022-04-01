@@ -134,7 +134,10 @@ const mapStateToProps = (state) => {
   return {
     showModal: state.editExamCenter.showModal,
     initialValues: {
-      ...state.editExamCenter.selectedExamCenter,
+      schoolCode: state.editExamCenter.selectedExamCenter.school.schoolCode,
+      examCenterCode: state.editExamCenter.selectedExamCenter.examCenterCode,
+      name: state.editExamCenter.selectedExamCenter.school.name,
+      address: state.editExamCenter.selectedExamCenter.school.address,
     },
     examCenters: state.editExamCenter.examCenters,
   };

@@ -3,6 +3,7 @@ import {
   examCenters,
   Invigilators,
   AssignmentResults,
+  Schools
 } from "fake-db/static_data/AssignmentTask";
 import { getStatus } from "app/views/shared/function/getStatus";
 
@@ -23,11 +24,13 @@ export const getAssignmentResultSummary = (role, taskId) => {
         (center) => center.id === data.examCenter
       );
 
+      const resolvedExamCenter = {...examCenter, school: Schools.find((school) => school.id === examCenter.school)};
+
       data.invigilators.forEach((invigilatorId) => {
         newResults = [
           ...newResults,
           {
-            examCenter: examCenter,
+            examCenter: resolvedExamCenter,
             invigilator: Invigilators.find(
               (invigilator) => invigilator.id === invigilatorId
             ),

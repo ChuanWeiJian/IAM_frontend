@@ -91,7 +91,7 @@ export const renderMultipleColumnFormExamCentersCheckboxGroup = (formProps) => {
                     return formProps.input.onChange(newValue);
                   }}
                 />
-                <span>{`${item.schoolCode} - ${item.examCenterCode} - ${item.name}`}</span>
+                <span>{`${item.school.schoolCode} - ${item.examCenterCode} - ${item.school.name}`}</span>
                 <span className="checkmark"></span>
               </label>
             </div>
@@ -113,9 +113,9 @@ export const renderInvigilatorOptions = (formProps) => {
       >
         {formProps.options.map((option) => {
           return (
-            option.examCenterId !== formProps.originalExamCenterId && (
+            option.schoolId.id !== formProps.originalSchoolId && (
               <option key={option.id} value={option.id}>
-                {`${option.name} - ${option.examCenterCode}`}
+                {`${option.name} - ${option.schoolId.schoolCode}`}
               </option>
             )
           );
@@ -138,7 +138,7 @@ export const renderEditAssignmentResultArrayField = (formProps) => {
               className="col-lg-12"
               name={invigilator}
               options={formProps.options}
-              originalExamCenterId={formProps.examCenterId}
+              originalSchoolId={formProps.schoolId}
               component={renderInvigilatorOptions}
             />
           );

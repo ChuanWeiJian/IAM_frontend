@@ -11,7 +11,7 @@ const AssignmentResultTable = ({ results }) => {
       sort: true,
     },
     {
-      dataField: "examCenter.schoolCode",
+      dataField: "examCenter.school.schoolCode",
       text: "Assigned School Code",
       sort: true,
     },
@@ -21,7 +21,7 @@ const AssignmentResultTable = ({ results }) => {
       sort: true,
     },
     {
-      dataField: "examCenter.name",
+      dataField: "examCenter.school.name",
       text: "Assigned School Name",
       sort: true,
     },

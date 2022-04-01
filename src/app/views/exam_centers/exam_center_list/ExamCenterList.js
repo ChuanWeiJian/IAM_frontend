@@ -49,7 +49,7 @@ const ExamCentersList = (props) => {
               swal
                 .fire({
                   title: "Are you sure?",
-                  text: `Confirm to delete ${row.schoolCode} - ${row.examCenterCode} - ${row.name}`,
+                  text: `Confirm to delete ${row.school.schoolCode} - ${row.examCenterCode} - ${row.school.name}`,
                   icon: "warning",
                   type: "question",
                   showCancelButton: true,
@@ -90,7 +90,7 @@ const ExamCentersList = (props) => {
       sort: true,
     },
     {
-      dataField: "schoolCode",
+      dataField: "school.schoolCode",
       text: "School Code",
       sort: true,
     },
@@ -100,7 +100,7 @@ const ExamCentersList = (props) => {
       sort: true,
     },
     {
-      dataField: "name",
+      dataField: "school.name",
       text: "Exam Center Name",
       sort: true,
     },

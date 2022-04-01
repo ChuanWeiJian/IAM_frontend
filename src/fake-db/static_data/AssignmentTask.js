@@ -19,30 +19,48 @@ export const examTypes = [
 export const examCenters = [
   {
     id: "01",
+    examCenterCode: "JC005",
+    school: "01",
+    assignmentTasks: ["01", "02", "03"],
+  },
+  {
+    id: "02",
+    examCenterCode: "JC017",
+    school: "02",
+    assignmentTasks: ["01", "02", "03"],
+  },
+  {
+    id: "03",
+    examCenterCode: "JC013",
+    school: "03",
+    assignmentTasks: ["01", "02", "03"],
+  },
+];
+
+export const Schools = [
+  {
+    id: "01",
     name: "SMK Tinggi Kluang",
     schoolCode: "JEB2037",
-    examCenterCode: "JC005",
+    examCenters: ["01"],
     address: "xxxx, Jalan XXX, 81000, XXX, Johor",
-    examSecretary: "02",
-    assignmentTasks: ["01", "02", "03"],
+    examSecretary: "01",
   },
   {
     id: "02",
     name: "SMK Tengku Aris Bendahara",
     schoolCode: "JEB2038",
-    examCenterCode: "JC017",
+    examCenters: ["02"],
     address: "xxxx, Jalan XXX, 81000, XXX, Johor",
     examSecretary: "02",
-    assignmentTasks: ["01", "02", "03"],
   },
   {
     id: "03",
     name: "SMK Sultan Abdul Jalil",
     schoolCode: "JEA2033",
-    examCenterCode: "JC013",
+    examCenters: ["03"],
     address: "xxxx, Jalan XXX, 81000, XXX, Johor",
     examSecretary: "03",
-    assignmentTasks: ["01", "02", "03"],
   },
 ];
 
@@ -56,6 +74,11 @@ export const AssignmentTasks = [
     assignmentDate: "22/03/2020 00:00",
     examCenters: ["01", "02", "03"],
     examCenterData: ["01", "02", "03"],
+    collectionStatus: [
+      { examCenter: "01", status: 2 },
+      { examCenter: "02", status: 2 },
+      { examCenter: "03", status: 2 },
+    ],
     chiefInvigilatorComplete: true,
     viceChiefInvigilatorComplete: true,
     invigilatorComplete: true,
@@ -69,10 +92,15 @@ export const AssignmentTasks = [
     title: "STPM 2022",
     examType: "STPM",
     createdDate: "20/03/2022 17:16",
-    collectionDate: "22/03/2022 00:00",
-    assignmentDate: "31/03/2022 00:00",
+    collectionDate: "20/04/2022 00:00",
+    assignmentDate: "30/04/2022 00:00",
     examCenters: ["01", "02", "03"],
-    examCenterData: ["07", "08", "09"],
+    examCenterData: [],
+    collectionStatus: [
+      { examCenter: "01", status: 0 },
+      { examCenter: "02", status: 0 },
+      { examCenter: "03", status: 0 },
+    ],
     chiefInvigilatorComplete: false,
     viceChiefInvigilatorComplete: false,
     invigilatorComplete: false,
@@ -87,9 +115,14 @@ export const AssignmentTasks = [
     examType: "SPM",
     createdDate: "18/03/2022 17:16",
     collectionDate: "19/03/2022 00:00",
-    assignmentDate: "31/03/2022 00:00",
+    assignmentDate: "30/04/2022 00:00",
     examCenters: ["01", "02", "03"],
     examCenterData: ["04", "05", "06"],
+    collectionStatus: [
+      { examCenter: "01", status: 2 },
+      { examCenter: "02", status: 2 },
+      { examCenter: "03", status: 2 },
+    ],
     chiefInvigilatorComplete: true,
     viceChiefInvigilatorComplete: false,
     invigilatorComplete: true,
@@ -209,8 +242,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "01",
-    examCenterCode: "JC005",
+    schoolId: "01",
   },
   {
     id: "02",
@@ -218,8 +250,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "F",
-    examCenterId: "02",
-    examCenterCode: "JC017",
+    schoolId: "02",
   },
   {
     id: "03",
@@ -227,8 +258,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "03",
-    examCenterCode: "JC013",
+    schoolId: "03",
   },
   {
     id: "04",
@@ -236,8 +266,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "01",
-    examCenterCode: "JC005",
+    schoolId: "01",
   },
   {
     id: "05",
@@ -245,8 +274,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "02",
-    examCenterCode: "JC017",
+    schoolId: "02",
   },
   {
     id: "06",
@@ -254,8 +282,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "03",
-    examCenterCode: "JC013",
+    schoolId: "03",
   },
   {
     id: "07",
@@ -263,8 +290,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "01",
-    examCenterCode: "JC005",
+    schoolId: "01",
   },
   {
     id: "08",
@@ -272,8 +298,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "02",
-    examCenterCode: "JC017",
+    schoolId: "02",
   },
   {
     id: "09",
@@ -281,8 +306,7 @@ export const Invigilators = [
     ic: "xxxxx-01-xxxx",
     email: "xxxx@gmail.com",
     gender: "M",
-    examCenterId: "03",
-    examCenterCode: "JC013",
+    schoolId: "03",
   },
 ];
 

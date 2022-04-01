@@ -14,6 +14,8 @@ const ExamCenterInformation = (props) => {
     props.getExamCenterInformation(centerId);
   }, []);
 
+  console.log(props.examCenter.school ? props.examCenter.school.schoolCode : "");
+
   return (
     <div>
       <Breadcrumb
@@ -24,10 +26,10 @@ const ExamCenterInformation = (props) => {
         ]}
       ></Breadcrumb>
       <ExamCenterInformationHeader
-        schoolCode={props.examCenter.schoolCode}
+        schoolCode={props.examCenter.school ? props.examCenter.school.schoolCode : ""}
         examCenterCode={props.examCenter.examCenterCode}
-        name={props.examCenter.name}
-        address={props.examCenter.address}
+        name={props.examCenter.school ? props.examCenter.school.name : ""}
+        address={props.examCenter.school ? props.examCenter.school.address : ""}
       />
       <div className="mb-5"></div>
 

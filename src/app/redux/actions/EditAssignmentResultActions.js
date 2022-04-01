@@ -3,6 +3,7 @@ import {
   examCenters,
   Invigilators,
   AssignmentResults,
+  Schools,
 } from "fake-db/static_data/AssignmentTask";
 export const INITIALIZE_ASSIGNMENT_RESULT_FORM =
   "EDIT-ASSIGNMENT-RESULT INITIALIZE_ASSIGNMENT_RESULT_FORM";
@@ -22,14 +23,28 @@ export const initializeForm = (role, taskId) => {
         const examCenter = examCenters.find(
           (center) => center.id === data.examCenter
         );
-        const invigilators = data.invigilators.map((invigilatorId) =>
-          Invigilators.find((invigilator) => invigilator.id === invigilatorId)
-        );
+
+        const resolvedExamCenter = {
+          ...examCenter,
+          school: Schools.find((school) => school.id === examCenter.school),
+        };
+
+        const invigilators = data.invigilators.map((invigilatorId) => {
+          const invigilator = Invigilators.find(
+            (invigilator) => invigilator.id === invigilatorId
+          );
+          return {
+            ...invigilator,
+            schoolId: Schools.find(
+              (school) => school.id === invigilator.schoolId
+            ),
+          };
+        });
 
         involvedInvigilators = [...involvedInvigilators, ...invigilators];
 
         return {
-          examCenter: examCenter,
+          examCenter: resolvedExamCenter,
           invigilators: invigilators,
         };
       }),
@@ -45,7 +60,7 @@ export const initializeForm = (role, taskId) => {
       }
     });
   }
-  
+
   return {
     type: INITIALIZE_ASSIGNMENT_RESULT_FORM,
     payload: { assignmentTask, resolvedResult, involvedInvigilators },
