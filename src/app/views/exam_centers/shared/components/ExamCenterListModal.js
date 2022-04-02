@@ -5,6 +5,7 @@ const ExamCenterListModal = (props) => {
   return (
     <Fragment>
       <Button
+        type="button"
         className="text-capitalize btn btn-dark"
         onClick={() => props.toggleModal(true)}
       >

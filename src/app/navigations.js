@@ -9,15 +9,15 @@ export const navigations = [
         icon: "i-Clock-3",
         name: "Version 1",
         path: "/dashboard/v1",
-        type: "link"
+        type: "link",
       },
       {
         icon: "i-Clock-4",
         name: "Version 2",
         path: "/dashboard/v2",
-        type: "link"
-      }
-    ]
+        type: "link",
+      },
+    ],
   },
   {
     name: "Assignment Tasks",
@@ -29,15 +29,15 @@ export const navigations = [
         icon: "i-Add-File",
         name: "New Assignment Task",
         path: "/assignment/new",
-        type: "link"
-      }, 
+        type: "link",
+      },
       {
         icon: "i-File-Horizontal-Text",
         name: "Assignment Tasks List",
         path: "/assignment/list",
-        type: "link"
-      }, 
-    ]
+        type: "link",
+      },
+    ],
   },
   {
     name: "School & Exam Center",
@@ -49,21 +49,15 @@ export const navigations = [
         icon: "i-University",
         name: "New School",
         path: "/school/new",
-        type: "link"
-      },
-      {
-        icon: "i-University",
-        name: "New Exam Center",
-        path: "/examcenter/new",
-        type: "link"
+        type: "link",
       },
       {
         icon: "i-University1",
-        name: "Exam Centers List",
-        path: "/examcenter/list",
-        type: "link"
+        name: "Registered Schools List",
+        path: "/school/list",
+        type: "link",
       },
-    ]
+    ],
   },
   {
     name: "Formal Letter",
@@ -75,14 +69,14 @@ export const navigations = [
         icon: "i-Mail-Add-",
         name: "New Formal Letter",
         path: "/letter/new",
-        type: "link"
+        type: "link",
       },
       {
         icon: "i-Email",
         name: "Formal Letter List",
         path: "/letter/list",
-        type: "link"
+        type: "link",
       },
-    ]
+    ],
   },
 ];

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Breadcrumb, SimpleCard } from "@gull";
 import { Link } from "react-router-dom";
@@ -8,15 +8,10 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
-import { getAllExamCenters } from "app/redux/actions/ExamCenterListActions";
 
 const { SearchBar } = Search;
 
 const ExamCentersList = (props) => {
-  useEffect(() => {
-    props.getAllExamCenters();
-  }, []);
-
   const renderActionButtons = (cell, row, rowIndex) => {
     return (
       <div className="d-flex flex-wrap align-items-center">
@@ -49,7 +44,7 @@ const ExamCentersList = (props) => {
               swal
                 .fire({
                   title: "Are you sure?",
-                  text: `Confirm to delete ${row.school.schoolCode} - ${row.examCenterCode} - ${row.school.name}`,
+                  text: `Confirm to delete ${row.examCenterCode}?`,
                   icon: "warning",
                   type: "question",
                   showCancelButton: true,
@@ -90,18 +85,8 @@ const ExamCentersList = (props) => {
       sort: true,
     },
     {
-      dataField: "school.schoolCode",
-      text: "School Code",
-      sort: true,
-    },
-    {
       dataField: "examCenterCode",
       text: "Exam Center Code",
-      sort: true,
-    },
-    {
-      dataField: "school.name",
-      text: "Exam Center Name",
       sort: true,
     },
     {
@@ -127,42 +112,30 @@ const ExamCentersList = (props) => {
   };
   return (
     <div>
-      <Breadcrumb
-        routeSegments={[
-          { name: "Exam Centers", path: "/examcenter" },
-          { name: "Exam Centers List" },
-        ]}
-      ></Breadcrumb>
-      <SimpleCard title="Exam Centers List">
-        <ToolkitProvider
-          striped
-          keyField="id"
-          data={props.examCenters}
-          columns={sortableColumn}
-          search
-        >
-          {(props) => (
-            <>
-              <div className="d-flex justify-content-start align-items-center">
-                <SearchBar {...props.searchProps} className="mb-2" />
-              </div>
-              <BootstrapTable
-                {...props.baseProps}
-                bootstrap4
-                pagination={paginationFactory(paginationOptions)}
-                noDataIndication={"Table is empty"}
-                wrapperClasses="table-responsive"
-              />
-            </>
-          )}
-        </ToolkitProvider>
-      </SimpleCard>
+      <ToolkitProvider
+        striped
+        keyField="id"
+        data={props.examCenters}
+        columns={sortableColumn}
+        search
+      >
+        {(props) => (
+          <>
+            <div className="d-flex justify-content-start align-items-center">
+              <SearchBar {...props.searchProps} className="mb-2" />
+            </div>
+            <BootstrapTable
+              {...props.baseProps}
+              bootstrap4
+              pagination={paginationFactory(paginationOptions)}
+              noDataIndication={"Table is empty"}
+              wrapperClasses="table-responsive"
+            />
+          </>
+        )}
+      </ToolkitProvider>
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { examCenters: state.examCenterList.examCenters };
-};
-
-export default connect(mapStateToProps, { getAllExamCenters })(ExamCentersList);
+export default ExamCentersList;

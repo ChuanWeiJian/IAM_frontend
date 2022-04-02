@@ -14,19 +14,25 @@ const ExamCenterInformation = (props) => {
     props.getExamCenterInformation(centerId);
   }, []);
 
-  console.log(props.examCenter.school ? props.examCenter.school.schoolCode : "");
-
   return (
     <div>
       <Breadcrumb
         routeSegments={[
-          { name: "Exam Centers", path: "/examcenter" },
-          { name: "Exam Centers List", path: "/examcenter/list" },
+          { name: "School & Exam Centers", path: "/examcenter" },
+          { name: "Registered School List", path: "/school/list" },
+          {
+            name: "School Information",
+            path: `/school/${
+              props.examCenter.school ? props.examCenter.school.id : ""
+            }`,
+          },
           { name: "Exam Center Information" },
         ]}
       ></Breadcrumb>
       <ExamCenterInformationHeader
-        schoolCode={props.examCenter.school ? props.examCenter.school.schoolCode : ""}
+        schoolCode={
+          props.examCenter.school ? props.examCenter.school.schoolCode : ""
+        }
         examCenterCode={props.examCenter.examCenterCode}
         name={props.examCenter.school ? props.examCenter.school.name : ""}
         address={props.examCenter.school ? props.examCenter.school.address : ""}

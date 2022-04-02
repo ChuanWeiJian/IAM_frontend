@@ -13,8 +13,8 @@ import CompileLetterReducer from "./CompileLetterReducer";
 import EditAssignmentTaskReducer from "./EditAssignmentTaskReducer";
 import EditAssignmentResultReducer from "./EditAssignmentResultReducer";
 import NewSchoolsReducer from "./NewSchoolReducer";
-import NewExamCenterReducer from "./NewExamCenterReducer";
-import ExamCenterListReducer from "./ExamCenterListReducer";
+import SchoolListReducer from "./SchoolListReducer";
+import SchoolInformationReducer from "./SchoolInformationReducer";
 import ExamCenterInformationReducer from "./ExamCenterInformationReducer";
 import LetterTemplatesListReducer from "./LetterTemplatesListReducer";
 import LetterTemplateContentReducer from "./LetterTemplateContentReducer";
@@ -39,8 +39,8 @@ const RootReducer = combineReducers({
   editAssignmentTask: EditAssignmentTaskReducer,
   editAssignmentResult: EditAssignmentResultReducer,
   newSchool: NewSchoolsReducer,
-  newExamCenter: NewExamCenterReducer,
-  examCenterList: ExamCenterListReducer,
+  schoolList: SchoolListReducer,
+  schoolInformation: SchoolInformationReducer,
   examCenterInformation: ExamCenterInformationReducer,
   editExamCenter: EditExamCenterReducer,
   letterTemplatesList: LetterTemplatesListReducer,
