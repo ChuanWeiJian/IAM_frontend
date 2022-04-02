@@ -3,7 +3,11 @@ import { Breadcrumb, SimpleCard } from "@gull";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
-import { setPage, setRowsPerPage } from "app/redux/actions/TableActions";
+import {
+  setPage,
+  setRowsPerPage,
+  resetTableState,
+} from "app/redux/actions/TableActions";
 import { getAssignmentTaskInfo } from "app/redux/actions/AssignmentTaskInfoActions";
 import ExamCenterDataSummary from "./components/ExamCenterDataSummary";
 import AssignmentTaskInfoHeader from "../shared/components/AssignmentTaskInfoHeader";
@@ -13,6 +17,7 @@ const AssignmentTaskInfo = (props) => {
 
   useEffect(() => {
     props.getAssignmentTaskInfo(taskId);
+    props.resetTableState();
   }, []);
 
   const handlePageClick = (data) => {
@@ -137,4 +142,5 @@ export default connect(mapStateToProps, {
   getAssignmentTaskInfo,
   setPage,
   setRowsPerPage,
+  resetTableState,
 })(AssignmentTaskInfo);

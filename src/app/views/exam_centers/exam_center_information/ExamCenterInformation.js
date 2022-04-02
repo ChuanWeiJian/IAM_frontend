@@ -5,13 +5,18 @@ import { useParams } from "react-router-dom";
 
 import ExamCenterInformationHeader from "./components/ExamCenterInformationHeader";
 import AssignmentTaskTable from "./components/AssignmentTasksTable";
-import { setPage, setRowsPerPage } from "app/redux/actions/TableActions";
+import {
+  setPage,
+  setRowsPerPage,
+  resetTableState,
+} from "app/redux/actions/TableActions";
 import { getExamCenterInformation } from "app/redux/actions/ExamCenterInformationActions";
 
 const ExamCenterInformation = (props) => {
   const centerId = useParams().centerId;
   useEffect(() => {
     props.getExamCenterInformation(centerId);
+    props.resetTableState();
   }, []);
 
   return (
@@ -65,4 +70,5 @@ export default connect(mapStateToProps, {
   getExamCenterInformation,
   setPage,
   setRowsPerPage,
+  resetTableState,
 })(ExamCenterInformation);
