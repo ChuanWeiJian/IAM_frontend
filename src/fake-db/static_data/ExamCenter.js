@@ -3,18 +3,21 @@ export const examCenters = [
     id: "01",
     examCenterCode: "JC005",
     school: "01",
+    safeRoomNo: "J01",
     assignmentTasks: ["01", "02", "03"],
   },
   {
     id: "02",
     examCenterCode: "JC017",
     school: "02",
+    safeRoomNo: "J02",
     assignmentTasks: ["01", "02", "03"],
   },
   {
     id: "03",
     examCenterCode: "JC013",
     school: "03",
+    safeRoomNo: "J03",
     assignmentTasks: ["01", "02", "03"],
   },
 ];

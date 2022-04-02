@@ -16,10 +16,10 @@ import NewSchoolsReducer from "./NewSchoolReducer";
 import SchoolListReducer from "./SchoolListReducer";
 import SchoolInformationReducer from "./SchoolInformationReducer";
 import ExamCenterInformationReducer from "./ExamCenterInformationReducer";
+import EditSchoolInformationReducer from "./EditSchoolInformationReducer";
 import LetterTemplatesListReducer from "./LetterTemplatesListReducer";
 import LetterTemplateContentReducer from "./LetterTemplateContentReducer";
 import EditLetterTemplateReducer from "./EditLetterTemplateReducer";
-import EditExamCenterReducer from "./EditExamCenterReducer";
 import TableReducer from "./TableReducer";
 import { reducer as formReducer } from "redux-form";
 
@@ -42,7 +42,7 @@ const RootReducer = combineReducers({
   schoolList: SchoolListReducer,
   schoolInformation: SchoolInformationReducer,
   examCenterInformation: ExamCenterInformationReducer,
-  editExamCenter: EditExamCenterReducer,
+  editSchoolInformation: EditSchoolInformationReducer,
   letterTemplatesList: LetterTemplatesListReducer,
   letterTemplateContent: LetterTemplateContentReducer,
   editLetterTemplate: EditLetterTemplateReducer,

@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Breadcrumb, SimpleCard } from "@gull";
 import { Link } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
@@ -8,6 +7,12 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
+
+import {
+  initializeForm,
+  toggleForm,
+} from "app/redux/actions/SchoolInformationActions";
+import { Scatter } from "recharts";
 
 const { SearchBar } = Search;
 
@@ -30,9 +35,18 @@ const ExamCentersList = (props) => {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Edit</Tooltip>}
         >
-          <Link className="p-2 btn-hover rounded-circle" to={cell.edit}>
-            <MdModeEdit className="cursor-pointer" size={24}></MdModeEdit>
-          </Link>
+          <div
+            className="p-2 btn-hover rounded-circle"
+            onClick={() => {
+              props.initializeForm(rowIndex);
+              props.toggleForm(true);
+            }}
+          >
+            <MdModeEdit
+              className="cursor-pointer text-primary"
+              size={24}
+            ></MdModeEdit>
+          </div>
         </OverlayTrigger>
         <OverlayTrigger
           placement="top"
@@ -138,4 +152,14 @@ const ExamCentersList = (props) => {
   );
 };
 
-export default ExamCentersList;
+const mapStateToProps = (state) => {
+  return {
+    examCenters: state.schoolInformation.school.examCenters
+      ? state.schoolInformation.school.examCenters
+      : [],
+  };
+};
+
+export default connect(mapStateToProps, { initializeForm, toggleForm })(
+  ExamCentersList
+);

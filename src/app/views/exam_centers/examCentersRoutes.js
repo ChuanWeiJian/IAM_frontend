@@ -6,11 +6,14 @@ const SchoolList = lazy(() => import("./school_list/SchoolList"));
 const SchoolInformation = lazy(() =>
   import("./school_information/SchoolInformation")
 );
+const EditSchoolInformation = lazy(() =>
+  import("./edit_school_information/EditSchoolInformation")
+);
 const ExamCenters = lazy(() => import("./examCenters"));
 const ExamCenterInformation = lazy(() =>
   import("./exam_center_information/ExamCenterInformation")
 );
-const EditExamCenter = lazy(() => import("./edit_exam_center/EditExamCenter"));
+
 const examCentersRoutes = [
   {
     path: "/examcenter",
@@ -33,14 +36,14 @@ const examCentersRoutes = [
     component: SchoolInformation,
   },
   {
+    path: "/school/edit/:schoolId",
+    exact: true,
+    component: EditSchoolInformation,
+  },
+  {
     path: "/examcenter/:centerId",
     exact: true,
     component: ExamCenterInformation,
-  },
-  {
-    path: "/examcenter/edit/:centerId",
-    exact: true,
-    component: EditExamCenter,
   },
 ];
 

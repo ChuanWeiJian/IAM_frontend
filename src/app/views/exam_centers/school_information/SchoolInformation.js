@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 
 import SchoolInformationHeader from "./components/SchoolInformationHeader";
 import ExamCenterList from "./components/ExamCenterList";
+import EditExamCenter from "./components/EditExamCenter";
 import { getSchoolInformationById } from "app/redux/actions/SchoolInformationActions";
 
 const ExamCenterInformation = (props) => {
@@ -33,9 +34,8 @@ const ExamCenterInformation = (props) => {
       <div className="mb-5"></div>
 
       <SimpleCard title="Registered Exam Centers">
-        <ExamCenterList
-          examCenters={props.school.examCenters ? props.school.examCenters : []}
-        />
+        <ExamCenterList />
+        <EditExamCenter />
       </SimpleCard>
     </div>
   );

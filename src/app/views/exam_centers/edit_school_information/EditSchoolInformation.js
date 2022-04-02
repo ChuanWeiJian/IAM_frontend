@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Breadcrumb } from "@gull";
@@ -9,43 +9,36 @@ import swal from "sweetalert2";
 
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import SchoolListModal from "../shared/components/SchoolListModal";
-import { examSecretaries } from "fake-db/static_data/ExamCenter";
 import { validateSchool as validate } from "../shared/validation";
 import {
-  getAllSchools,
+  initializeForm,
   toggleSchoolListModal,
-} from "app/redux/actions/NewSchoolActions";
+} from "app/redux/actions/EditSchoolInformationActions";
 import { checkSchoolCodeUniqueness } from "../shared/check_uniqueness";
 
-const NewSchool = (props) => {
+const EditSchoolInformation = (props) => {
+  const schoolId = useParams().schoolId;
   const history = useHistory();
 
   useEffect(() => {
-    props.getAllSchools();
+    props.initializeForm(schoolId);
   }, []);
 
   const handleFormSubmit = (values) => {
     swal.fire({
-      title: "Registering new school...",
+      title: "Save Changes...",
       onBeforeOpen: () => {
         swal.showLoading();
       },
       onOpen: () => {
         //submit form process here remember to async and await with try...catch block
-        const examSecretaryAcc = examSecretaries.find((acc) => acc.id === "04");
         console.log(values);
         swal.hideLoading();
         swal
           .fire({
             title: "Success",
             icon: "success",
-            html: renderToStaticMarkup(
-              <>
-                <h3>Exam Secretary Account</h3>
-                <p>Username: {examSecretaryAcc.username}</p>
-                <p>Password: {examSecretaryAcc.password}</p>
-              </>
-            ),
+            html: "Successful saved the changes",
           })
           .then((result) => {
             history.push(`/school/list`);
@@ -60,7 +53,8 @@ const NewSchool = (props) => {
       <Breadcrumb
         routeSegments={[
           { name: "Schools & Exam Centers", path: "/examcenter" },
-          { name: "New School" },
+          { name: "School List", path: "/school/list" },
+          { name: "Edit School Information" },
         ]}
       ></Breadcrumb>
       <div className="2-columns-form-layout">
@@ -69,7 +63,7 @@ const NewSchool = (props) => {
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-header bg-transparent">
-                  <h3 className="card-title"> New School</h3>
+                  <h3 className="card-title"> Edit School Information</h3>
                 </div>
                 <form onSubmit={props.handleSubmit(handleFormSubmit)}>
                   <div className="card-body">
@@ -97,6 +91,15 @@ const NewSchool = (props) => {
                                 "No school code is entered",
                                 `Please enter the school code first`,
                                 "warning"
+                              );
+                            } else if (
+                              props.schoolCode ===
+                              props.initialValues.schoolCode
+                            ) {
+                              swal.fire(
+                                "Same school code",
+                                `The school code is same before changes`,
+                                "info"
                               );
                             } else {
                               const unique = checkSchoolCodeUniqueness(
@@ -152,7 +155,7 @@ const NewSchool = (props) => {
                       <div className="row">
                         <div className="col-lg-12">
                           <button type="submit" className="btn btn-primary m-1">
-                            Register School
+                            Save Changes
                           </button>
                         </div>
                       </div>
@@ -168,17 +171,24 @@ const NewSchool = (props) => {
   );
 };
 
-const selector = formValueSelector("NewSchool");
+const selector = formValueSelector("EditSchoolInformation");
 
 const mapStateToProps = (state) => {
   return {
-    showModal: state.newSchool.showModal,
-    schools: state.newSchool.schools,
+    showModal: state.editSchoolInformation.showModal,
+    schools: state.editSchoolInformation.schools,
+    initialValues: state.editSchoolInformation.selectedSchool,
     schoolCode: selector(state, "schoolCode"),
   };
 };
 
 export default connect(mapStateToProps, {
   toggleSchoolListModal,
-  getAllSchools,
-})(reduxForm({ form: "NewSchool", validate: validate })(NewSchool));
+  initializeForm,
+})(
+  reduxForm({
+    form: "EditSchoolInformation",
+    validate: validate,
+    enableReinitialize: true,
+  })(EditSchoolInformation)
+);
