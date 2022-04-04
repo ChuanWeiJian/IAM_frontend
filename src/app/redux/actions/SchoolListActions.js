@@ -6,11 +6,12 @@ export const SET_SELECTED_INDEX = "SCHOOL-LIST SET_SELECTED_INDEX";
 export const TOGGLE_EXAM_CENTER_LIST = "SCHOOL-LIST TOGGLE_EXAM_CENTER_LIST";
 
 export const getSchoolListData = () => {
+  //get all schools by district
+  //resolve the actions fields after retrieved from database
   const resolvedSchools = Schools.map((school, index) => {
     let actions = {
       view: "/school/" + school.id,
       edit: "/school/edit/" + school.id,
-      delete: "/school/delete/" + school.id,
     };
 
     return {
@@ -20,6 +21,7 @@ export const getSchoolListData = () => {
     };
   });
 
+  //get all exam centers by district with resolved school
   const resolvedExamCenters = examCenters.map((center, index) => {
     const resolvedSchool = Schools.find(
       (school) => school.id === center.school

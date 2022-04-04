@@ -11,6 +11,8 @@ export const toggleSchoolListModal = (show) => {
 };
 
 export const initializeForm = (schoolId) => {
+  //get all schools
+  //find the school by id
   const selectedSchool = Schools.find((school) => school.id === schoolId);
   return {
     type: INITIALIZE_FORM,

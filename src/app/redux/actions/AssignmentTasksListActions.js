@@ -11,6 +11,7 @@ export const getAllAssignmentTasks = () => {
     let actions = {
       view: "/assignment/" + task.id,
       edit: "/assignment/edit/" + task.id,
+      delete: "/assignment/delete/" + task.id,
     };
 
     return {

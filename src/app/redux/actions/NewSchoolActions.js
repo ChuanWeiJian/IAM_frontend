@@ -12,6 +12,7 @@ export const toggleSchoolListModal = (show) => {
 };
 
 export const getAllSchools = () => {
+  //get all schools 
   return {
     type: GET_ALL_SCHOOLS,
     payload: Schools,

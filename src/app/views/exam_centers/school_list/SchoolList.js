@@ -9,10 +9,8 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   MdModeEdit,
   MdRemoveRedEye,
-  MdDelete,
   MdAddCircle,
 } from "react-icons/md";
-import swal from "sweetalert2";
 import {
   getSchoolListData,
   toggleForm,
@@ -66,46 +64,6 @@ const SchoolList = (props) => {
           <Link className="p-2 btn-hover rounded-circle" to={cell.edit}>
             <MdModeEdit className="cursor-pointer" size={24}></MdModeEdit>
           </Link>
-        </OverlayTrigger>
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip id="tooltip-top">Delete</Tooltip>}
-        >
-          <div
-            className="p-2 btn-hover rounded-circle"
-            onClick={() => {
-              swal
-                .fire({
-                  title: "Are you sure?",
-                  text: `All the registered exam centers will be removed as well. Confirm to delete ${row.schoolCode} - ${row.name}?  `,
-                  icon: "warning",
-                  type: "question",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, delete it!",
-                  cancelButtonText: "No",
-                })
-                .then((result) => {
-                  if (result.value) {
-                    console.log(`Deleting - ${cell.delete}`);
-
-                    swal.fire(
-                      "Deleted!",
-                      "Your file has been deleted.",
-                      "success"
-                    );
-                  } else {
-                    swal.fire("Cancelled!", "Permission denied.", "error");
-                  }
-                });
-            }}
-          >
-            <MdDelete
-              className="cursor-pointer text-primary"
-              size={24}
-            ></MdDelete>
-          </div>
         </OverlayTrigger>
       </div>
     );

@@ -7,6 +7,7 @@ export const GET_EXAM_CENTER_INFORMATION =
   "EXAM-CENTER-INFORMATION GET_EXAM_CENTER_INFORMATION";
 
 export const getExamCenterInformation = (centerId) => {
+  //get exam center by id & district with resolved school & assignment tasks
   const examCenter = examCenters.find((center) => center.id === centerId);
   const resolvedExamCenter = {
     ...examCenter,

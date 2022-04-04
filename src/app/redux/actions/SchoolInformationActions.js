@@ -8,7 +8,9 @@ export const TOGGLE_EXAM_CENTER_LIST =
 export const INITIALIZE_FORM = "EDIT-EXAM-CENTER INITIALIZE_FORM";
 
 export const getSchoolInformationById = (schoolId) => {
+  // get school by id & district with resolved exam centers
   const school = Schools.find((school) => school.id === schoolId);
+  // resolve actions field after retrieved data
   const resolvedExamCenters = school.examCenters.map((centerId, index) => {
     const resolvedExamCenter = examCenters.find(
       (center) => center.id === centerId
@@ -18,7 +20,6 @@ export const getSchoolInformationById = (schoolId) => {
       ...resolvedExamCenter,
       actions: {
         view: "/examcenter/" + centerId,
-        delete: "/examcenter/delete/" + centerId,
       },
       index: index + 1,
     };
@@ -29,6 +30,7 @@ export const getSchoolInformationById = (schoolId) => {
     examCenters: resolvedExamCenters,
   };
 
+  //get all registered exam centers by district with resolved school field
   const examCentersList = examCenters.map((center) => {
     return {
       ...center,
