@@ -110,12 +110,6 @@ const AssignmentTaskList = (props) => {
       sort: true,
     },
     {
-      dataField: "assignmentDate",
-      text: "Assignment Deadline",
-      sort: true,
-    },
-
-    {
       dataField: "actions",
       text: "Action",
       formatter: renderActionButtons,

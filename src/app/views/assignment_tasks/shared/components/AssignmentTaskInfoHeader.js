@@ -1,25 +1,31 @@
 import React from "react";
 import { Badge } from "react-bootstrap";
 
-const AssignmentTaskInfoHeader = ({ assignmentTask, status }) => {
+const AssignmentTaskInfoHeader = ({ assignmentTask }) => {
   const renderStatus = () => {
-    switch (status) {
+    switch (assignmentTask.status) {
       case "Collection in progress":
         return (
           <Badge className="bg-primary rounded-pill text-white p-2">
-            {status}
+            {assignmentTask.status}
+          </Badge>
+        );
+      case "Collection data incomplete":
+        return (
+          <Badge className="bg-danger rounded-pill text-white p-2">
+            {assignmentTask.status}
           </Badge>
         );
       case "Assigning in progress":
         return (
           <Badge className="bg-secondary rounded-pill text-white p-2">
-            {status}
+            {assignmentTask.status}
           </Badge>
         );
       default:
         return (
           <Badge className="bg-success rounded-pill text-white p-2">
-            {status}
+            {assignmentTask.status}
           </Badge>
         );
     }
@@ -44,12 +50,6 @@ const AssignmentTaskInfoHeader = ({ assignmentTask, status }) => {
           <div className="mb-4">
             <p className="text-primary mb-1 h5">Data Collection Deadline</p>
             <span>{assignmentTask.collectionDate}</span>
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="mb-4">
-            <p className="text-primary mb-1 h5">Assignment Task Deadline</p>
-            <span>{assignmentTask.assignmentDate}</span>
           </div>
         </div>
       </div>

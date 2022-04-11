@@ -5,13 +5,14 @@ import {
   AssignmentResults,
   Schools
 } from "fake-db/static_data/AssignmentTask";
-import { getStatus } from "app/views/shared/function/getStatus";
 
 export const GET_ASSIGNMENT_RESULT_SUMMARY_INFO =
   "ASSIGNMENT-RESULT-SUMMARY GET_ASSIGNMENT_RESULT_SUMMARY_INFO";
 
 export const getAssignmentResultSummary = (role, taskId) => {
   const assignmentTask = AssignmentTasks.find((task) => task.id === taskId);
+  //get assignment result by assignment task id and role with all resolved (the assignment task will be resolved as well)
+  //resolve result into array
   const result = AssignmentResults.find(
     (result) => result.assignmentTask === taskId && result.role === role
   );
@@ -47,10 +48,8 @@ export const getAssignmentResultSummary = (role, taskId) => {
     };
   }
 
-  const status = getStatus(assignmentTask);
-
   return {
     type: GET_ASSIGNMENT_RESULT_SUMMARY_INFO,
-    payload: { assignmentTask, resolvedResult, status },
+    payload: { assignmentTask, resolvedResult},
   };
 };

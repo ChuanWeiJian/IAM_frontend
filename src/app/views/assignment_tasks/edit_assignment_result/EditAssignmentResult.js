@@ -28,11 +28,11 @@ const EditAssignmentResult = (props) => {
           const examCenterId = key.slice(6);
           newResults = [
             ...newResults,
-            { examCenter: examCenterId, invigilator: values[key] },
+            { examCenter: examCenterId, invigilators: values[key] },
           ];
         }
 
-        console.log(newResults);
+        console.log({ results: newResults });
         console.log(values);
         swal.hideLoading();
         swal

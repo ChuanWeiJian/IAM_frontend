@@ -3,6 +3,7 @@ import { Breadcrumb, SimpleCard } from "@gull";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
+import { Badge } from "react-bootstrap";
 import {
   setPage,
   setRowsPerPage,
@@ -25,6 +26,32 @@ const AssignmentTaskInfo = (props) => {
     props.setPage(page);
   };
 
+  const renderCollectionStatus = (examCenterId, collectionStatus) => {
+    const status = collectionStatus.find(
+      (status) => status.examCenter === examCenterId
+    );
+    switch (status.status) {
+      case "Incomplete":
+        return (
+          <Badge className="bg-danger rounded-pill text-white p-2">
+            {status.status}
+          </Badge>
+        );
+      case "Pending":
+        return (
+          <Badge className="bg-secondary rounded-pill text-white p-2">
+            {status.status}
+          </Badge>
+        );
+      default:
+        return (
+          <Badge className="bg-success rounded-pill text-white p-2">
+            {status.status}
+          </Badge>
+        );
+    }
+  };
+
   return (
     <div>
       <Breadcrumb
@@ -35,10 +62,7 @@ const AssignmentTaskInfo = (props) => {
         ]}
       ></Breadcrumb>
       <SimpleCard>
-        <AssignmentTaskInfoHeader
-          assignmentTask={props.assignmentTask}
-          status={props.status}
-        />
+        <AssignmentTaskInfoHeader assignmentTask={props.assignmentTask} />
 
         <div className="custom-separator"></div>
 
@@ -74,6 +98,7 @@ const AssignmentTaskInfo = (props) => {
                   <th>School Code</th>
                   <th>Exam Center Code</th>
                   <th>School Name</th>
+                  <th>Collection Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -89,6 +114,12 @@ const AssignmentTaskInfo = (props) => {
                         <td>{examCenter.school.schoolCode}</td>
                         <td>{examCenter.examCenterCode}</td>
                         <td>{examCenter.school.name}</td>
+                        <td>
+                          {renderCollectionStatus(
+                            examCenter.id,
+                            props.assignmentTask.collectionStatus
+                          )}
+                        </td>
                       </tr>
                     );
                   })}
@@ -118,7 +149,6 @@ const AssignmentTaskInfo = (props) => {
 
         <h5>Exam Center Data Summary</h5>
         <ExamCenterDataSummary
-          status={props.status}
           examCenterData={props.collectedExamCenterData}
           assignmentTask={props.assignmentTask}
         />
@@ -131,7 +161,6 @@ const mapStateToProps = (state) => {
   return {
     assignmentTask: state.assignmentTaskInfo.assignmentTask,
     involvedExamCenters: state.assignmentTaskInfo.involvedExamCenters,
-    status: state.assignmentTaskInfo.status,
     collectedExamCenterData: state.assignmentTaskInfo.examCenterData,
     page: state.table.page,
     rowsPerPage: state.table.rowsPerPage,

@@ -1,7 +1,6 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { getStatus } from "app/views/shared/function/getStatus";
 
 const AssignmentTaskTable = (props) => {
   return (
@@ -50,7 +49,7 @@ const AssignmentTaskTable = (props) => {
                       <td>
                         <Link to={`/assignment/${task.id}`}>{task.title}</Link>
                       </td>
-                      <td>{getStatus(task)}</td>
+                      <td>{task.status}</td>
                     </tr>
                   );
                 })}

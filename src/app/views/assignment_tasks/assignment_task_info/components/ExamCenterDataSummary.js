@@ -1,16 +1,33 @@
 import React from "react";
 import ActionButtons from "./ActionButtons";
 
-const ExamCenterDataSummary = ({ status, examCenterData, assignmentTask }) => {
+const ExamCenterDataSummary = ({ examCenterData, assignmentTask }) => {
   const renderSummary = () => {
-    if (examCenterData.length === 0) {
+    if (assignmentTask.status === "Collection in progress") {
+      return (
+        <tr>
+          <td colSpan="3">
+            Data Collection in progress, please come back again after the
+            collection deadline
+          </td>
+        </tr>
+      );
+    } else if (assignmentTask.status === "Collection data incomplete") {
+      return (
+        <tr>
+          <td colSpan="3">
+            Data Collection not complete, please extend the collection deadline
+          </td>
+        </tr>
+      );
+    } else if (examCenterData.length === 0) {
       return (
         <tr>
           <td colSpan="3">No Data Found</td>
         </tr>
       );
     } else {
-      if (status === "Collection in progress") {
+      if (assignmentTask.status === "Collection in progress") {
         return (
           <tr>
             <td colSpan="3">

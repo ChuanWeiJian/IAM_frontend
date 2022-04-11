@@ -3,7 +3,6 @@ import { GET_ASSIGNMENT_RESULT_SUMMARY_INFO } from "../actions/AssignmentResultS
 const initialState = {
   assignmentTask: {},
   result: {},
-  status: "",
 };
 
 const AssignmentResultSummaryReducer = (state = initialState, action) => {
@@ -13,7 +12,6 @@ const AssignmentResultSummaryReducer = (state = initialState, action) => {
         ...state,
         assignmentTask: action.payload.assignmentTask,
         result: action.payload.resolvedResult,
-        status: action.payload.status,
       };
     default:
       return state;

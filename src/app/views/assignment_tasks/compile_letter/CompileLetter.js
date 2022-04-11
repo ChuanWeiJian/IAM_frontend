@@ -30,7 +30,7 @@ const CompileLetter = (props) => {
         title="Letter Template"
         subtitle="Please select the letter template"
       >
-        <LetterTemplateForm letters={props.letterTemplates} taskId={taskId} />
+        <LetterTemplateForm letters={props.letterTemplates} taskId={taskId} role={role} />
 
         <div className="custom-separator"></div>
 

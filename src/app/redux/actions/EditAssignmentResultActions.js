@@ -9,7 +9,9 @@ export const INITIALIZE_ASSIGNMENT_RESULT_FORM =
   "EDIT-ASSIGNMENT-RESULT INITIALIZE_ASSIGNMENT_RESULT_FORM";
 
 export const initializeForm = (role, taskId) => {
+  //get assignment task by id and district
   const assignmentTask = AssignmentTasks.find((task) => task.id === taskId);
+  //get assignment result by task id and role with all fields resolved
   const assignmentResult = AssignmentResults.find(
     (result) => result.assignmentTask === taskId && result.role === role
   );

@@ -28,7 +28,6 @@ const AssignmentResultSummary = (props) => {
       <SimpleCard>
         <AssignmentTaskInfoHeader
           assignmentTask={props.assignmentTask}
-          status={props.status}
         />
 
         <div className="custom-separator"></div>
@@ -46,7 +45,6 @@ const mapStateToProps = (state) => {
   return {
     assignmentTask: state.assignmentResultSummary.assignmentTask,
     result: state.assignmentResultSummary.result,
-    status: state.assignmentResultSummary.status,
   };
 };
 

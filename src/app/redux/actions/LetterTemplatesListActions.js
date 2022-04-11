@@ -4,6 +4,7 @@ export const GET_ALL_LETTER_TEMPLATES =
   "LETTER-TEMPLATES-LIST GET_ALL_LETTER_TEMPLATES";
 
 export const getAllLetterTemplates = () => {
+  //get all letter templates by district
   const resolvedLetterTemplates = LetterTemplates.map((template, index) => {
     let actions = {
       view: "/letter/" + template.id,

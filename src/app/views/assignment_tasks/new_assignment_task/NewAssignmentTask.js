@@ -33,6 +33,12 @@ const NewAssignmentTask = (props) => {
       onOpen: () => {
         //submit form process here remember to async and await with try...catch block
         console.log(values);
+        console.log(values.collectionDate.toString());
+        console.log(
+          moment("2022-04-05T16:00:00.000Z", moment.ISO_8601).format(
+            "DD/MM/YYYY HH:mm"
+          )
+        );
         swal.hideLoading();
         swal
           .fire("Success", "Successful create new assignment task", "success")
@@ -92,16 +98,6 @@ const NewAssignmentTask = (props) => {
                           return current.isAfter(moment().subtract(1, "day"));
                         }}
                         helpText="Please select data collection deadline"
-                        component={renderMultiColumnFormDateTimeField}
-                      />
-                      <Field
-                        className="col-md-6"
-                        name="assignmentDate"
-                        placeholder="Please select assignment deadline"
-                        helpText="Please select assignment deadline"
-                        isValidDate={(current) => {
-                          return current.isAfter(moment());
-                        }}
                         component={renderMultiColumnFormDateTimeField}
                       />
                     </div>

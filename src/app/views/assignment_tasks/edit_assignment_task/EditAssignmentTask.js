@@ -96,16 +96,6 @@ const EditAssignmentTask = (props) => {
                         }}
                         component={renderMultiColumnFormDateTimeField}
                       />
-                      <Field
-                        className="col-md-6"
-                        name="assignmentDate"
-                        placeholder="Please select assignment deadline"
-                        helpText="Please select assignment deadline"
-                        isValidDate={(current) => {
-                          return current.isAfter(moment());
-                        }}
-                        component={renderMultiColumnFormDateTimeField}
-                      />
                     </div>
 
                     <div className="custom-separator"></div>

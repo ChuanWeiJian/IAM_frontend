@@ -13,6 +13,7 @@ import swal from "sweetalert2";
 const LetterTemplatesForm = (props) => {
   const history = useHistory();
   const taskId = props.taskId;
+  const role = props.role;
 
   const letters = props.letters.map((letter, index) => {
     return {
@@ -64,6 +65,8 @@ const LetterTemplatesForm = (props) => {
       onOpen: () => {
         //submit form process here remember to async and await with try...catch block
         console.log(values);
+        console.log(role);
+        console.log(taskId);
         swal.hideLoading();
         swal
           .fire("Success", "Successful compile and sent the letters", "success")

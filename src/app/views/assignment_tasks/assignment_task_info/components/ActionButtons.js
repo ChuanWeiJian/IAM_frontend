@@ -2,15 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdPeople, MdModeEdit, MdRemoveRedEye, MdEmail } from "react-icons/md";
-import moment from "moment";
 
 const ActionButtons = ({ role, assignmentTask, isComplete }) => {
-  const now = moment(new Date(), "DD/MM/YYYY HH:mm");
-  const resolvedAssignmentDate = moment(
-    assignmentTask.assignmentDate,
-    "DD/MM/YYYY HH:mm"
-  );
-
   return (
     <div className="d-flex flex-wrap align-items-center justify-content-center">
       {isComplete ? (
@@ -29,24 +22,25 @@ const ActionButtons = ({ role, assignmentTask, isComplete }) => {
               ></MdRemoveRedEye>
             </Link>
           </OverlayTrigger>
-          {!resolvedAssignmentDate.isSameOrBefore(now) && (
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip id="tooltip-top">Edit</Tooltip>}
+          <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip id="tooltip-top">Edit</Tooltip>}
+          >
+            <Link
+              className="p-2 btn-hover rounded-circle"
+              to={`/assignment/result/edit/${role}/${assignmentTask.id}`}
             >
-              <Link
-                className="p-2 btn-hover rounded-circle"
-                to={`/assignment/result/edit/${role}/${assignmentTask.id}`}
-              >
-                <MdModeEdit className="cursor-pointer" size={24}></MdModeEdit>
-              </Link>
-            </OverlayTrigger>
-          )}
+              <MdModeEdit className="cursor-pointer" size={24}></MdModeEdit>
+            </Link>
+          </OverlayTrigger>
           <OverlayTrigger
             placement="top"
             overlay={<Tooltip id="tooltip-top">Send Formal Letter</Tooltip>}
           >
-            <Link className="p-2 btn-hover rounded-circle" to={`/assignment/letter/${role}/${assignmentTask.id}`}>
+            <Link
+              className="p-2 btn-hover rounded-circle"
+              to={`/assignment/letter/${role}/${assignmentTask.id}`}
+            >
               <MdEmail className="cursor-pointer" size={24}></MdEmail>
             </Link>
           </OverlayTrigger>

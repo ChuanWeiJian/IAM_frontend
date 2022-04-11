@@ -1,12 +1,12 @@
 import { AssignmentTasks } from "fake-db/static_data/AssignmentTask";
-import { getStatus } from "app/views/shared/function/getStatus";
 
 export const GET_ALL_ASSIGNMENT_TASKS =
   "ASSIGNMENT-TASKS-LIST GET_ALL_ASSIGNMENT_TASKS";
 
 export const getAllAssignmentTasks = () => {
+  //get all assignment tasks by district
+  //resolve the actions
   const resolvedAssignmentTasks = AssignmentTasks.map((task, index) => {
-    let status = getStatus(task);
 
     let actions = {
       view: "/assignment/" + task.id,
@@ -16,7 +16,6 @@ export const getAllAssignmentTasks = () => {
 
     return {
       ...task,
-      status: status,
       actions: actions,
       index: index + 1,
     };
