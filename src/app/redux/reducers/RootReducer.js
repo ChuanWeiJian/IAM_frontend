@@ -21,6 +21,8 @@ import LetterTemplatesListReducer from "./LetterTemplatesListReducer";
 import LetterTemplateContentReducer from "./LetterTemplateContentReducer";
 import EditLetterTemplateReducer from "./EditLetterTemplateReducer";
 import TableReducer from "./TableReducer";
+import ErrorModalReducer from "./ErrorModalReducer";
+import LoadingReducer from "./LoadingReducer";
 import { reducer as formReducer } from "redux-form";
 
 const RootReducer = combineReducers({
@@ -46,6 +48,8 @@ const RootReducer = combineReducers({
   letterTemplatesList: LetterTemplatesListReducer,
   letterTemplateContent: LetterTemplateContentReducer,
   editLetterTemplate: EditLetterTemplateReducer,
+  error: ErrorModalReducer,
+  loading: LoadingReducer,
   form: formReducer,
 });
 

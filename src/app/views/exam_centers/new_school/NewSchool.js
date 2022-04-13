@@ -6,15 +6,18 @@ import { Breadcrumb } from "@gull";
 import { Button } from "react-bootstrap";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import swal from "sweetalert2";
+import axios from "axios";
 
+import Loader from "app/views/shared/components/Loader";
+import ErrorModal from "app/views/shared/components/ErrorModal";
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import SchoolListModal from "../shared/components/SchoolListModal";
-import { examSecretaries } from "fake-db/static_data/ExamCenter";
 import { validateSchool as validate } from "../shared/validation";
 import {
   getAllSchools,
   toggleSchoolListModal,
 } from "app/redux/actions/NewSchoolActions";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 import { checkSchoolCodeUniqueness } from "../shared/check_uniqueness";
 
 const NewSchool = (props) => {
@@ -30,33 +33,46 @@ const NewSchool = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        const examSecretaryAcc = examSecretaries.find((acc) => acc.id === "04");
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire({
-            title: "Success",
-            icon: "success",
-            html: renderToStaticMarkup(
-              <>
-                <h3>Exam Secretary Account</h3>
-                <p>Username: {examSecretaryAcc.username}</p>
-                <p>Password: {examSecretaryAcc.password}</p>
-              </>
-            ),
-          })
-          .then((result) => {
-            history.push(`/school/list`);
+        try {
+          values = { ...values, district: "Kluang" }; //after done authentication, this line will be removed, district will be directly retrieved from logged in user
+
+          await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_BACKEND_URL}/schools`,
+            data: values,
+          }).then((response) => {
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Register School",
+                icon: "success",
+                html: renderToStaticMarkup(
+                  <>
+                    <h3>Exam Secretary Account</h3>
+                    <p>Username: {response.data.login}</p>
+                    <p>Password: {response.data.password}</p>
+                  </>
+                ),
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                history.push(`/school/list`);
+              });
           });
+        } catch (err) {
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Schools & Exam Centers", path: "/examcenter" },
@@ -175,10 +191,14 @@ const mapStateToProps = (state) => {
     showModal: state.newSchool.showModal,
     schools: state.newSchool.schools,
     schoolCode: selector(state, "schoolCode"),
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
 export default connect(mapStateToProps, {
   toggleSchoolListModal,
   getAllSchools,
+  resetError,
+  setError,
 })(reduxForm({ form: "NewSchool", validate: validate })(NewSchool));

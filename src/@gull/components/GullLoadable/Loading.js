@@ -8,7 +8,7 @@ const styles = {
   margin: "auto",
   height: "40px",
   width: "40px",
-  zIndex: 324324324
+  zIndex: 324324324,
 };
 
 const Loading = () => {
