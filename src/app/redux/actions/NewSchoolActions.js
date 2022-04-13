@@ -1,7 +1,6 @@
-import { Schools } from "fake-db/static_data/ExamCenter";
 import axios from "axios";
 import { SET_ERROR } from "./ErrorModalActions";
-import { SET_LOADING, setFetchingLoading } from "./LoadingActions";
+import { SET_LOADING } from "./LoadingActions";
 
 export const GET_ALL_SCHOOLS = "NEW-SCHOOL GET_ALL_SCHOOLS";
 export const TOGGLE_SCHOOL_LIST = "NEW-SCHOOL TOGGLE_SCHOOL_LIST";
