@@ -1,4 +1,3 @@
-import { examCenters, Schools } from "fake-db/static_data/ExamCenter";
 import axios from "axios";
 import { SET_ERROR } from "./ErrorModalActions";
 import { SET_LOADING } from "./LoadingActions";

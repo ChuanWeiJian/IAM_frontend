@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { connect } from "react-redux";
-import { renderToStaticMarkup } from "react-dom/server";
 import { Breadcrumb } from "@gull";
 import { Button } from "react-bootstrap";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import swal from "sweetalert2";
+import axios from "axios";
 
+import Loader from "app/views/shared/components/Loader";
+import ErrorModal from "app/views/shared/components/ErrorModal";
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import SchoolListModal from "../shared/components/SchoolListModal";
 import { validateSchool as validate } from "../shared/validation";
@@ -14,6 +16,7 @@ import {
   initializeForm,
   toggleSchoolListModal,
 } from "app/redux/actions/EditSchoolInformationActions";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 import { checkSchoolCodeUniqueness } from "../shared/check_uniqueness";
 
 const EditSchoolInformation = (props) => {
@@ -30,26 +33,38 @@ const EditSchoolInformation = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire({
-            title: "Success",
-            icon: "success",
-            html: "Successful saved the changes",
-          })
-          .then((result) => {
-            history.push(`/school/list`);
+        try {
+          await axios({
+            method: "PATCH",
+            url: `${process.env.REACT_APP_BACKEND_URL}/schools/${schoolId}`,
+            data: values,
+          }).then((response) => {
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Edit School Information",
+                icon: "success",
+                html: "Successful saved the changes",
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                history.push(`/school/list`);
+              });
           });
+        } catch (err) {
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Schools & Exam Centers", path: "/examcenter" },
@@ -179,12 +194,16 @@ const mapStateToProps = (state) => {
     schools: state.editSchoolInformation.schools,
     initialValues: state.editSchoolInformation.selectedSchool,
     schoolCode: selector(state, "schoolCode"),
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
 export default connect(mapStateToProps, {
   toggleSchoolListModal,
   initializeForm,
+  resetError,
+  setError,
 })(
   reduxForm({
     form: "EditSchoolInformation",
