@@ -7,6 +7,7 @@ export const GET_SCHOOL_LIST_DATA = "SCHOOL-LIST GET_SCHOOL_LIST_DATA";
 export const TOGGLE_FORM = "SCHOOL-LIST TOGGLE_FORM";
 export const SET_SELECTED_INDEX = "SCHOOL-LIST SET_SELECTED_INDEX";
 export const TOGGLE_EXAM_CENTER_LIST = "SCHOOL-LIST TOGGLE_EXAM_CENTER_LIST";
+export const ADD_NEW_EXAM_CENTER = "SCHOOL-LIST ADD_NEW_EXAM_CENTER";
 
 export const getSchoolListData = () => async (dispatch) => {
   dispatch({ type: SET_LOADING, payload: true });
@@ -59,5 +60,12 @@ export const toggleExamCenterListModal = (show) => {
   return {
     type: TOGGLE_EXAM_CENTER_LIST,
     payload: show,
+  };
+};
+
+export const addNewExamCenter = (index, examCenter) => {
+  return {
+    type: ADD_NEW_EXAM_CENTER,
+    payload: { index, examCenter },
   };
 };

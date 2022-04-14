@@ -3,6 +3,7 @@ import {
   TOGGLE_FORM,
   SET_SELECTED_INDEX,
   TOGGLE_EXAM_CENTER_LIST,
+  ADD_NEW_EXAM_CENTER,
 } from "../actions/SchoolListActions";
 
 const initialState = {
@@ -27,6 +28,16 @@ const SchoolListReducer = (state = initialState, action) => {
       return { ...state, selectedIndex: action.payload };
     case TOGGLE_EXAM_CENTER_LIST:
       return { ...state, showModal: action.payload };
+    case ADD_NEW_EXAM_CENTER:
+      const newSchools = [...state.schools];
+      newSchools[action.payload.index].examCenters.push(
+        action.payload.examCenter.id
+      );
+      const newExamCenterList = [
+        ...state.examCenters,
+        action.payload.examCenter,
+      ];
+      return { ...state, schools: newSchools, examCenters: newExamCenterList };
     default:
       return state;
   }

@@ -3,11 +3,14 @@ import { Modal, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import swal from "sweetalert2";
+import axios from "axios";
 
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import ExamCenterListModal from "../../shared/components/ExamCenterListModal";
 import { checkExamCenterCodeUniqueness } from "../../shared/check_uniqueness";
 import { validateExamCenter as validate } from "../../shared/validation";
+import { addNewExamCenter } from "app/redux/actions/SchoolListActions";
+import { setError } from "app/redux/actions/ErrorModalActions";
 
 const NewExamCenter = (props) => {
   const handleFormSubmit = (values) => {
@@ -16,24 +19,38 @@ const NewExamCenter = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        console.log(props.school.id);
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire({
-            title: "Success",
-            icon: "success",
-            html: "Successful register new exam center",
-          })
-          .then((result) => {
-            //refresh the school list or update the exam center number of the school
-            props.toggleForm(false);
-            props.reset();
+        try {
+          values = { ...values, schoolId: props.school.id, district: "Kluang" };
+
+          await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_BACKEND_URL}/examcenters`,
+            data: values,
+          }).then((response) => {
+            console.log(response.data.examCenter);
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Register Exam Centers",
+                icon: "success",
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                props.addNewExamCenter(
+                  props.selectedIndex,
+                  response.data.examCenter
+                );
+                props.toggleForm(false);
+                props.reset();
+              });
           });
+        } catch (err) {
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
@@ -175,9 +192,12 @@ const NewExamCenter = (props) => {
 const selector = formValueSelector("NewExamCenter");
 
 const mapStateToProps = (state) => {
-  return { examCenterCode: selector(state, "examCenterCode") };
+  return {
+    examCenterCode: selector(state, "examCenterCode"),
+    selectedIndex: state.schoolList.selectedIndex,
+  };
 };
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps, { setError, addNewExamCenter })(
   reduxForm({ form: "NewExamCenter", validate: validate })(NewExamCenter)
 );
