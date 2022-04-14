@@ -94,15 +94,16 @@ const EditExamCenter = (props) => {
                                       `Please enter the exam center code first`,
                                       "warning"
                                     );
-                                  } 
-                                  else if(props.examCenterCode === props.initialValues.examCenterCode){
+                                  } else if (
+                                    props.examCenterCode ===
+                                    props.initialValues.examCenterCode
+                                  ) {
                                     swal.fire(
                                       "Same exam center code",
                                       `The exam center code is exactly the same before changes`,
                                       "info"
                                     );
-                                  }
-                                  else {
+                                  } else {
                                     const unique =
                                       checkExamCenterCodeUniqueness(
                                         props.examCenters,
@@ -188,16 +189,18 @@ const mapStateToProps = (state) => {
   return {
     school: state.schoolInformation.school,
     initialValues: state.schoolInformation.school.examCenters
-      ? {
-          examCenterCode:
-            state.schoolInformation.school.examCenters[
-              state.schoolInformation.selectedIndex
-            ].examCenterCode,
-          safeRoomNo:
-            state.schoolInformation.school.examCenters[
-              state.schoolInformation.selectedIndex
-            ].safeRoomNo,
-        }
+      ? state.schoolInformation.school.examCenters.length != 0
+        ? {
+            examCenterCode:
+              state.schoolInformation.school.examCenters[
+                state.schoolInformation.selectedIndex
+              ].examCenterCode,
+            safeRoomNo:
+              state.schoolInformation.school.examCenters[
+                state.schoolInformation.selectedIndex
+              ].safeRoomNo,
+          }
+        : { examCenterCode: "", safeRoomNo: "" }
       : {},
     examCenterCode: selector(state, "examCenterCode"),
     examCenters: state.schoolInformation.examCenters,

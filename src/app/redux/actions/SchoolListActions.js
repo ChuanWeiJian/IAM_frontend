@@ -9,14 +9,15 @@ export const SET_SELECTED_INDEX = "SCHOOL-LIST SET_SELECTED_INDEX";
 export const TOGGLE_EXAM_CENTER_LIST = "SCHOOL-LIST TOGGLE_EXAM_CENTER_LIST";
 
 export const getSchoolListData = () => async (dispatch) => {
-  //get all schools by district without resolved fields
   dispatch({ type: SET_LOADING, payload: true });
   let response, schools, examCenters;
   try {
+    //get all schools by district without resolved fields
     response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/schools/Kluang`
     );
 
+    //add in actions and index to each school data, for table configuration
     schools = response.data.schools.map((school, index) => {
       let actions = {
         view: "/school/" + school.id,
@@ -26,6 +27,7 @@ export const getSchoolListData = () => async (dispatch) => {
       return { ...school, actions: actions, index: index + 1 };
     });
 
+    //get exam centers with resolved schools
     response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/examcenters/school/Kluang`
     );

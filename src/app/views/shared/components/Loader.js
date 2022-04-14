@@ -17,7 +17,8 @@ const loaderOverlay = {
   top: 0,
   height: "100%",
   width: "100%",
-  zIndex: 324324323
+  zIndex: 324324323,
+  backgroundColor: "white",
 };
 
 const Loader = () => {

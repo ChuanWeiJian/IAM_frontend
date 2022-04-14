@@ -6,17 +6,17 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import {
-  MdModeEdit,
-  MdRemoveRedEye,
-  MdAddCircle,
-} from "react-icons/md";
+import { MdModeEdit, MdRemoveRedEye, MdAddCircle } from "react-icons/md";
+
+import Loader from "app/views/shared/components/Loader";
+import ErrorModal from "app/views/shared/components/ErrorModal";
 import {
   getSchoolListData,
   toggleForm,
   toggleExamCenterListModal,
   setSelectedIndex,
 } from "app/redux/actions/SchoolListActions";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 import NewExamCenter from "./components/NewExamCenter";
 
 const { SearchBar } = Search;
@@ -113,6 +113,8 @@ const SchoolList = (props) => {
   };
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Schools & Exam Centers", path: "/examcenter" },
@@ -162,6 +164,8 @@ const mapStateToProps = (state) => {
     selectedIndex: state.schoolList.selectedIndex,
     schools: state.schoolList.schools,
     examCenters: state.schoolList.examCenters,
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
@@ -170,4 +174,6 @@ export default connect(mapStateToProps, {
   toggleForm,
   toggleExamCenterListModal,
   setSelectedIndex,
+  resetError,
+  setError,
 })(SchoolList);
