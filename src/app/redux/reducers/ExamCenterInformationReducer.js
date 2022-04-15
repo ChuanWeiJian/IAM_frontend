@@ -2,7 +2,6 @@ import { GET_EXAM_CENTER_INFORMATION } from "../actions/ExamCenterInformationAct
 
 const initialState = {
   examCenter: {},
-  assignmentTasks: [],
 };
 
 const ExamCenterInformationReducer = (state = initialState, action) => {
@@ -11,7 +10,6 @@ const ExamCenterInformationReducer = (state = initialState, action) => {
       return {
         ...state,
         examCenter: action.payload.examCenter,
-        assignmentTasks: action.payload.assignmentTasks,
       };
     default:
       return state;

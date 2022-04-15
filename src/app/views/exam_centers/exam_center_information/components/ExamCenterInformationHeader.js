@@ -34,7 +34,7 @@ const ExamCenterInformationHeader = ({
           <div className="card">
             <div className="card-body">
               <div className="ul-product-detail__border-box">
-                <h5 className="heading">Exam Center Name</h5>
+                <h5 className="heading">School Name</h5>
                 <p className="text-muted text-12">{name}</p>
               </div>
             </div>
@@ -45,7 +45,7 @@ const ExamCenterInformationHeader = ({
           <div className="card">
             <div className="card-body">
               <div className="ul-product-detail__border-box">
-                <h5 className="heading">Address</h5>
+                <h5 className="heading">School Address</h5>
                 <p className="text-muted text-12">{address}</p>
               </div>
             </div>
