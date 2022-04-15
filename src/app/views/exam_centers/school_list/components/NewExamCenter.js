@@ -77,7 +77,7 @@ const NewExamCenter = (props) => {
                       <div className="card">
                         <div className="card-header bg-transparent">
                           <h3 className="card-title">
-                            {`${props.school.schoolCode} - ${props.school.name}`}
+                            {`${props.school.schoolCode} - ${props.school.schoolName}`}
                           </h3>
                         </div>
                         <form onSubmit={props.handleSubmit(handleFormSubmit)}>

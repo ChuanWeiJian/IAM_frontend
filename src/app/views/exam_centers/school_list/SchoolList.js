@@ -81,7 +81,7 @@ const SchoolList = (props) => {
       sort: true,
     },
     {
-      dataField: "name",
+      dataField: "schoolName",
       text: "School Name",
       sort: true,
     },

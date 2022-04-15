@@ -31,7 +31,7 @@ const SchoolListModal = (props) => {
                         <li
                           className="list-group-item"
                           key={school.id}
-                        >{`${school.schoolCode} - ${school.name} - ${school.examCenters.length} exam center(s)`}</li>
+                        >{`${school.schoolCode} - ${school.schoolName} - ${school.examCenters.length} exam center(s)`}</li>
                       );
                     })}
                   </ul>

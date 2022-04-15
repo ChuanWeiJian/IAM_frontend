@@ -1,3 +1,26 @@
+export const typeOfSchools = [
+  {
+    id: "01",
+    title: "Public School",
+    value: "Public School",
+  },
+  {
+    id: "02",
+    title: "International School",
+    value: "International School",
+  },
+  {
+    id: "03",
+    title: "Private School",
+    value: "Private School",
+  },
+  {
+    id: "04",
+    title: "Vernacular School",
+    value: "Vernacular School",
+  },
+]
+
 export const examCenters = [
   {
     id: "01",

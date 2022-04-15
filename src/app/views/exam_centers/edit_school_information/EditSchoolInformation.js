@@ -9,7 +9,11 @@ import axios from "axios";
 
 import Loader from "app/views/shared/components/Loader";
 import ErrorModal from "app/views/shared/components/ErrorModal";
-import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
+import { typeOfSchools } from "fake-db/static_data/ExamCenter";
+import {
+  renderMultiColumnFormInputField,
+  renderMultiColumnFormSelect,
+} from "app/views/shared/form/form";
 import SchoolListModal from "../shared/components/SchoolListModal";
 import { validateSchool as validate } from "../shared/validation";
 import {
@@ -148,7 +152,7 @@ const EditSchoolInformation = (props) => {
                       <Field
                         className="col-md-6"
                         type="text"
-                        name="name"
+                        name="schoolName"
                         placeholder="School Name"
                         helpText="Please enter the school name"
                         component={renderMultiColumnFormInputField}
@@ -156,9 +160,114 @@ const EditSchoolInformation = (props) => {
                       <Field
                         className="col-md-6"
                         type="text"
-                        name="address"
+                        name="schoolAddress"
                         placeholder="School Address"
                         helpText="Please enter the school address"
+                        component={renderMultiColumnFormInputField}
+                      />
+                    </div>
+
+                    <div className="custom-separator"></div>
+
+                    <div className="row">
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="postcode"
+                        placeholder="Postcode"
+                        helpText="Please enter the postcode"
+                        component={renderMultiColumnFormInputField}
+                      />
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="city"
+                        placeholder="City"
+                        helpText="Please enter the city"
+                        component={renderMultiColumnFormInputField}
+                      />
+                    </div>
+
+                    <div className="custom-separator"></div>
+
+                    <div className="row">
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="stateCode"
+                        placeholder="State Code"
+                        helpText="Please enter the state code"
+                        component={renderMultiColumnFormInputField}
+                      />
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="areaCode"
+                        placeholder="Area Code"
+                        helpText="Please enter the area code"
+                        component={renderMultiColumnFormInputField}
+                      />
+                    </div>
+
+                    <div className="custom-separator"></div>
+
+                    <div className="row">
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="taxNumber"
+                        placeholder="Tax Number"
+                        helpText="Please enter the Tax Number"
+                        component={renderMultiColumnFormInputField}
+                      />
+                      <Field
+                        className="col-md-6"
+                        name="typeOfSchool"
+                        items={typeOfSchools}
+                        helpText="Please select the type of school"
+                        defaultOption="Please select type of school..."
+                        component={renderMultiColumnFormSelect}
+                      />
+                    </div>
+
+                    <div className="custom-separator"></div>
+
+                    <div className="row">
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="codeDun"
+                        placeholder="Code DUN"
+                        helpText="Please enter the code DUN"
+                        component={renderMultiColumnFormInputField}
+                      />
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="codeParlimen"
+                        placeholder="Code Parlimen"
+                        helpText="Please enter the code Parlimen"
+                        component={renderMultiColumnFormInputField}
+                      />
+                    </div>
+
+                    <div className="custom-separator"></div>
+
+                    <div className="row">
+                      <Field
+                        className="col-md-6"
+                        type="text"
+                        name="schoolPhoneNumber"
+                        placeholder="Phone Number"
+                        helpText="Please enter the school phone number"
+                        component={renderMultiColumnFormInputField}
+                      />
+                      <Field
+                        className="col-md-6"
+                        type="email"
+                        name="schoolEmailAddress"
+                        placeholder="Email Address"
+                        helpText="Please enter the school email address"
                         component={renderMultiColumnFormInputField}
                       />
                     </div>

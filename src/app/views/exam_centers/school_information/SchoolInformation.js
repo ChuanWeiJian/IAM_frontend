@@ -29,12 +29,7 @@ const ExamCenterInformation = (props) => {
         ]}
       ></Breadcrumb>
       <SchoolInformationHeader
-        schoolCode={props.school.schoolCode}
-        examCenterCount={
-          props.school.examCenters ? props.school.examCenters.length : 0
-        }
-        name={props.school.name}
-        address={props.school.address}
+        school={props.school}
       />
       <div className="mb-5"></div>
 
