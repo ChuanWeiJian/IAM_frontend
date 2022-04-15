@@ -4,8 +4,12 @@ import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
 import { Breadcrumb } from "@gull";
 import swal from "sweetalert2";
+import axios from "axios";
 
+import ErrorModal from "app/views/shared/components/ErrorModal";
+import Loader from "app/views/shared/components/Loader";
 import { initializeForm } from "app/redux/actions/EditLetterTemplateActions";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 import {
   renderMultiColumnFormInputField,
   renderMultiColumnFormRichTextEditor,
@@ -27,22 +31,38 @@ const EditLetterTemplate = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire("Success", "Successful saved the changes", "success")
-          .then((result) => {
-            history.push("/letter/list");
+        try {
+          await axios({
+            method: "PATCH",
+            url: `${process.env.REACT_APP_BACKEND_URL}/letters/${templateId}`,
+            data: values,
+          }).then((response) => {
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Edit Letter Template",
+                icon: "success",
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                history.push(`/letter/list`);
+              });
           });
+        } catch (err) {
+          swal.hideLoading();
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: () => false,
     });
   };
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Letter Templates", path: "/letter" },
@@ -123,10 +143,16 @@ const mapStateToProps = (state) => {
   return {
     initialValues: state.editLetterTemplate.letterTemplate,
     content: selector(state, "content"),
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
-export default connect(mapStateToProps, { initializeForm: initializeForm })(
+export default connect(mapStateToProps, {
+  initializeForm,
+  setError,
+  resetError,
+})(
   reduxForm({
     form: "EditLetterTemplate",
     enableReinitialize: true,
