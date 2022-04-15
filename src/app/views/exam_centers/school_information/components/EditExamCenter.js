@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import swal from "sweetalert2";
+import axios from "axios";
 
 import { renderMultiColumnFormInputField } from "app/views/shared/form/form";
 import ExamCenterListModal from "../../shared/components/ExamCenterListModal";
@@ -11,7 +12,9 @@ import { validateExamCenter as validate } from "../../shared/validation";
 import {
   toggleForm,
   toggleExamCenterListModal,
+  updateExamCenter,
 } from "app/redux/actions/SchoolInformationActions";
+import { setError } from "app/redux/actions/ErrorModalActions";
 
 const EditExamCenter = (props) => {
   const handleFormSubmit = (values) => {
@@ -20,24 +23,35 @@ const EditExamCenter = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        console.log(props.school.id);
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire({
-            title: "Success",
-            icon: "success",
-            html: "Successful saved the changes",
-          })
-          .then((result) => {
-            //refresh the school list or update the exam center number of the school
-            props.toggleForm(false);
-            props.reset();
+        try {
+          await axios({
+            method: "PATCH",
+            url: `${process.env.REACT_APP_BACKEND_URL}/examcenters/${
+              props.school.examCenters[props.selectedIndex].id
+            }`,
+            data: values,
+          }).then((response) => {
+            
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Edit Exam Center",
+                icon: "success",
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                props.updateExamCenter(props.selectedIndex, response.data.examCenter);
+                props.toggleForm(false);
+                props.reset();
+              });
           });
+        } catch (err) {
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
@@ -206,12 +220,15 @@ const mapStateToProps = (state) => {
     examCenters: state.schoolInformation.examCenters,
     showModal: state.schoolInformation.showModal,
     showForm: state.schoolInformation.showForm,
+    selectedIndex: state.schoolInformation.selectedIndex,
   };
 };
 
 export default connect(mapStateToProps, {
   toggleForm,
   toggleExamCenterListModal,
+  setError,
+  updateExamCenter,
 })(
   reduxForm({
     form: "EditExamCenter",

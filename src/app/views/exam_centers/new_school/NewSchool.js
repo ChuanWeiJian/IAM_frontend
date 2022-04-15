@@ -11,7 +11,10 @@ import axios from "axios";
 import Loader from "app/views/shared/components/Loader";
 import ErrorModal from "app/views/shared/components/ErrorModal";
 import { typeOfSchools } from "fake-db/static_data/ExamCenter";
-import { renderMultiColumnFormInputField, renderMultiColumnFormSelect } from "app/views/shared/form/form";
+import {
+  renderMultiColumnFormInputField,
+  renderMultiColumnFormSelect,
+} from "app/views/shared/form/form";
 import SchoolListModal from "../shared/components/SchoolListModal";
 import { validateSchool as validate } from "../shared/validation";
 import {
@@ -38,7 +41,7 @@ const NewSchool = (props) => {
         //submit form process here remember to async and await with try...catch block
         try {
           values = { ...values, district: "Kluang" }; //after done authentication, this line will be removed, district will be directly retrieved from logged in user
-          console.log(values);
+
           await axios({
             method: "POST",
             url: `${process.env.REACT_APP_BACKEND_URL}/schools`,

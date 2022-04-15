@@ -29,7 +29,6 @@ const NewExamCenter = (props) => {
             url: `${process.env.REACT_APP_BACKEND_URL}/examcenters`,
             data: values,
           }).then((response) => {
-            console.log(response.data.examCenter);
             swal.hideLoading();
             swal
               .fire({

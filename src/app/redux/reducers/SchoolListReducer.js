@@ -29,15 +29,23 @@ const SchoolListReducer = (state = initialState, action) => {
     case TOGGLE_EXAM_CENTER_LIST:
       return { ...state, showModal: action.payload };
     case ADD_NEW_EXAM_CENTER:
-      const newSchools = [...state.schools];
-      newSchools[action.payload.index].examCenters.push(
-        action.payload.examCenter.id
-      );
-      const newExamCenterList = [
-        ...state.examCenters,
-        action.payload.examCenter,
-      ];
-      return { ...state, schools: newSchools, examCenters: newExamCenterList };
+      return {
+        ...state,
+        schools: state.schools.map((school, index) => {
+          if (index == state.selectedIndex) {
+            return {
+              ...school,
+              examCenters: [
+                ...school.examCenters,
+                action.payload.examCenter.id,
+              ],
+            };
+          } else {
+            return school;
+          }
+        }),
+        examCenters: [...state.examCenters, action.payload.examCenter],
+      };
     default:
       return state;
   }

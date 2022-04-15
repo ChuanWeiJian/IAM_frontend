@@ -8,6 +8,7 @@ export const TOGGLE_FORM = "EDIT-EXAM-CENTER TOGGLE_FORM";
 export const TOGGLE_EXAM_CENTER_LIST =
   "EDIT-EXAM-CENTER TOGGLE_EXAM_CENTER_LIST";
 export const INITIALIZE_FORM = "EDIT-EXAM-CENTER INITIALIZE_FORM";
+export const UPDATE_EXAM_CENTER = "EDIT-EXAM-CENTER UPDATE_EXAM_CENTER";
 
 export const getSchoolInformationById = (schoolId) => async (dispatch) => {
   let response, school, examCenters;
@@ -67,5 +68,12 @@ export const initializeForm = (index) => {
   return {
     type: INITIALIZE_FORM,
     payload: index,
+  };
+};
+
+export const updateExamCenter = (index, examCenter) => {
+  return {
+    type: UPDATE_EXAM_CENTER,
+    payload: { index, examCenter },
   };
 };
