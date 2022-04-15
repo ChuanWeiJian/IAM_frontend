@@ -8,11 +8,15 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
+import axios from "axios";
 
 import ErrorModal from "app/views/shared/components/ErrorModal";
 import Loader from "app/views/shared/components/Loader";
-import { getAllLetterTemplates } from "app/redux/actions/LetterTemplatesListActions";
-import { resetError } from "app/redux/actions/ErrorModalActions";
+import {
+  getAllLetterTemplates,
+  updateLetterTemplates,
+} from "app/redux/actions/LetterTemplatesListActions";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 
 let { SearchBar } = Search;
 
@@ -64,12 +68,37 @@ const LetterTemplatesList = (props) => {
                 })
                 .then((result) => {
                   if (result.value) {
-                    console.log("Deleting");
-                    swal.fire(
-                      "Deleted!",
-                      "Your file has been deleted.",
-                      "success"
-                    );
+                    swal.fire({
+                      title: "Deleting the template...",
+                      onBeforeOpen: () => {
+                        swal.showLoading();
+                      },
+                      onOpen: async () => {
+                        //submit form process here remember to async and await with try...catch block
+                        try {
+                          await axios({
+                            method: "DELETE",
+                            url: `${process.env.REACT_APP_BACKEND_URL}/letters/${row.id}`,
+                          }).then((response) => {
+                            swal.hideLoading();
+                            swal
+                              .fire({
+                                title:
+                                  "Successfully Delete the Letter Template",
+                                icon: "success",
+                                allowOutsideClick: false,
+                              })
+                              .then((result) => {
+                                props.updateLetterTemplates(row.id);
+                              });
+                          });
+                        } catch (err) {
+                          swal.hideLoading();
+                          props.setError(err);
+                        }
+                      },
+                      allowOutsideClick: () => false,
+                    });
                   } else {
                     swal.fire("Cancelled!", "Permission denied.", "error");
                   }
@@ -164,6 +193,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { getAllLetterTemplates, resetError })(
-  LetterTemplatesList
-);
+export default connect(mapStateToProps, {
+  getAllLetterTemplates,
+  updateLetterTemplates,
+  resetError,
+  setError,
+})(LetterTemplatesList);

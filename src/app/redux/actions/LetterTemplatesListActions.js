@@ -4,6 +4,8 @@ import { SET_LOADING } from "./LoadingActions";
 
 export const GET_ALL_LETTER_TEMPLATES =
   "LETTER-TEMPLATES-LIST GET_ALL_LETTER_TEMPLATES";
+export const UPDATE_LETTER_TEMPLATES =
+  "DELETE-LETTER-TEMPLATE UPDATE_LETTER_TEMPLATES";
 
 export const getAllLetterTemplates = () => async (dispatch) => {
   dispatch({ type: SET_LOADING, payload: true });
@@ -32,7 +34,10 @@ export const getAllLetterTemplates = () => async (dispatch) => {
   } catch (err) {
     dispatch({ type: SET_ERROR, payload: err });
   }
-  
 
   dispatch({ type: SET_LOADING, payload: false });
+};
+
+export const updateLetterTemplates = (templateId) => {
+  return { type: UPDATE_LETTER_TEMPLATES, payload: templateId };
 };
