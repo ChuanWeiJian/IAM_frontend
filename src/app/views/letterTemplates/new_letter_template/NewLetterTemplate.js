@@ -4,11 +4,15 @@ import { Breadcrumb } from "@gull";
 import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
 import { connect } from "react-redux";
 import swal from "sweetalert2";
+import axios from "axios";
+
+import ErrorModal from "app/views/shared/components/ErrorModal";
 import {
   renderMultiColumnFormInputField,
   renderMultiColumnFormRichTextEditor,
   renderTagsSelector,
 } from "app/views/shared/form/form";
+import { setError, resetError } from "app/redux/actions/ErrorModalActions";
 import { validateLetterTemplate as validate } from "../shared/validation";
 
 const NewLetterTemplate = (props) => {
@@ -20,22 +24,38 @@ const NewLetterTemplate = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire("Success", "Successful saved the letter template", "success")
-          .then((result) => {
-            history.push("/letter/list");
+        try {
+          values = { ...values, district: "Kluang" };
+          await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_BACKEND_URL}/letters`,
+            data: values,
+          }).then((response) => {
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Create New Letter Template",
+                icon: "success",
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                history.push("/letter/list");
+              });
           });
+        } catch (err) {
+          swal.hideLoading();
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
   return (
     <div>
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Letter Templates", path: "/letter" },
@@ -112,10 +132,10 @@ const NewLetterTemplate = (props) => {
 const selector = formValueSelector("NewLetterTemplate");
 
 const mapStateToProps = (state) => {
-  return { content: selector(state, "content") };
+  return { content: selector(state, "content"), httpError: state.error.error };
 };
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps, { resetError, setError })(
   reduxForm({ form: "NewLetterTemplate", validate: validate })(
     NewLetterTemplate
   )
