@@ -9,7 +9,10 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
 
+import ErrorModal from "app/views/shared/components/ErrorModal";
+import Loader from "app/views/shared/components/Loader";
 import { getAllLetterTemplates } from "app/redux/actions/LetterTemplatesListActions";
+import { resetError } from "app/redux/actions/ErrorModalActions";
 
 let { SearchBar } = Search;
 
@@ -17,7 +20,7 @@ const LetterTemplatesList = (props) => {
   useEffect(() => {
     props.getAllLetterTemplates();
   }, []);
-  
+
   const renderActionButtons = (cell, row, rowIndex) => {
     return (
       <div className="d-flex flex-wrap align-items-center">
@@ -117,6 +120,8 @@ const LetterTemplatesList = (props) => {
   };
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Letter Templates", path: "/letter" },
@@ -152,9 +157,13 @@ const LetterTemplatesList = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { letterTemplates: state.letterTemplatesList.letterTemplates };
+  return {
+    letterTemplates: state.letterTemplatesList.letterTemplates,
+    httpError: state.error.error,
+    loading: state.loading.loading,
+  };
 };
 
-export default connect(mapStateToProps, { getAllLetterTemplates })(
+export default connect(mapStateToProps, { getAllLetterTemplates, resetError })(
   LetterTemplatesList
 );
