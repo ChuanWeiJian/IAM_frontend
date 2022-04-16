@@ -5,6 +5,8 @@ import moment from "moment";
 
 export const GET_ALL_ASSIGNMENT_TASKS =
   "ASSIGNMENT-TASKS-LIST GET_ALL_ASSIGNMENT_TASKS";
+export const UPDATE_ASSIGNMENT_TASKS_LIST =
+  "DELETE-ASSIGNMENT-TASK UPDATE_ASSIGNMENT_TASKS_LIST";
 
 export const getAllAssignmentTasks = () => async (dispatch) => {
   dispatch({ type: SET_LOADING, payload: true });
@@ -39,4 +41,8 @@ export const getAllAssignmentTasks = () => async (dispatch) => {
   }
 
   dispatch({ type: SET_LOADING, payload: false });
+};
+
+export const updateAssignmentTaskList = (taskId) => {
+  return { type: UPDATE_ASSIGNMENT_TASKS_LIST, payload: taskId };
 };

@@ -8,13 +8,16 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
-import { getAllAssignmentTasks } from "app/redux/actions/AssignmentTasksListActions";
+
 import axios from "axios";
 
 import Loader from "app/views/shared/components/Loader";
 import ErrorModal from "app/views/shared/components/ErrorModal";
 import { setError, resetError } from "app/redux/actions/ErrorModalActions";
-
+import {
+  getAllAssignmentTasks,
+  updateAssignmentTaskList,
+} from "app/redux/actions/AssignmentTasksListActions";
 let { SearchBar } = Search;
 
 const AssignmentTaskList = (props) => {
@@ -54,7 +57,7 @@ const AssignmentTaskList = (props) => {
               swal
                 .fire({
                   title: "Are you sure?",
-                  text: `Confirm to delete ${row.title}?`,
+                  text: `All assigned results will also be removed. Confirm to delete ${row.title}? `,
                   icon: "warning",
                   type: "question",
                   showCancelButton: true,
@@ -65,13 +68,36 @@ const AssignmentTaskList = (props) => {
                 })
                 .then((result) => {
                   if (result.value) {
-                    console.log(`Deleting - ${cell.delete}`);
-
-                    swal.fire(
-                      "Deleted!",
-                      "Your file has been deleted.",
-                      "success"
-                    );
+                    swal.fire({
+                      title: "Deleting assignment task...",
+                      onBeforeOpen: () => {
+                        swal.showLoading();
+                      },
+                      onOpen: async () => {
+                        //submit form process here remember to async and await with try...catch block
+                        try {
+                          await axios({
+                            method: "DELETE",
+                            url: `${process.env.REACT_APP_BACKEND_URL}/assignments/${row.id}`,
+                          }).then((response) => {
+                            swal.hideLoading();
+                            swal
+                              .fire({
+                                title: "Successfully Delete Assignment Task",
+                                icon: "success",
+                                allowOutsideClick: false,
+                              })
+                              .then((result) => {
+                                props.updateAssignmentTaskList(row.id);
+                              });
+                          });
+                        } catch (err) {
+                          swal.hideLoading();
+                          props.setError(err);
+                        }
+                      },
+                      allowOutsideClick: false,
+                    });
                   } else {
                     swal.fire("Cancelled!", "Permission denied.", "error");
                   }
@@ -184,6 +210,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getAllAssignmentTasks,
+  updateAssignmentTaskList,
   resetError,
   setError,
 })(AssignmentTaskList);
