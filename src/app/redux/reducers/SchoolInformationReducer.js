@@ -48,7 +48,7 @@ const SchoolInformationReducer = (state = initialState, action) => {
         school: {
           ...state.school,
           examCenters: state.school.examCenters.map((center, index) => {
-            if (index == state.selectedIndex) {
+            if (index === state.selectedIndex) {
               return resolvedExamCenter;
             } else {
               return center;

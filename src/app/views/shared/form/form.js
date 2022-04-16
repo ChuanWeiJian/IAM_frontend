@@ -91,7 +91,7 @@ export const renderMultipleColumnFormExamCentersCheckboxGroup = (formProps) => {
                     return formProps.input.onChange(newValue);
                   }}
                 />
-                <span>{`${item.school.schoolCode} - ${item.examCenterCode} - ${item.school.name}`}</span>
+                <span>{`${item.school.schoolCode} - ${item.examCenterCode} - ${item.school.schoolName}`}</span>
                 <span className="checkmark"></span>
               </label>
             </div>

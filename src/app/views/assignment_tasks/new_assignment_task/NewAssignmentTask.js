@@ -7,7 +7,10 @@ import moment from "moment";
 import { Form } from "react-bootstrap";
 import { validateAssignmentTask as validate } from "../shared/validation";
 import swal from "sweetalert2";
+import axios from "axios";
 
+import ErrorModal from "app/views/shared/components/ErrorModal";
+import Loader from "app/views/shared/components/Loader";
 import {
   renderMultiColumnFormInputField,
   renderMultiColumnFormSelect,
@@ -16,6 +19,7 @@ import {
 } from "app/views/shared/form/form";
 import { examTypes } from "fake-db/static_data/AssignmentTask";
 import { getAllExamCenters } from "app/redux/actions/NewAssignmentTaskActions";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 
 const NewAssignmentTask = (props) => {
   const history = useHistory();
@@ -30,28 +34,49 @@ const NewAssignmentTask = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        console.log(values);
-        console.log(values.collectionDate.toString());
+        try {
+          values = {
+            ...values,
+            collectionDate: values.collectionDate.toString(),
+            district: "Kluang",
+          };
+
+          await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_BACKEND_URL}/assignments`,
+            data: values,
+          }).then((response) => {
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Create New Assignment Task",
+                icon: "success",
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                history.push("/assignment/list");
+              });
+          });
+        } catch (err) {
+          swal.hideLoading();
+          props.setError(err);
+        }
         console.log(
           moment("2022-04-05T16:00:00.000Z", moment.ISO_8601).format(
             "DD/MM/YYYY HH:mm"
           )
         );
-        swal.hideLoading();
-        swal
-          .fire("Success", "Successful create new assignment task", "success")
-          .then((result) => {
-            history.push("/assignment/list");
-          });
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
@@ -156,10 +181,18 @@ const NewAssignmentTask = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return state.newAssignmentTask;
+  return {
+    ...state.newAssignmentTask,
+    httpError: state.error.error,
+    loading: state.loading.loading,
+  };
 };
 
-export default connect(mapStateToProps, { getAllExamCenters })(
+export default connect(mapStateToProps, {
+  getAllExamCenters,
+  setError,
+  resetError,
+})(
   reduxForm({ form: "NewAssignmentTask", validate: validate })(
     NewAssignmentTask
   )

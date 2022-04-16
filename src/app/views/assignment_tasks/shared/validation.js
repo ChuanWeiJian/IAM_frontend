@@ -12,8 +12,8 @@ export const validateAssignmentTask = (values) => {
     errors.collectionDate = "Please select the deadline of data collection";
   }
 
-  if (!values.examCenters || values.examCenters.length === 0) {
-    errors.examCenters = "Must select at least one exam center";
+  if (!values.examCenters || values.examCenters.length <= 1) {
+    errors.examCenters = "Must select at least two exam center";
   }
 
   return errors;
