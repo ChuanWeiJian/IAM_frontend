@@ -13,7 +13,7 @@ import {
   resetTableState,
 } from "app/redux/actions/TableActions";
 import { getAssignmentTaskInfo } from "app/redux/actions/AssignmentTaskInfoActions";
-import { resetError } from "app/redux/actions/ErrorModalActions";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 import ExamCenterDataSummary from "./components/ExamCenterDataSummary";
 import AssignmentTaskInfoHeader from "../shared/components/AssignmentTaskInfoHeader";
 

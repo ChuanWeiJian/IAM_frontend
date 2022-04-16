@@ -5,6 +5,8 @@ import moment from "moment";
 
 export const GET_ASSIGNMENT_TASK_INFO =
   "ASSIGNMENT-TASK-INFO GET_ASSIGNMENT_TASK_INFO";
+export const UPDATE_ASSIGNMENT_TASK =
+  "ASSIGN-INVIGILATOR UPDATE_ASSIGNMENT_TASK";
 
 export const getAssignmentTaskInfo = (taskId) => async (dispatch) => {
   dispatch({ type: SET_LOADING, payload: true });
@@ -22,4 +24,11 @@ export const getAssignmentTaskInfo = (taskId) => async (dispatch) => {
   }
 
   dispatch({ type: SET_LOADING, payload: false });
+};
+
+export const updateAssignmentTask = (assignmentTask) => {
+  return {
+    type: UPDATE_ASSIGNMENT_TASK,
+    payload: assignmentTask,
+  };
 };
