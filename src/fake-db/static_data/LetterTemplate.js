@@ -12,7 +12,7 @@ export const tagFieldsOptions = [
   {
     id: "04",
     title: "Assigned Exam Center Name",
-    value: "assignmentResults[assignmentResultIndex].results[resultIndex].examCenter.school.name",
+    value: "assignmentResults[assignmentResultIndex].results[resultIndex].examCenter.school.schoolName",
   },
   {
     id: "05",

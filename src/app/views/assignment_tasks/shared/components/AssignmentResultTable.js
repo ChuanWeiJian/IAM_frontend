@@ -21,26 +21,26 @@ const AssignmentResultTable = ({ results }) => {
       sort: true,
     },
     {
-      dataField: "examCenter.school.name",
+      dataField: "examCenter.school.schoolName",
       text: "Assigned School Name",
       sort: true,
     },
     {
-      dataField: "invigilator.name",
+      dataField: "invigilator.teacherName",
       text: "Invigilator",
       sort: true,
     },
     {
-      dataField: "invigilator.ic",
+      dataField: "invigilator.icNumber",
       text: "I.C.",
     },
     {
-      dataField: "invigilator.gender",
+      dataField: "invigilator.teacherSex",
       text: "Gender",
       sort: true,
     },
     {
-      dataField: "invigilator.email",
+      dataField: "invigilator.teacherEmailAddress",
       text: "Email",
     },
   ];
