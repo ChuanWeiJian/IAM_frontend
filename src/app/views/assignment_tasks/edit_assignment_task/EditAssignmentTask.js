@@ -44,6 +44,13 @@ const EditAssignmentTask = (props) => {
       })
       .then((result) => {
         if (result.value) {
+          values = {
+            ...values,
+            collectionDate: moment(
+              values.collectionDate,
+              "DD/MM/YYYY HH:mm"
+            ).toString(),
+          };
           swal.fire({
             title: "Saving Changes...",
             onBeforeOpen: () => {
