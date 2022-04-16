@@ -9,6 +9,11 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdModeEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 import swal from "sweetalert2";
 import { getAllAssignmentTasks } from "app/redux/actions/AssignmentTasksListActions";
+import axios from "axios";
+
+import Loader from "app/views/shared/components/Loader";
+import ErrorModal from "app/views/shared/components/ErrorModal";
+import { setError, resetError } from "app/redux/actions/ErrorModalActions";
 
 let { SearchBar } = Search;
 
@@ -133,6 +138,8 @@ const AssignmentTaskList = (props) => {
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
@@ -168,9 +175,15 @@ const AssignmentTaskList = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { resolvedAssignmentTasks: state.assignmentTasksList.assignmentTasks };
+  return {
+    resolvedAssignmentTasks: state.assignmentTasksList.assignmentTasks,
+    httpError: state.error.error,
+    loading: state.loading.loading,
+  };
 };
 
-export default connect(mapStateToProps, { getAllAssignmentTasks })(
-  AssignmentTaskList
-);
+export default connect(mapStateToProps, {
+  getAllAssignmentTasks,
+  resetError,
+  setError,
+})(AssignmentTaskList);

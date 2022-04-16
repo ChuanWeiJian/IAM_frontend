@@ -63,11 +63,6 @@ const NewAssignmentTask = (props) => {
           swal.hideLoading();
           props.setError(err);
         }
-        console.log(
-          moment("2022-04-05T16:00:00.000Z", moment.ISO_8601).format(
-            "DD/MM/YYYY HH:mm"
-          )
-        );
       },
       allowOutsideClick: false,
     });
