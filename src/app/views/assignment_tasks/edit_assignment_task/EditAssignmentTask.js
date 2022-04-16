@@ -6,7 +6,10 @@ import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import { Form } from "react-bootstrap";
 import swal from "sweetalert2";
+import axios from "axios";
 
+import ErrorModal from "app/views/shared/components/ErrorModal";
+import Loader from "app/views/shared/components/Loader";
 import {
   renderMultiColumnFormInputField,
   renderMultiColumnFormSelect,
@@ -14,6 +17,7 @@ import {
   renderMultipleColumnFormExamCentersCheckboxGroup,
 } from "app/views/shared/form/form";
 import { initializeForm } from "app/redux/actions/EditAssignmentTaskActions";
+import { setError, resetError } from "app/redux/actions/ErrorModalActions";
 import { examTypes } from "fake-db/static_data/AssignmentTask";
 import { validateAssignmentTask as validate } from "../shared/validation";
 
@@ -26,27 +30,62 @@ const EditAssignmentTask = (props) => {
   }, []);
 
   const handleFormSubmit = (values) => {
-    swal.fire({
-      title: "Saving Changes...",
-      onBeforeOpen: () => {
-        swal.showLoading();
-      },
-      onOpen: () => {
-        //submit form process here remember to async and await with try...catch block
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire("Success", "Successful save the changes", "success")
-          .then((result) => {
-            history.push("/assignment/list");
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: "Any changes adding or removing exam centers will remove the previous assignment result",
+        icon: "warning",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Save Changes!",
+        cancelButtonText: "No",
+      })
+      .then((result) => {
+        if (result.value) {
+          swal.fire({
+            title: "Saving Changes...",
+            onBeforeOpen: () => {
+              swal.showLoading();
+            },
+            onOpen: async () => {
+              //submit form process here remember to async and await with try...catch block
+              try {
+                await axios({
+                  method: "PATCH",
+                  url: `${process.env.REACT_APP_BACKEND_URL}/assignments/${taskId}`,
+                  data: values,
+                }).then((response) => {
+                  swal.hideLoading();
+                  swal
+                    .fire({
+                      title: "Successfully Edit Assignment Task",
+                      icon: "success",
+                      html: "Please re-assign the invigilators if there is any adding/removing of exam centers",
+                      allowOutsideClick: false,
+                    })
+                    .then((result) => {
+                      history.push("/assignment/list");
+                    });
+                });
+              } catch (err) {
+                swal.hideLoading();
+                props.setError(err);
+              }
+            },
+            allowOutsideClick: false,
           });
-      },
-      allowOutsideClick: () => !swal.isLoading(),
-    });
+        } else {
+          swal.fire("Cancelled!", "Permission denied.", "error");
+        }
+      });
   };
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
@@ -161,19 +200,21 @@ const mapStateToProps = (state) => {
       examType: state.editAssignmentTask.assignmentTask.examType,
       collectionDate: moment(
         state.editAssignmentTask.assignmentTask.collectionDate,
-        "DD/MM/YYYY HH:mm"
-      ),
-      assignmentDate: moment(
-        state.editAssignmentTask.assignmentTask.assignmentDate,
-        "DD/MM/YYYY HH:mm"
-      ),
+        moment.ISO_8601
+      ).format("DD/MM/YYYY HH:mm"),
       examCenters: state.editAssignmentTask.assignmentTask.examCenters,
     },
     examCenters: state.editAssignmentTask.examCenters,
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
-export default connect(mapStateToProps, { initializeForm: initializeForm })(
+export default connect(mapStateToProps, {
+  initializeForm,
+  setError,
+  resetError,
+})(
   reduxForm({
     form: "EditAssignmentTask",
     validate: validate,
