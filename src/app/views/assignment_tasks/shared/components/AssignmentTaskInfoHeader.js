@@ -1,5 +1,6 @@
 import React from "react";
 import { Badge } from "react-bootstrap";
+import moment from "moment";
 
 const AssignmentTaskInfoHeader = ({ assignmentTask }) => {
   const renderStatus = () => {
@@ -49,7 +50,21 @@ const AssignmentTaskInfoHeader = ({ assignmentTask }) => {
         <div className="col-md-3">
           <div className="mb-4">
             <p className="text-primary mb-1 h5">Data Collection Deadline</p>
-            <span>{assignmentTask.collectionDate}</span>
+            <span>
+              {moment(assignmentTask.collectionDate, moment.ISO_8601).format(
+                "DD/MM/YYYY HH:mm"
+              )}
+            </span>
+          </div>
+        </div>
+        <div className="col-md-3">
+          <div className="mb-4">
+            <p className="text-primary mb-1 h5">Created Date</p>
+            <span>
+              {moment(assignmentTask.createdDate, moment.ISO_8601).format(
+                "DD/MM/YYYY HH:mm"
+              )}
+            </span>
           </div>
         </div>
       </div>

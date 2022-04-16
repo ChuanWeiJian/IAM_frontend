@@ -4,12 +4,16 @@ import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { Badge } from "react-bootstrap";
+
+import ErrorModal from "app/views/shared/components/ErrorModal";
+import Loader from "app/views/shared/components/Loader";
 import {
   setPage,
   setRowsPerPage,
   resetTableState,
 } from "app/redux/actions/TableActions";
 import { getAssignmentTaskInfo } from "app/redux/actions/AssignmentTaskInfoActions";
+import { resetError } from "app/redux/actions/ErrorModalActions";
 import ExamCenterDataSummary from "./components/ExamCenterDataSummary";
 import AssignmentTaskInfoHeader from "../shared/components/AssignmentTaskInfoHeader";
 
@@ -54,6 +58,8 @@ const AssignmentTaskInfo = (props) => {
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
@@ -113,7 +119,7 @@ const AssignmentTaskInfo = (props) => {
                         <td>{index + 1}</td>
                         <td>{examCenter.school.schoolCode}</td>
                         <td>{examCenter.examCenterCode}</td>
-                        <td>{examCenter.school.name}</td>
+                        <td>{examCenter.school.schoolName}</td>
                         <td>
                           {renderCollectionStatus(
                             examCenter.id,
@@ -160,10 +166,17 @@ const AssignmentTaskInfo = (props) => {
 const mapStateToProps = (state) => {
   return {
     assignmentTask: state.assignmentTaskInfo.assignmentTask,
-    involvedExamCenters: state.assignmentTaskInfo.involvedExamCenters,
-    collectedExamCenterData: state.assignmentTaskInfo.examCenterData,
+    involvedExamCenters: state.assignmentTaskInfo.assignmentTask.examCenters
+      ? state.assignmentTaskInfo.assignmentTask.examCenters
+      : [],
+    collectedExamCenterData: state.assignmentTaskInfo.assignmentTask
+      .examCenterData
+      ? state.assignmentTaskInfo.assignmentTask.examCenterData
+      : [],
     page: state.table.page,
     rowsPerPage: state.table.rowsPerPage,
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
@@ -172,4 +185,5 @@ export default connect(mapStateToProps, {
   setPage,
   setRowsPerPage,
   resetTableState,
+  resetError,
 })(AssignmentTaskInfo);

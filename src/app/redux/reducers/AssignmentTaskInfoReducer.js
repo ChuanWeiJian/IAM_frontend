@@ -2,8 +2,6 @@ import { GET_ASSIGNMENT_TASK_INFO } from "../actions/AssignmentTaskInfoActions";
 
 const initialState = {
   assignmentTask: {},
-  involvedExamCenters: [],
-  examCenterData: []
 };
 
 const AssignmentTaskInfoReducer = (state = initialState, action) => {
@@ -12,8 +10,6 @@ const AssignmentTaskInfoReducer = (state = initialState, action) => {
       return {
         ...state,
         assignmentTask: action.payload.assignmentTask,
-        involvedExamCenters: action.payload.resolvedExamCenters,
-        examCenterData: action.payload.collectedExamCenterData
       };
     default:
       return state;
