@@ -5,10 +5,14 @@ import { useParams, useHistory } from "react-router-dom";
 import { FieldArray, reduxForm } from "redux-form";
 import _ from "lodash";
 import swal from "sweetalert2";
+import axios from "axios";
 
+import Loader from "app/views/shared/components/Loader";
+import ErrorModal from "app/views/shared/components/ErrorModal";
 import { renderEditAssignmentResultArrayField } from "../../shared/form/form";
 import { initializeForm } from "app/redux/actions/EditAssignmentResultActions";
 import { validateAssignmentResult as validate } from "../shared/validation";
+import { resetError, setError } from "app/redux/actions/ErrorModalActions";
 
 const EditAssignmentResult = (props) => {
   const history = useHistory();
@@ -21,27 +25,40 @@ const EditAssignmentResult = (props) => {
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        let newResults = [];
-        for (let key in values) {
-          const examCenterId = key.slice(6);
-          newResults = [
-            ...newResults,
-            { examCenter: examCenterId, invigilators: values[key] },
-          ];
-        }
+        try {
+          let resolvedResults = [];
+          for (let key in values) {
+            const examCenterId = key.slice(6);
+            resolvedResults = [
+              ...resolvedResults,
+              { examCenter: examCenterId, invigilators: values[key] },
+            ];
+          }
 
-        console.log({ results: newResults });
-        console.log(values);
-        swal.hideLoading();
-        swal
-          .fire("Success", "Successful save the changes", "success")
-          .then((result) => {
-            history.push(`/assignment/${taskId}`);
+          await axios({
+            method: "PATCH",
+            url: `${process.env.REACT_APP_BACKEND_URL}/results/${props.assignmentResult.id}`,
+            data: { results: resolvedResults },
+          }).then((response) => {
+            swal.hideLoading();
+            swal
+              .fire({
+                title: "Successfully Edit Assignment Result",
+                icon: "success",
+                allowOutsideClick: false,
+              })
+              .then((result) => {
+                history.push(`/assignment/${taskId}`);
+              });
           });
+        } catch (err) {
+          swal.hideLoading();
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
@@ -51,6 +68,8 @@ const EditAssignmentResult = (props) => {
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
@@ -70,7 +89,7 @@ const EditAssignmentResult = (props) => {
             <div className="row">
               {props.assignmentResult.results &&
                 props.assignmentResult.results.map((result, index) => {
-                  const label = `${props.assignmentResult.results[index].examCenter.school.schoolCode} - ${props.assignmentResult.results[index].examCenter.examCenterCode} - ${props.assignmentResult.results[index].examCenter.school.name}`;
+                  const label = `${props.assignmentResult.results[index].examCenter.school.schoolCode} - ${props.assignmentResult.results[index].examCenter.examCenterCode} - ${props.assignmentResult.results[index].examCenter.school.schoolName}`;
                   return (
                     <FieldArray
                       key={index}
@@ -114,13 +133,21 @@ const mapStateToProps = (state) => {
 
   return {
     initialValues: initialValues,
-    assignmentTask: state.editAssignmentResult.assignmentTask,
+    assignmentTask: state.editAssignmentResult.assignmentResult.assignmentTask
+      ? state.editAssignmentResult.assignmentResult.assignmentTask
+      : {},
     assignmentResult: state.editAssignmentResult.assignmentResult,
     involvedInvigilators: state.editAssignmentResult.invigilators,
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
-export default connect(mapStateToProps, { initializeForm })(
+export default connect(mapStateToProps, {
+  initializeForm,
+  resetError,
+  setError,
+})(
   reduxForm({
     form: "EditAssignmentResult",
     validate: validate,

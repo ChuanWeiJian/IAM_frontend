@@ -3,7 +3,13 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 
+import PopOver from "./PopOver";
+
 const AssignmentResultTable = ({ results }) => {
+  const renderPopOver = (cell, row, rowIndex) => {
+    return <PopOver invigilator={cell} />;
+  };
+  
   const sortableColumn = [
     {
       dataField: "index",
@@ -26,9 +32,11 @@ const AssignmentResultTable = ({ results }) => {
       sort: true,
     },
     {
-      dataField: "invigilator.teacherName",
+      dataField: "invigilator",
       text: "Invigilator",
       sort: true,
+      formatter: renderPopOver,
+      sortValue: (cell, row) => cell.teacherName,
     },
     {
       dataField: "invigilator.icNumber",

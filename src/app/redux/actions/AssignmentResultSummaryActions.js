@@ -15,6 +15,7 @@ export const getAssignmentResultSummary =
       response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/results/${taskId}/${role}`
       );
+
       //resolve result into array
       assignmentResult = response.data.assignmentResult;
       let resolvedResults = [];

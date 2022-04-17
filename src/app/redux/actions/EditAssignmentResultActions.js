@@ -1,70 +1,49 @@
-import {
-  AssignmentTasks,
-  examCenters,
-  Invigilators,
-  AssignmentResults,
-  Schools,
-} from "fake-db/static_data/AssignmentTask";
+import axios from "axios";
+import { SET_ERROR } from "./ErrorModalActions";
+import { SET_LOADING } from "./LoadingActions";
+
 export const INITIALIZE_ASSIGNMENT_RESULT_FORM =
   "EDIT-ASSIGNMENT-RESULT INITIALIZE_ASSIGNMENT_RESULT_FORM";
 
-export const initializeForm = (role, taskId) => {
-  //get assignment task by id and district
-  const assignmentTask = AssignmentTasks.find((task) => task.id === taskId);
-  //get assignment result by task id and role with all fields resolved
-  const assignmentResult = AssignmentResults.find(
-    (result) => result.assignmentTask === taskId && result.role === role
-  );
+export const initializeForm = (role, taskId) => async (dispatch) => {
+  dispatch({ type: SET_LOADING, payload: true });
+  let response, assignmentResult;
 
-  let resolvedResult;
-  let involvedInvigilators = [];
-  if (assignmentResult) {
-    resolvedResult = {
-      ...assignmentResult,
-      results: assignmentResult.results.map((data) => {
-        const examCenter = examCenters.find(
-          (center) => center.id === data.examCenter
-        );
+  try {
+    //get assignment result by task id and role with all fields resolved
+    response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/results/${taskId}/${role}`
+    );
 
-        const resolvedExamCenter = {
-          ...examCenter,
-          school: Schools.find((school) => school.id === examCenter.school),
-        };
+    assignmentResult = response.data.assignmentResult;
+    let involvedInvigilators = [];
 
-        const invigilators = data.invigilators.map((invigilatorId) => {
-          const invigilator = Invigilators.find(
-            (invigilator) => invigilator.id === invigilatorId
-          );
-          return {
-            ...invigilator,
-            schoolId: Schools.find(
-              (school) => school.id === invigilator.schoolId
-            ),
-          };
-        });
-
-        involvedInvigilators = [...involvedInvigilators, ...invigilators];
-
-        return {
-          examCenter: resolvedExamCenter,
-          invigilators: invigilators,
-        };
-      }),
-    };
+    assignmentResult.results.forEach((result) => {
+      result.invigilators.forEach((invigilator) =>
+        involvedInvigilators.push(invigilator)
+      );
+    });
 
     involvedInvigilators.sort((a, b) => {
-      if (a.examCenterCode > b.examCenterCode) {
+      if (a.user.school.schoolCode > b.user.school.schoolCode) {
         return 1;
-      } else if (a.examCenterCode < b.examCenterCode) {
+      } else if (a.user.school.schoolCode < b.user.school.schoolCode) {
         return -1;
       } else {
         return 0;
       }
     });
+
+    dispatch({
+      type: INITIALIZE_ASSIGNMENT_RESULT_FORM,
+      payload: {
+        assignmentResult,
+        involvedInvigilators,
+      },
+    });
+  } catch (err) {
+    dispatch({ type: SET_ERROR, payload: err });
   }
 
-  return {
-    type: INITIALIZE_ASSIGNMENT_RESULT_FORM,
-    payload: { assignmentTask, resolvedResult, involvedInvigilators },
-  };
+  dispatch({ type: SET_LOADING, payload: false });
 };

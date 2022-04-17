@@ -113,9 +113,9 @@ export const renderInvigilatorOptions = (formProps) => {
       >
         {formProps.options.map((option) => {
           return (
-            option.schoolId.id !== formProps.originalSchoolId && (
+            option.user.school.id !== formProps.assigningSchoolId && (
               <option key={option.id} value={option.id}>
-                {`${option.name} - ${option.schoolId.schoolCode}`}
+                {`${option.teacherName} - ${option.user.school.schoolCode}`}
               </option>
             )
           );
@@ -138,7 +138,7 @@ export const renderEditAssignmentResultArrayField = (formProps) => {
               className="col-lg-12"
               name={invigilator}
               options={formProps.options}
-              originalSchoolId={formProps.schoolId}
+              assigningSchoolId={formProps.schoolId}
               component={renderInvigilatorOptions}
             />
           );
