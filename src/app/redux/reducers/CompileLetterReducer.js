@@ -1,7 +1,6 @@
 import { GET_COMPILE_LETTER_INFO } from "../actions/CompileLetterActions";
 
 const initialState = {
-  assignmentTask: {},
   assignmentResult: {},
   letterTemplates: [],
 };
@@ -11,8 +10,7 @@ const CompileLetterReducer = (state = initialState, action) => {
     case GET_COMPILE_LETTER_INFO:
       return {
         ...state,
-        assignmentTask: action.payload.assignmentTask,
-        assignmentResult: action.payload.resolvedResult,
+        assignmentResult: action.payload.assignmentResult,
         letterTemplates: action.payload.letterTemplates,
       };
     default:

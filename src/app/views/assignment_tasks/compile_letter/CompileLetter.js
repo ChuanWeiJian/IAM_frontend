@@ -4,9 +4,12 @@ import { Breadcrumb, SimpleCard } from "@gull";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
 
+import Loader from "app/views/shared/components/Loader";
+import ErrorModal from "app/views/shared/components/ErrorModal";
 import { getCompileLetterInfo } from "app/redux/actions/CompileLetterActions";
 import LetterTemplateForm from "./components/LetterTemplateForm";
 import AssignmentResultTable from "../shared/components/AssignmentResultTable";
+import { resetError } from "app/redux/actions/ErrorModalActions";
 
 const CompileLetter = (props) => {
   const role = useParams().role;
@@ -18,6 +21,8 @@ const CompileLetter = (props) => {
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
+      <ErrorModal error={props.httpError} onConfirm={props.resetError} />
       <Breadcrumb
         routeSegments={[
           { name: "Assignment Tasks", path: "/assignment" },
@@ -30,7 +35,11 @@ const CompileLetter = (props) => {
         title="Letter Template"
         subtitle="Please select the letter template"
       >
-        <LetterTemplateForm letters={props.letterTemplates} taskId={taskId} role={role} />
+        <LetterTemplateForm
+          letters={props.letterTemplates}
+          taskId={taskId}
+          role={role}
+        />
 
         <div className="custom-separator"></div>
 
@@ -47,12 +56,16 @@ const CompileLetter = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    assignmentTask: state.compileLetter.assignmentTask,
+    assignmentTask: state.compileLetter.assignmentResult.assignmentTask
+      ? state.compileLetter.assignmentResult.assignmentTask
+      : {},
     assignmentResult: state.compileLetter.assignmentResult,
     letterTemplates: state.compileLetter.letterTemplates,
+    httpError: state.error.error,
+    loading: state.loading.loading,
   };
 };
 
-export default connect(mapStateToProps, { getCompileLetterInfo })(
+export default connect(mapStateToProps, { getCompileLetterInfo, resetError })(
   CompileLetter
 );

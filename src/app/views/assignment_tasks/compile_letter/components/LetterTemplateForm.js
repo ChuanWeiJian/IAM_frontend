@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Link, useHistory } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -9,6 +10,9 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { MdRemoveRedEye } from "react-icons/md";
 import { validateCompileLetterTemplate as validate } from "app/views/assignment_tasks/shared/validation";
 import swal from "sweetalert2";
+import axios from "axios";
+
+import { setError } from "app/redux/actions/ErrorModalActions";
 
 const LetterTemplatesForm = (props) => {
   const history = useHistory();
@@ -59,22 +63,39 @@ const LetterTemplatesForm = (props) => {
   const handleFormSubmit = (values) => {
     swal.fire({
       title: "Compiling letters...",
+      text: "This might take a while, please be patience...",
       onBeforeOpen: () => {
         swal.showLoading();
       },
-      onOpen: () => {
+      onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
-        console.log(values);
-        console.log(role);
-        console.log(taskId);
-        swal.hideLoading();
-        swal
-          .fire("Success", "Successful compile and sent the letters", "success")
-          .then((result) => {
-            history.push(`/assignment/${taskId}`);
+        try {
+          values = { ...values, taskId: taskId, role: role };
+
+          await axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_BACKEND_URL}/letters/compile`,
+            data: values,
+          }).then((response) => {
+            if (response.data.message === "success") {
+              swal.hideLoading();
+              swal
+                .fire({
+                  title: "Successfully Compile and Sent Letters",
+                  icon: "success",
+                  allowOutsideClick: false,
+                })
+                .then((result) => {
+                  history.push(`/assignment/${taskId}`);
+                });
+            }
           });
+        } catch (err) {
+          swal.hideLoading();
+          props.setError(err);
+        }
       },
-      allowOutsideClick: () => !swal.isLoading(),
+      allowOutsideClick: false,
     });
   };
 
@@ -144,6 +165,12 @@ const LetterTemplatesForm = (props) => {
   );
 };
 
-export default reduxForm({ form: "CompileLetterForm", validate: validate })(
-  LetterTemplatesForm
+const mapStateToProps = (state) => {
+  return;
+};
+
+export default connect(mapStateToProps, { setError })(
+  reduxForm({ form: "CompileLetterForm", validate: validate })(
+    LetterTemplatesForm
+  )
 );
