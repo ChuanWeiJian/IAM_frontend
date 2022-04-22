@@ -36,7 +36,7 @@ const ExamCentersList = (props) => {
           <div
             className="p-2 btn-hover rounded-circle"
             onClick={() => {
-              props.initializeForm(rowIndex);
+              props.initializeForm(row.index - 1);
               props.toggleForm(true);
             }}
           >
