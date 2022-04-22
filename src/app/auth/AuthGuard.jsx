@@ -11,18 +11,18 @@ class AuthGuard extends Component {
 
     this.state = {
       authenticated: true,
-      routes
+      routes,
     };
   }
 
   componentDidMount() {
     this.setState({
-      routes: flatMap(this.state.routes, item => {
+      routes: flatMap(this.state.routes, (item) => {
         if (item.routes) {
           return [...item.routes];
         }
         return [item];
-      })
+      }),
     });
 
     if (!this.state.authenticated) {
@@ -43,14 +43,14 @@ class AuthGuard extends Component {
   static getDerivedStateFromProps(props, state) {
     const { location, user } = props;
     const { pathname } = location;
-    const matched = state.routes.find(r => r.path === pathname);
+    const matched = state.routes.find((r) => r.path === pathname);
     const authenticated =
       matched && matched.auth && matched.auth.length
         ? matched.auth.includes(user.role)
         : true;
 
     return {
-      authenticated
+      authenticated,
     };
   }
 
@@ -60,7 +60,7 @@ class AuthGuard extends Component {
 
     history.push({
       pathname: "/session/signin",
-      state: { redirectUrl: pathname }
+      state: { redirectUrl: pathname },
     });
   }
 
@@ -78,8 +78,8 @@ class AuthGuard extends Component {
 
 AuthGuard.contextType = AppContext;
 
-const mapStateToProps = state => ({
-  user: state.user
+const mapStateToProps = (state) => ({
+  user: state.user,
 });
 
 export default withRouter(connect(mapStateToProps)(AuthGuard));

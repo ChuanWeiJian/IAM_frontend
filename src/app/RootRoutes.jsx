@@ -5,6 +5,7 @@ import sessionsRoutes from "./views/sessions/sessionsRoutes";
 import assignmentTasksRoutes from "./views/assignment_tasks/assignmentTasksRoutes";
 import letterTemplatesRoutes from "./views/letterTemplates/letterTemplatesRoutes";
 import examCentersRoutes from "./views/exam_centers/examCentersRoutes";
+import userManagementRoutes from "./views/users/userRoutes";
 import AuthGuard from "./auth/AuthGuard";
 
 const redirectRoute = [
@@ -31,6 +32,7 @@ const routes = [
       ...assignmentTasksRoutes,
       ...letterTemplatesRoutes,
       ...examCentersRoutes,
+      ...userManagementRoutes,
       ...redirectRoute,
       ...errorRoute,
     ],

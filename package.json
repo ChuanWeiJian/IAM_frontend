@@ -20,6 +20,7 @@
     "echarts-for-react": "^2.0.15-beta.1",
     "firebase": "^7.2.2",
     "formik": "^2.0.3",
+    "generate-password": "^1.7.0",
     "history": "^4.10.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",

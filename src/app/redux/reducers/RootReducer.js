@@ -5,6 +5,8 @@ import LayoutReducer from "./LayoutReducer";
 import ScrumBoardReducer from "./ScrumBoardReducer";
 import NotificationReducer from "./NotificationReducer";
 import EcommerceReducer from "./EcommerceReducer";
+import OfficerAccountsListReducer from "./OfficerAccountsListReducer";
+import EditAccountInformationReducer from "./EditAccountInformationReducer";
 import NewAssignmentTaskReducer from "./NewAssignmentTaskReducer";
 import AssignmentTasksListReducer from "./AssignmentTasksListReducer";
 import AssignmentTaskInfoReducer from "./AssignmentTaskInfoReducer";
@@ -32,6 +34,8 @@ const RootReducer = combineReducers({
   scrumboard: ScrumBoardReducer,
   notification: NotificationReducer,
   ecommerce: EcommerceReducer,
+  accountsList: OfficerAccountsListReducer,
+  editAccountInformation: EditAccountInformationReducer,
   table: TableReducer,
   newAssignmentTask: NewAssignmentTaskReducer,
   assignmentTasksList: AssignmentTasksListReducer,

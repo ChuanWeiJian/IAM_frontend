@@ -20,6 +20,26 @@ export const navigations = [
     ],
   },
   {
+    name: "User Management",
+    description: "Management of officer accounts",
+    type: "dropDown",
+    icon: "i-Business-Mens",
+    sub: [
+      {
+        icon: "i-Add-User",
+        name: "New Officer Account",
+        path: "/user/new",
+        type: "link",
+      },
+      {
+        icon: "i-Administrator",
+        name: "Officer Accounts List",
+        path: "/user/list",
+        type: "link",
+      },
+    ],
+  },
+  {
     name: "Assignment Tasks",
     description: "Management of assignment tasks",
     type: "dropDown",

@@ -1,47 +1,53 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { Breadcrumb } from "@gull";
-import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "sweetalert2";
 import axios from "axios";
 
+import { district } from "fake-db/static_data/District";
+import Loader from "app/views/shared/components/Loader";
 import ErrorModal from "app/views/shared/components/ErrorModal";
 import {
   renderMultiColumnFormInputField,
-  renderMultiColumnFormRichTextEditor,
-  renderTagsSelector,
+  renderMultiColumnFormSelect,
 } from "app/views/shared/form/form";
 import { setError, resetError } from "app/redux/actions/ErrorModalActions";
-import { validateLetterTemplate as validate } from "../shared/validation";
+import { initializeForm } from "app/redux/actions/EditAccountInformationActions";
+import { validateEditAccount as validate } from "../shared/validation";
 
-const NewLetterTemplate = (props) => {
+const EditAccountInformation = (props) => {
   const history = useHistory();
+  const accountId = useParams().id;
+
+  useEffect(() => {
+    props.initializeForm(accountId);
+  }, []);
 
   const handleFormSubmit = (values) => {
     swal.fire({
-      title: "Saving letter template...",
+      title: "Saving Changes...",
       onBeforeOpen: () => {
         swal.showLoading();
       },
       onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
         try {
-          values = { ...values, district: "Kluang" };
           await axios({
-            method: "POST",
-            url: `${process.env.REACT_APP_BACKEND_URL}/letters`,
+            method: "PATCH",
+            url: `${process.env.REACT_APP_BACKEND_URL}/users/officer/${accountId}`,
             data: values,
           }).then((response) => {
             swal.hideLoading();
             swal
               .fire({
-                title: "Successfully Create New Letter Template",
+                title: "Successfully edit the officer account",
                 icon: "success",
                 allowOutsideClick: false,
               })
               .then((result) => {
-                history.push("/letter/list");
+                history.push("/user/list");
               });
           });
         } catch (err) {
@@ -55,12 +61,13 @@ const NewLetterTemplate = (props) => {
 
   return (
     <div>
+      {props.loading && <Loader></Loader>}
       <ErrorModal error={props.httpError} onConfirm={props.resetError} />
-      
       <Breadcrumb
         routeSegments={[
-          { name: "Letter Templates", path: "/letter" },
-          { name: "New Letter Template" },
+          { name: "User Management", path: "/user" },
+          { name: "Officer Accounts List", path: "/user/list" },
+          { name: "Edit Officer Account" },
         ]}
       ></Breadcrumb>
       <div className="2-columns-form-layout">
@@ -69,18 +76,27 @@ const NewLetterTemplate = (props) => {
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-header bg-transparent">
-                  <h3 className="card-title"> New Letter Template</h3>
+                  <h3 className="card-title"> Edit Officer Account</h3>
                 </div>
                 <form onSubmit={props.handleSubmit(handleFormSubmit)}>
                   <div className="card-body">
                     <div className="row">
                       <Field
                         className="col-md-6"
-                        name="title"
+                        name="login"
+                        readOnly="true"
                         type="text"
-                        placeholder="Letter Template Title"
-                        helpText="Please enter the letter template's title"
+                        placeholder="User Login"
+                        helpText="Please enter the user login"
                         component={renderMultiColumnFormInputField}
+                      />
+                      <Field
+                        className="col-md-6"
+                        name="district"
+                        items={district}
+                        helpText="Please select the district"
+                        defaultOption="Please select a district..."
+                        component={renderMultiColumnFormSelect}
                       />
                     </div>
 
@@ -88,25 +104,16 @@ const NewLetterTemplate = (props) => {
 
                     <div className="row">
                       <Field
-                        name="content"
-                        placeholder="Your letter template content..."
-                        title="Letter Template Content"
-                        subtitle="Please ensure that the tag is added into the content, or else the compiled letter might lack of information"
-                        component={renderMultiColumnFormRichTextEditor}
+                        className="col-md-6"
+                        name="status"
+                        items={[
+                          { id: "01", title: "Active", value: 1 },
+                          { id: "02", title: "Inactive", value: 0 },
+                        ]}
+                        helpText="Please select the status"
+                        defaultOption="Please select a status..."
+                        component={renderMultiColumnFormSelect}
                       />
-                    </div>
-
-                    <div className="custom-separator"></div>
-
-                    <div className="row">
-                      <div className="col-md-6">
-                        <FieldArray
-                          name="tags"
-                          letterContent={props.content}
-                          changeFunction={props.change}
-                          component={renderTagsSelector}
-                        />
-                      </div>
                     </div>
                   </div>
                   <div className="card-footer">
@@ -114,7 +121,7 @@ const NewLetterTemplate = (props) => {
                       <div className="row">
                         <div className="col-lg-12">
                           <button type="submit" className="btn btn-primary m-1">
-                            Create Letter Template
+                            Save Changes
                           </button>
                         </div>
                       </div>
@@ -130,14 +137,22 @@ const NewLetterTemplate = (props) => {
   );
 };
 
-const selector = formValueSelector("NewLetterTemplate");
-
 const mapStateToProps = (state) => {
-  return { content: selector(state, "content"), httpError: state.error.error };
+  return {
+    initialValues: state.editAccountInformation.account,
+    httpError: state.error.error,
+    loading: state.loading.loading,
+  };
 };
 
-export default connect(mapStateToProps, { resetError, setError })(
-  reduxForm({ form: "NewLetterTemplate", validate: validate })(
-    NewLetterTemplate
-  )
+export default connect(mapStateToProps, {
+  resetError,
+  setError,
+  initializeForm,
+})(
+  reduxForm({
+    form: "EditAccountInformation",
+    validate: validate,
+    enableReinitialize: true,
+  })(EditAccountInformation)
 );

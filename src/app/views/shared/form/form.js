@@ -15,6 +15,7 @@ export const renderMultiColumnFormInputField = (formProps) => {
   return (
     <div className={`form-group ${formProps.className || ""}`}>
       <input
+        readOnly={formProps.readOnly}
         type={formProps.type}
         {...formProps.input}
         placeholder={formProps.placeholder}
