@@ -14,7 +14,7 @@ export const getAssignmentTaskInfo = (taskId) => async (dispatch) => {
   try {
     //get assignment task by id & district with resolved exam center and exam center data
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/assignments/resolve/${taskId}/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/assignments/resolve/${taskId}`
     );
 
     assignmentTask = response.data.assignmentTask;

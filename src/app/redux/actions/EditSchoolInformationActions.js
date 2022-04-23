@@ -18,14 +18,14 @@ export const initializeForm = (schoolId) => async (dispatch) => {
   try {
     //get all schools by district
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/schools/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/schools`
     );
 
     schools = response.data.schools;
 
     //find the school by id
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/schools/${schoolId}/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/schools/${schoolId}`
     );
 
     selectedSchool = response.data.school;

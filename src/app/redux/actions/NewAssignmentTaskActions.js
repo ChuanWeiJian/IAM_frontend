@@ -10,7 +10,7 @@ export const getAllExamCenters = () => async (dispatch) => {
   let response, examCenters;
   try {
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school`
     );
 
     examCenters = response.data.examCenters;

@@ -11,7 +11,7 @@ export const getLetterTemplateById = (templateId) => async (dispatch) => {
   try {
     //get letter template by id and district
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/letters/${templateId}/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/letters/${templateId}`
     );
 
     letterTemplate = response.data.letterTemplate;

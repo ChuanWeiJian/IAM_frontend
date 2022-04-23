@@ -40,7 +40,6 @@ const NewAssignmentTask = (props) => {
           values = {
             ...values,
             collectionDate: values.collectionDate.toString(),
-            district: "Kluang",
           };
 
           await axios({

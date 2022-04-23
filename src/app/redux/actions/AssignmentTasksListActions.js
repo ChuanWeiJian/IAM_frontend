@@ -14,7 +14,7 @@ export const getAllAssignmentTasks = () => async (dispatch) => {
   try {
     //get all assignment tasks by district
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/assignments/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/assignments`
     );
     //resolve the actions, index and date fields
     assignmentTasks = response.data.assignmentTasks.map((task, index) => {

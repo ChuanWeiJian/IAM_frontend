@@ -14,7 +14,7 @@ export const getSchoolListData = () => async (dispatch) => {
   try {
     //get all schools by district without resolved fields
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/schools/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/schools`
     );
 
     //add in actions and index to each school data, for table configuration
@@ -29,7 +29,7 @@ export const getSchoolListData = () => async (dispatch) => {
 
     //get exam centers with resolved schools
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school`
     );
 
     examCenters = response.data.examCenters;

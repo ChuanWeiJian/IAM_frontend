@@ -10,7 +10,7 @@ export const initializeForm = (templateId) => async (dispatch) => {
   try {
     //get the letter template by templateId
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/letters/${templateId}/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/letters/${templateId}`
     );
     letterTemplate = response.data.letterTemplate;
     dispatch({ type: INITIALIZE_FORM, payload: letterTemplate });

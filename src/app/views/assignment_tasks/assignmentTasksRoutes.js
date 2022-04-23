@@ -1,5 +1,5 @@
 import { lazy } from "react";
-//import { authRoles } from "app/auth/authRoles";
+import { authRoles } from "app/auth/authRoles";
 
 const NewAssignmentTask = lazy(() =>
   import("./new_assignment_task/NewAssignmentTask")
@@ -31,41 +31,49 @@ const assignmentTasksRoutes = [
     path: "/assignment",
     exact: true,
     component: AssignmentTasks,
+    auth: authRoles.officer,
   },
   {
     path: "/assignment/new",
     exact: true,
     component: NewAssignmentTask,
+    auth: authRoles.officer,
   },
   {
     path: "/assignment/list",
     exact: true,
     component: AssignmentTasksList,
+    auth: authRoles.officer,
   },
   {
     path: "/assignment/:taskId",
     exact: true,
     component: AssignmentTaskInfo,
+    auth: authRoles.officer,
   },
   {
     path: "/assignment/result/:role/:taskId",
     exact: true,
     component: AssignmentResultSummary,
+    auth: authRoles.officer,
   },
   {
     path: "/assignment/edit/:taskId",
     exact: true,
     component: EditAssignmentTask,
+    auth: authRoles.officer,
   },
   {
     path: "/assignment/result/edit/:role/:taskId",
     exact: true,
     component: EditAssignmentResult,
+    auth: authRoles.officer,
   },
   {
     path: "/assignment/letter/:role/:taskId",
     exact: true,
     component: CompileLetter,
+    auth: authRoles.officer,
   },
 ];
 

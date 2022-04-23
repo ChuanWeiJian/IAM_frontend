@@ -22,8 +22,7 @@ const NewExamCenter = (props) => {
       onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
         try {
-          values = { ...values, schoolId: props.school.id, district: "Kluang" };
-
+          values = { ...values, schoolId: props.school.id };
           await axios({
             method: "POST",
             url: `${process.env.REACT_APP_BACKEND_URL}/examcenters`,

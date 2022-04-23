@@ -11,14 +11,14 @@ export const initializeForm = (taskId) => async (dispatch) => {
   try {
     //get assignment by id and district
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/assignments/${taskId}/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/assignments/${taskId}`
     );
 
     assignmentTask = response.data.assignmentTask;
 
     //get all the exam centers by district with school resolved
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school`
     );
 
     examCenters = response.data.examCenters;

@@ -40,8 +40,6 @@ const NewSchool = (props) => {
       onOpen: async () => {
         //submit form process here remember to async and await with try...catch block
         try {
-          values = { ...values, district: "Kluang" }; //after done authentication, this line will be removed, district will be directly retrieved from logged in user
-
           await axios({
             method: "POST",
             url: `${process.env.REACT_APP_BACKEND_URL}/schools`,

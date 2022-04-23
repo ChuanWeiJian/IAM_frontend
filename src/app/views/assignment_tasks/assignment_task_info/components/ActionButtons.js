@@ -114,7 +114,10 @@ const ActionButtons = (props) => {
                 });
             }}
           >
-            <MdPeople className="cursor-pointer" size={24}></MdPeople>
+            <MdPeople
+              className="cursor-pointer text-primary"
+              size={24}
+            ></MdPeople>
           </div>
         </OverlayTrigger>
       )}

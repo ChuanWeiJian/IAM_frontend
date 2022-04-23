@@ -18,7 +18,7 @@ export const getAllSchools = () => async (dispatch) => {
   dispatch({ type: SET_LOADING, payload: true });
   try {
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/schools/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/schools`
     );
     dispatch({ type: GET_ALL_SCHOOLS, payload: response.data.schools });
   } catch (err) {

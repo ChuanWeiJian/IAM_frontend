@@ -16,7 +16,7 @@ export const getSchoolInformationById = (schoolId) => async (dispatch) => {
   // get school by id & district with resolved exam centers
   try {
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/schools/examcenters/${schoolId}/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/schools/examcenters/${schoolId}`
     );
 
     // resolve actions field after retrieved data
@@ -35,7 +35,7 @@ export const getSchoolInformationById = (schoolId) => async (dispatch) => {
 
     //get all registered exam centers by district with resolved school field
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/examcenters/school`
     );
 
     examCenters = response.data.examCenters;

@@ -27,9 +27,7 @@ export const getCompileLetterInfo = (role, taskId) => async (dispatch) => {
     });
 
     //get all letter templates under the district
-    response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/letters/Kluang`
-    );
+    response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/letters`);
 
     letterTemplates = response.data.letterTemplates;
 

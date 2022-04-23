@@ -1,24 +1,19 @@
 import React, { Component } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { loginWithEmailAndPassword } from "app/redux/actions/LoginActions";
+import { login } from "app/redux/actions/LoginActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
 
 const SigninSchema = yup.object().shape({
-  email: yup.string().email("Invalid email").required("email is required"),
-  password: yup
-    .string()
-    .min(8, "Password must be 8 character long")
-    .required("password is required"),
+  login: yup.string().required("Login is required"),
+  password: yup.string().required("Password is required"),
 });
 
 class Signin extends Component {
   state = {
-    email: "watson@example.com",
-    password: "12345678",
+    login: "",
+    password: "",
   };
 
   handleChange = (event) => {
@@ -27,7 +22,7 @@ class Signin extends Component {
   };
 
   handleSubmit = (value, { isSubmitting }) => {
-    this.props.loginWithEmailAndPassword(value);
+    this.props.login(value);
   };
 
   render() {
@@ -63,18 +58,18 @@ class Signin extends Component {
                     }) => (
                       <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                          <label htmlFor="email">Email address</label>
+                          <label htmlFor="login">Login</label>
                           <input
                             className="form-control form-control-rounded position-relative"
-                            type="email"
-                            name="email"
+                            type="text"
+                            name="login"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.email}
+                            value={values.login}
                           />
-                          {errors.email && (
+                          {errors.login && (
                             <div className="text-danger mt-1 ml-2">
-                              {errors.email}
+                              {errors.login}
                             </div>
                           )}
                         </div>
@@ -94,44 +89,34 @@ class Signin extends Component {
                             </div>
                           )}
                         </div>
-                        <button
-                          className="btn btn-rounded btn-primary w-100 my-1 mt-2"
-                          type="submit"
-                        >
-                          Sign In
-                        </button>
+                        {this.props.loading ? (
+                          <div className="text-center w-100 my-1 mt-2">
+                            <div className="spinner spinner-primary me-3"></div>
+                          </div>
+                        ) : (
+                          <button
+                            className="btn btn-rounded btn-primary w-100 my-1 mt-2"
+                            type="submit"
+                          >
+                            Sign In
+                          </button>
+                        )}
                       </form>
                     )}
                   </Formik>
-
-                  <div className="mt-3 text-center">
-                    <Link to="/session/forgot-password" className="text-muted">
-                      <u>Forgot Password?</u>
-                    </Link>
-                  </div>
                 </div>
               </div>
               <div
                 className="col-md-6 text-center "
                 style={{
                   backgroundSize: "cover",
-                  backgroundImage: "url(/assets/images/photo-long-3.jpg)",
+                  backgroundImage: "url(/assets/images/login-form-photo.jpg)",
                 }}
               >
                 <div className="pe-3 auth-right">
-                  <Link
-                    to="/session/signup"
-                    className="btn btn-rounded btn-outline-primary btn-outline-email w-100 my-1 btn-icon-text"
-                  >
-                    <i className="i-Mail-with-At-Sign"></i> Sign up with Email
-                  </Link>
-
-                  <Button className="btn btn-rounded btn-outline-google w-100 my-1 btn-icon-text">
-                    <i className="i-Google-Plus"></i> Sign up with Google
-                  </Button>
-                  <Button className="btn btn-rounded w-100 my-1 btn-icon-text btn-outline-facebook">
-                    <i className="i-Facebook-2"></i> Sign up with Facebook
-                  </Button>
+                  <div className="text-danger mt-1 ml-2">
+                    {this.props.loginError}
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,10 +128,11 @@ class Signin extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loginWithEmailAndPassword: PropTypes.func.isRequired,
-  user: state.user,
+  login: PropTypes.func.isRequired,
+  loginError: state.login.error,
+  loading: state.login.loading,
 });
 
 export default connect(mapStateToProps, {
-  loginWithEmailAndPassword,
+  login,
 })(Signin);

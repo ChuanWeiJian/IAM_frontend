@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -8,12 +8,12 @@ import {
   setDefaultSettings,
 } from "app/redux/actions/LayoutActions";
 import { logoutUser } from "app/redux/actions/UserActions";
+import { logout } from "app/redux/actions/LoginActions";
 import { withRouter } from "react-router-dom";
 
 import { merge } from "lodash";
 
 class Layout1Header extends Component {
-
   handleMenuClick = () => {
     let { setLayoutSettings, settings } = this.props;
     setLayoutSettings(
@@ -73,36 +73,55 @@ class Layout1Header extends Component {
           ></i>
 
           <div className="user col px-3">
-            <Dropdown>
-              <Dropdown.Toggle
-                as="span"
-                className="toggle-hidden cursor-pointer"
-              >
-                <img
-                  src="/assets/images/faces/1.jpg"
-                  id="userDropdown"
-                  alt=""
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <div className="dropdown-header">
-                  <i className="i-Lock-User me-1"></i> Timothy Carlson
-                </div>
-                <Link to="/" className="dropdown-item cursor-pointer">
-                  Account settings
-                </Link>
-                <Link
-                  to="/"
-                  className="dropdown-item cursor-pointer"
-                  onClick={this.props.logoutUser}
+            {this.props.login ? (
+              <Dropdown>
+                <Dropdown.Toggle
+                  as="span"
+                  className="toggle-hidden cursor-pointer"
                 >
-                  Sign out
-                </Link>
-              </Dropdown.Menu>
-            </Dropdown>
+                  <img
+                    src={
+                      this.props.user.district !== ""
+                        ? `/assets/images/Flag/${this.props.user.district}.png`
+                        : `/assets/images/faces/admin.png`
+                    }
+                    id="userDropdown"
+                    alt=""
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <div className="dropdown-header">
+                    <i className="i-Lock-User me-1"></i> {this.props.user.login}
+                  </div>
+                  <div className="dropdown-header">
+                    <i className="i-Map-Marker"></i> {this.props.user.district}
+                  </div>
+
+                  <Link
+                    to="/"
+                    className="dropdown-item cursor-pointer"
+                    onClick={() => {
+                      this.props.logoutUser();
+                      this.props.logout();
+                    }}
+                  >
+                    Sign out
+                  </Link>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Link to="/session/signin">
+                <Button
+                  variant={`outline-primary`}
+                  className="m-1 text-capitalize"
+                >
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -124,6 +143,7 @@ const mapStateToProps = (state) => ({
   logoutUser: PropTypes.func.isRequired,
   user: state.user,
   settings: state.layout.settings,
+  login: state.login.success,
 });
 
 export default withRouter(
@@ -131,5 +151,6 @@ export default withRouter(
     setLayoutSettings,
     setDefaultSettings,
     logoutUser,
+    logout,
   })(Layout1Header)
 );

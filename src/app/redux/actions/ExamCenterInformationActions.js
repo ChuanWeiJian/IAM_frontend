@@ -11,7 +11,7 @@ export const getExamCenterInformation = (centerId) => async (dispatch) => {
   try {
     //get exam center by id & district with resolved school & assignment tasks
     response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/examcenters/resolve/${centerId}/Kluang`
+      `${process.env.REACT_APP_BACKEND_URL}/examcenters/resolve/${centerId}`
     );
 
     examCenter = response.data.examCenter;

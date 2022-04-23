@@ -24,6 +24,7 @@ export const navigations = [
     description: "Management of officer accounts",
     type: "dropDown",
     icon: "i-Business-Mens",
+    userGroup: "Admin",
     sub: [
       {
         icon: "i-Add-User",
@@ -44,6 +45,7 @@ export const navigations = [
     description: "Management of assignment tasks",
     type: "dropDown",
     icon: "i-File",
+    userGroup: "Officer",
     sub: [
       {
         icon: "i-Add-File",
@@ -64,6 +66,7 @@ export const navigations = [
     description: "Management of schools & exam centers",
     type: "dropDown",
     icon: "i-University1",
+    userGroup: "Officer",
     sub: [
       {
         icon: "i-University",
@@ -84,6 +87,7 @@ export const navigations = [
     description: "Management of formal letters",
     type: "dropDown",
     icon: "i-Mail",
+    userGroup: "Officer",
     sub: [
       {
         icon: "i-Mail-Add-",

@@ -36,7 +36,7 @@ const SchoolList = (props) => {
           <div
             className="p-2 btn-hover rounded-circle"
             onClick={() => {
-              props.setSelectedIndex(rowIndex);
+              props.setSelectedIndex(row.index - 1);
               props.toggleForm(true);
             }}
           >

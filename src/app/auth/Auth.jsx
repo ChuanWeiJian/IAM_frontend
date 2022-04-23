@@ -2,37 +2,38 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { setUserData } from "../redux/actions/UserActions";
+import { autoLogin, logout } from "../redux/actions/LoginActions";
 import jwtAuthService from "../services/jwtAuthService";
 import localStorageService from "../services/localStorageService";
-import firebaseAuthService from "../services/firebase/firebaseAuthService";
 
 class Auth extends Component {
   state = {};
 
   constructor(props) {
     super(props);
-
-    this.props.setUserData(localStorageService.getItem("auth_user"));
+    //auto login if jwt exist, user exist and do not exceed expire time
     this.checkJwtAuth();
-    // this.checkFirebaseAuth();
   }
 
   checkJwtAuth = () => {
-    jwtAuthService.loginWithToken().then(user => {
-      this.props.setUserData(user);
-    });
-  };
-
-  checkFirebaseAuth = () => {
-    firebaseAuthService.checkAuthStatus(user => {
-      if (user) {
-        console.log(user.uid);
-        console.log(user.email);
-        console.log(user.emailVerified);
+    if (
+      localStorageService.getItem("auth_user") &&
+      window.localStorage.getItem("jwt_token") &&
+      localStorageService.getItem("expire_date")
+    ) {
+      if (new Date(localStorageService.getItem("expire_date")) > new Date()) {
+        this.props.setUserData(localStorageService.getItem("auth_user"));
+        this.props.autoLogin();
+        jwtAuthService.autoLogin(
+          localStorageService.getItem("auth_user"),
+          window.localStorage.getItem("jwt_token")
+        );
       } else {
-        console.log("not logged in");
+        this.props.setUserData({});
+        this.props.logout();
+        jwtAuthService.logout();
       }
-    });
+    }
   };
 
   render() {
@@ -41,9 +42,11 @@ class Auth extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   setUserData: PropTypes.func.isRequired,
-  login: state.login
+  login: state.login,
 });
 
-export default connect(mapStateToProps, { setUserData })(Auth);
+export default connect(mapStateToProps, { setUserData, autoLogin, logout })(
+  Auth
+);
