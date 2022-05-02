@@ -62,6 +62,14 @@ export const navigations = [
     ],
   },
   {
+    name: "Assignment Results",
+    description: "View result of assignment",
+    type: "link",
+    icon: "i-File",
+    path: "/assignment/result/invigilator",
+    userGroup: "Teacher",
+  },
+  {
     name: "School & Exam Center",
     description: "Management of schools & exam centers",
     type: "dropDown",

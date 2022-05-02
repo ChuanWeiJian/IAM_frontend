@@ -10,6 +10,7 @@ import EditAccountInformationReducer from "./EditAccountInformationReducer";
 import NewAssignmentTaskReducer from "./NewAssignmentTaskReducer";
 import AssignmentTasksListReducer from "./AssignmentTasksListReducer";
 import AssignmentTaskInfoReducer from "./AssignmentTaskInfoReducer";
+import AssignmentResultInvigilatorReducer from "./AssignmentResultInvigilatorReducer";
 import AssignmentResultSummaryReducer from "./AssignmentResultSummaryReducer";
 import CompileLetterReducer from "./CompileLetterReducer";
 import EditAssignmentTaskReducer from "./EditAssignmentTaskReducer";
@@ -41,6 +42,7 @@ const RootReducer = combineReducers({
   assignmentTasksList: AssignmentTasksListReducer,
   assignmentTaskInfo: AssignmentTaskInfoReducer,
   assignmentResultSummary: AssignmentResultSummaryReducer,
+  assignmentResultInvigilator: AssignmentResultInvigilatorReducer,
   compileLetter: CompileLetterReducer,
   editAssignmentTask: EditAssignmentTaskReducer,
   editAssignmentResult: EditAssignmentResultReducer,

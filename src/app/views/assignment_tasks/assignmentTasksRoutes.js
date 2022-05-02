@@ -16,6 +16,10 @@ const AssignmentResultSummary = lazy(() =>
   import("./assignment_result_summary/AssignmentResultSummary")
 );
 
+const AssignmentResultInvigilator = lazy(() =>
+  import("./assignment_result_invigilator/AssignmentResultInvigilator")
+);
+
 const EditAssignmentTask = lazy(() =>
   import("./edit_assignment_task/EditAssignmentTask.js")
 );
@@ -56,6 +60,12 @@ const assignmentTasksRoutes = [
     exact: true,
     component: AssignmentResultSummary,
     auth: authRoles.officer,
+  },
+  {
+    path: "/assignment/result/invigilator",
+    exact: true,
+    component: AssignmentResultInvigilator,
+    auth: authRoles.invigilator,
   },
   {
     path: "/assignment/edit/:taskId",
