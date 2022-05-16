@@ -26,6 +26,7 @@ import EditLetterTemplateReducer from "./EditLetterTemplateReducer";
 import TableReducer from "./TableReducer";
 import ErrorModalReducer from "./ErrorModalReducer";
 import LoadingReducer from "./LoadingReducer";
+import DashboardReducer from "./DashboardReducer";
 import { reducer as formReducer } from "redux-form";
 
 const RootReducer = combineReducers({
@@ -56,6 +57,7 @@ const RootReducer = combineReducers({
   editLetterTemplate: EditLetterTemplateReducer,
   error: ErrorModalReducer,
   loading: LoadingReducer,
+  dashboard: DashboardReducer,
   form: formReducer,
 });
 

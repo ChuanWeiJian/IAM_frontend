@@ -7,14 +7,8 @@ export const navigations = [
     sub: [
       {
         icon: "i-Clock-3",
-        name: "Version 1",
-        path: "/dashboard/v1",
-        type: "link",
-      },
-      {
-        icon: "i-Clock-4",
-        name: "Version 2",
-        path: "/dashboard/v2",
+        name: "Dashboard",
+        path: "/",
         type: "link",
       },
     ],
