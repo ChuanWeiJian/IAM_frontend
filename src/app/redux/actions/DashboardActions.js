@@ -3,6 +3,7 @@ import { SET_ERROR } from "./ErrorModalActions";
 import { SET_LOADING } from "./LoadingActions";
 
 export const GET_DASHBOARD_INFO = "GET_DASHBOARD_INFO";
+export const RESET_DASHBOARD_DATA = "RESET_DASHBOARD_DATA";
 
 export const getDashboardInfo = (userGroup) => async (dispatch) => {
   dispatch({ type: SET_LOADING, payload: true });
@@ -44,4 +45,8 @@ export const getDashboardInfo = (userGroup) => async (dispatch) => {
     dispatch({ type: SET_ERROR, payload: err });
   }
   dispatch({ type: SET_LOADING, payload: false });
+};
+
+export const resetDashboardData = () => {
+  return { type: RESET_DASHBOARD_DATA };
 };

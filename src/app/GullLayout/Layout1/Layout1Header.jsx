@@ -8,6 +8,7 @@ import {
   setDefaultSettings,
 } from "app/redux/actions/LayoutActions";
 import { logoutUser } from "app/redux/actions/UserActions";
+import { resetDashboardData } from "app/redux/actions/DashboardActions";
 import { logout } from "app/redux/actions/LoginActions";
 import { withRouter } from "react-router-dom";
 
@@ -104,6 +105,7 @@ class Layout1Header extends Component {
                     to="/"
                     className="dropdown-item cursor-pointer"
                     onClick={() => {
+                      this.props.resetDashboardData();
                       this.props.logoutUser();
                       this.props.logout();
                     }}
@@ -152,5 +154,6 @@ export default withRouter(
     setDefaultSettings,
     logoutUser,
     logout,
+    resetDashboardData,
   })(Layout1Header)
 );
